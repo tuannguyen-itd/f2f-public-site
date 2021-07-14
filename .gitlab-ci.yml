@@ -1,0 +1,62 @@
+image: node
+
+stages:
+  - test
+  - build
+  - deploy
+
+cache:
+  key: 'pdf-public'
+  paths:
+    - node_modules
+
+test:
+  stage: test
+  tags: [docker]
+  script:
+    - echo "Running tests"
+    - npm install
+    - npm run test
+    - npm run build
+  only:
+    - merge_requests
+
+build:
+  stage: build
+  tags: [deploy]
+  script:
+    - echo "Building the Docker image"
+    - docker build . --tag docker.itdragons.com/tungsoft/pdf-public
+    - docker push docker.itdragons.com/tungsoft/pdf-public
+  only:
+    - develop
+    - /^release\/.*$/i
+    - master
+
+deploy_dev:
+  stage: deploy
+  tags: [deploy]
+  script:
+    - echo "Deploy to demo server"
+    - cd /disk1/projects/pdf
+    - docker-compose pull
+    - docker-compose up -d
+  environment:
+    name: demo
+    url: https://paper.itdragons.com/
+  only:
+    - develop
+
+deploy_prod:
+  stage: deploy
+  tags: [deploy]
+  script:
+    - echo "Deploy to production server"
+    - echo "nothing here... will config later"
+  environment:
+    name: production
+    url: http://paper.itdragons.com/
+  when: manual
+  only:
+    - /^release\/.*$/i
+    - master

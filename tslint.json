@@ -1,0 +1,31 @@
+{
+  "extends": ["tslint-config-airbnb", "tslint-react-hooks"],
+  "rules": {
+    "no-increment-decrement": [false],
+    "max-line-length": [
+      true,
+      {
+        "limit": 140,
+        "ignore-pattern": "^import |^export {(.*?)}",
+        "check-strings": true,
+        "check-regex": true
+      }
+    ],
+    "no-console": [true, "log", "debug"],
+    "import-name": false,
+    "align": false,
+    "function-name": [
+      true,
+      {
+        "function-regex": "^[a-zA-Z$][\\w\\d]+$",
+        "method-regex": "^[a-z$][\\w\\d]+$",
+        "private-method-regex": "^[a-z$][\\w\\d]+$",
+        "protected-method-regex": "^[a-z$][\\w\\d]+$",
+        "static-method-regex": "^[a-z$][\\w\\d]+$"
+      }
+    ],
+    "variable-name": {
+      "options": ["ban-keywords", "check-format", "allow-leading-underscore", "allow-pascal-case"]
+    }
+  }
+}

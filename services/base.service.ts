@@ -44,7 +44,7 @@ export const baseService = {
 
   getApiUrl(funcName) {
     const isV2Api = this.v2Api.includes('*') || this.v2Api.includes(funcName);
-    return [process.env.API_URL, '/api', isV2Api ? '/f2f/' : '/', this.apiPath].join('');
+    return [process.env.API_URL, '/api', isV2Api ? '/v2/' : '/', this.apiPath].join('');
   },
 
   async getEntities(page, size, sort, order, filters) {

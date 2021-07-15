@@ -1,13 +1,13 @@
 import { baseService, IService, makeRequestUrl } from './base.service';
-import { ICenter } from '@model/center.model';
+import { IClassRoom } from '@model/class-room.model';
 
-interface ICenterService<T> extends IService<ICenter> {
-  getTopCenters: (query: any) => Promise<{ data: T[] } | null>;
+interface IClassRoomService<T> extends IService<IClassRoom> {
+  getTopClassRooms: (query: any) => Promise<{ data: T[] } | null>;
 }
 
-export const centerService: ICenterService<ICenter> = {
+export const classRoomService: IClassRoomService<IClassRoom> = {
   ...baseService,
-  apiPath: 'centers',
+  apiPath: 'class-rooms',
   v2Api: ['*'],
 
   async getEntities(page, size, sort, order, filters) {
@@ -22,8 +22,8 @@ export const centerService: ICenterService<ICenter> = {
     return null;
   },
 
-  async getTopCenters(query) {
-    const url = `${process.env.API_URL}/api/v2/centers/tops?query=${query || ''}`;
+  async getTopClassRooms(query) {
+    const url = `${process.env.API_URL}/api/v2/class-rooms/tops?query=${query || ''}`;
     const res = await fetch(url);
     if (res?.ok) {
       const data = await res.json();

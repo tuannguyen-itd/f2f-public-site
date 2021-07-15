@@ -1,19 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Col, Input, InputGroup, InputGroupAddon, Row } from 'reactstrap';
 import Layout from '@components/layout';
-import { centerService, menuService } from '@services';
+import { classRoomService, menuService } from '@services';
 import { Pagination } from '@components/pagination/pagination';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import { useRouter } from 'next/router';
 import Error from 'next/error';
-import { Centers as ListCenters } from '@components/centers';
+import { ClassRooms as ListClassRooms } from '@components/classRooms';
 import { ITEMS_PER_PAGE } from '../../shared/util/pagination.constants';
 
-declare type CentersProps = InferGetServerSidePropsType<typeof getServerSideProps>;
+declare type ClassRoomsProps = InferGetServerSidePropsType<typeof getServerSideProps>;
 
 export const getServerSideProps: GetServerSideProps<any, NodeJS.Dict<string>> = async ({ query: { search, page = 1 }, res }) => {
   const menus = [];
-  const response = await centerService.getEntities(
+  const response = await classRoomService.getEntities(
     +page - 1, ITEMS_PER_PAGE, 'id', 'desc',
     { 'name.contains': search as string },
   );
@@ -28,7 +28,7 @@ export const getServerSideProps: GetServerSideProps<any, NodeJS.Dict<string>> = 
   return { props: { response, menus } };
 };
 
-export default function Centers({ menus, response, errorCode }: CentersProps) {
+export default function ClassRooms({ menus, response, errorCode }: ClassRoomsProps) {
   if (errorCode) return <Error statusCode={errorCode} />;
 
   const router = useRouter();
@@ -47,21 +47,21 @@ export default function Centers({ menus, response, errorCode }: CentersProps) {
       .filter(s => s)
       .join('&');
 
-    return `/centers${params ? `?${params}` : ''}`;
+    return `/class-rooms${params ? `?${params}` : ''}`;
   };
 
   const handlePaginateChange = value => +value && router.push(url(+value, search), undefined);
 
-  const handleSearchCenters = (event) => {
+  const handleSearchClassRooms = (event) => {
     event.preventDefault();
     router.push(url(1, search), undefined);
   };
 
-  const { data: centers, total } = response;
+  const { data: classRooms, total } = response;
 
   return (
     <Layout menus={menus}>
-      <form onSubmit={handleSearchCenters}>
+      <form onSubmit={handleSearchClassRooms}>
         <div className="mb-4">
           <Row>
             <Col>
@@ -70,7 +70,7 @@ export default function Centers({ menus, response, errorCode }: CentersProps) {
                   autoFocus={true}
                   value={search}
                   onChange={$event => setSearch($event.target.value)}
-                  placeholder="Search center by name, tags and fields..." />
+                  placeholder="Search classRoom by name, tags and fields..." />
                 <InputGroupAddon addonType="append">
                   <Button color="secondary">Search</Button>
                 </InputGroupAddon>
@@ -80,10 +80,10 @@ export default function Centers({ menus, response, errorCode }: CentersProps) {
         </div>
       </form>
 
-      <ListCenters data={centers} />
+      <ListClassRooms data={classRooms} />
 
       <Pagination
-        visible={centers?.length > 0 && total}
+        visible={classRooms?.length > 0 && total}
         activePage={+router.query.page || 1}
         onSelect={handlePaginateChange}
         maxButtons={7}

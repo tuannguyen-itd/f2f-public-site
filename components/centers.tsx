@@ -20,7 +20,7 @@ export const Centers = ({ data }: ICenters) => {
           </Link>
         </li>
       ))}
-      { !data?.length ? <h3 className="text-center text-error my-5">No center found!</h3> : '' }
+      { !data?.length ? <h3 className="text-error my-5">No center found!</h3> : '' }
     </ul>
   );
 };

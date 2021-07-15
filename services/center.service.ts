@@ -13,6 +13,7 @@ export const centerService: ICenterService<ICenter> = {
   async getEntities(page, size, sort, order, filters) {
     const baseUrl = this.getApiUrl('getEntities');
     const url = makeRequestUrl(baseUrl, page, size, sort, order, filters);
+    console.log(url);
     const res = await fetch(url);
     if (res?.ok) {
       const data = await res.json();

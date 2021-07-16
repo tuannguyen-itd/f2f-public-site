@@ -35,12 +35,6 @@ export default function Footer({ menus }: IFooterProps) {
           {menus?.map((menu, i) => (
             <FooterMenu title={menu.title} data={menu.menuItems} key={i} />
           ))}
-
-          <div className="mt-3">
-            <a className="text-muted" href={`${process.env.NEXT_PUBLIC_ADMIN_URL}`}>
-              Dashboard
-            </a>
-          </div>
         </div>
       </div>
     </footer>

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Col, Row } from 'reactstrap';
 import Comment from '@components/comment';
 import Share from '@components/share';
@@ -28,6 +28,7 @@ function ClassRoom({ menus, classRoom, errorCode }: ClassRoomProps) {
   if (errorCode) return <Error statusCode={errorCode} />;
 
   return (
+    // @ts-ignore
     <Layout menus={menus}>
       <div className="container-fluid view-container">
         {classRoom === null ? (

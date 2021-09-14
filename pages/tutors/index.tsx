@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Col, Input, InputGroup, InputGroupAddon, Row } from 'reactstrap';
 import Layout from '@components/layout';
-import { tutorService, menuService } from '@services';
+import { tutorService } from '@services';
 import { Pagination } from '@components/pagination/pagination';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import { useRouter } from 'next/router';
@@ -60,6 +60,7 @@ export default function Tutors({ menus, response, errorCode }: TutorsProps) {
   const { data: tutors, total } = response;
 
   return (
+    // @ts-ignore
     <Layout menus={menus}>
       <form onSubmit={handleSearchTutors}>
         <div className="mb-4">

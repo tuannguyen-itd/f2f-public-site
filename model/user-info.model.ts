@@ -1,7 +1,7 @@
 import { Moment } from 'moment';
 import { IUser, defaultValue as userDefaultValue } from '@model/user.model';
 import { IWard } from '@model/ward.model';
-import { Gender } from "@model/enumerations/gender.model";
+import { Gender } from '@model/enumerations/gender.model';
 
 export interface IUserInfo {
   id?: number;

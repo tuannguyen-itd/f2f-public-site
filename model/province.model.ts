@@ -1,4 +1,4 @@
-import {IDistrict} from "@model/district.model";
+import { IDistrict } from '@model/district.model';
 
 export interface IProvince {
   id?: number;

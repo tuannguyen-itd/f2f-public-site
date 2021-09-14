@@ -1,4 +1,4 @@
-import {IWard} from "@model/ward.model";
+import { IWard } from '@model/ward.model';
 
 export interface ICenter {
   id?: number;

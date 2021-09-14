@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Col, Input, InputGroup, InputGroupAddon, Row } from 'reactstrap';
 import Layout from '@components/layout';
-import { classRoomService, menuService } from '@services';
+import { classRoomService } from '@services';
 import { Pagination } from '@components/pagination/pagination';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import { useRouter } from 'next/router';
@@ -60,6 +60,7 @@ export default function ClassRooms({ menus, response, errorCode }: ClassRoomsPro
   const { data: classRooms, total } = response;
 
   return (
+    // @ts-ignore
     <Layout menus={menus}>
       <form onSubmit={handleSearchClassRooms}>
         <div className="mb-4">

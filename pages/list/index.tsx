@@ -1,14 +1,14 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Col, Input, InputGroup, InputGroupAddon, Row } from 'reactstrap';
-import {centerService, classRoomService, tutorService} from '@services';
+import { centerService, classRoomService, tutorService } from '@services';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import Error from 'next/error';
 import Layout from '@components/layout';
 import { ITEMS_PER_PAGE } from '../../shared/util/pagination.constants';
 import { Centers as ListCenters } from '@components/centers';
-import { ClassRooms as ListClassRooms } from "@components/classRooms";
-import { Tutors as ListTutors } from "@components/tutors";
-import {useRouter} from "next/router";
+import { ClassRooms as ListClassRooms } from '@components/classRooms';
+import { Tutors as ListTutors } from '@components/tutors';
+import { useRouter } from 'next/router';
 
 declare type SearchProps = InferGetServerSidePropsType<typeof getServerSideProps>;
 
@@ -61,12 +61,12 @@ function Index({ menus, errorCode, centerResponse, classRoomResponse, tutorsResp
     router.push(url(0, search), undefined);
   };
 
-
   const { data: centers } = centerResponse;
   const { data: classRooms } = classRoomResponse;
   const { data: tutors } = tutorsResponse;
 
   return (
+    // @ts-ignore
     <Layout menus={menus}>
 
       <form onSubmit={handleSearch}>

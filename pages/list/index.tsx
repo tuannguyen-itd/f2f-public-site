@@ -5,9 +5,9 @@ import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import Error from 'next/error';
 import Layout from '@components/layout';
 import { ITEMS_PER_PAGE } from '../../shared/util/pagination.constants';
-import { Centers as ListCenters } from '@components/centers';
-import { ClassRooms as ListClassRooms } from '@components/classRooms';
-import { Tutors as ListTutors } from '@components/tutors';
+import { CenterItem as ListCenters } from '@components/centers';
+import { ClassroomItem as ListClassRooms } from '@components/classRooms';
+import { TutorItem as ListTutors } from '@components/tutors';
 import { useRouter } from 'next/router';
 
 declare type SearchProps = InferGetServerSidePropsType<typeof getServerSideProps>;

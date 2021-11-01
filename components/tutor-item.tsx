@@ -6,7 +6,7 @@ interface ITutors {
   data?: ITutor[];
 }
 
-export const Tutors = ({ data }: ITutors) => {
+export const TutorItem = ({ data }: ITutors) => {
   return (
     <ul className="list-unstyled mt-2">
       {data?.map((tutor, index) => (

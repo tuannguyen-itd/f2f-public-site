@@ -6,7 +6,7 @@ import { Pagination } from '@components/pagination/pagination';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import { useRouter } from 'next/router';
 import Error from 'next/error';
-import { ClassRooms as ListClassRooms } from '@components/classRooms';
+import { ClassroomItem } from '@components/classroom-item';
 import { ITEMS_PER_PAGE } from '../../shared/util/pagination.constants';
 
 declare type ClassRoomsProps = InferGetServerSidePropsType<typeof getServerSideProps>;
@@ -457,7 +457,10 @@ export default function ClassRooms({ menus, response, errorCode }: ClassRoomsPro
         </div>
         <div className="outer-container">
           <div className="row clearfix">
-            <ListClassRooms data={classRooms} />
+              {classRooms.length > 0 ? classRooms.map((classRoom, index) => (
+                <ClassroomItem key={index} classRoom={classRoom} />
+              )) : ''}
+            { !classRooms?.length ? <h3 className="text-classRoom text-error my-5">No classRoom found!</h3> : '' }
           </div>
         </div>
         <Pagination
@@ -469,7 +472,6 @@ export default function ClassRooms({ menus, response, errorCode }: ClassRoomsPro
           totalItems={+total}
         />
       </section>
-
     </Layout>
   );
 }

@@ -6,7 +6,7 @@ import { Pagination } from '@components/pagination/pagination';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import { useRouter } from 'next/router';
 import Error from 'next/error';
-import { Tutors as ListTutors } from '@components/tutors';
+import { TutorItem as ListTutors } from '@components/tutors';
 import { ITEMS_PER_PAGE } from '../../shared/util/pagination.constants';
 
 declare type TutorsProps = InferGetServerSidePropsType<typeof getServerSideProps>;

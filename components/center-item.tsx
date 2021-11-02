@@ -1,6 +1,7 @@
 import React from 'react';
 import { ICenter } from '@model/center.model';
 import {Address} from "@components/address";
+import Link from "next/link";
 
 interface ICenterItemProps {
   center?: ICenter;
@@ -13,12 +14,16 @@ export const CenterItem = (props: ICenterItemProps) => {
     <div className="course-block style-two col-lg-3 col-md-6 col-sm-12">
       <div className="inner-box">
         <div className="image">
-          <a href="#">
-            <img src={`data:${center.logoContentType};base64,${center.logo}`} />
-          </a>
+          <Link href="/centers/[id]" as={`/centers/${center.id}`}>
+            <a><img src={`data:${center.logoContentType};base64,${center.logo}`} /></a>
+          </Link>
         </div>
         <div className="lower-content">
-          <h4><a href="#">{center.name}</a></h4>
+          <h4>
+            <Link href="/centers/[id]" as={`/centers/${center.id}`}>
+              <a>{center.name}</a>
+            </Link>
+          </h4>
           <div className="rating">
             <span className="fa fa-star" />
             <span className="fa fa-star" />
@@ -31,7 +36,11 @@ export const CenterItem = (props: ICenterItemProps) => {
         </div>
         {/* Overlay Content Box */}
         <div className="overlay-content-box">
-          <h4>{center.name}</h4>
+          <h4>
+            <Link href="/centers/[id]" as={`/centers/${center.id}`}>
+              <a>{center.name}</a>
+            </Link>
+          </h4>
           <div className="rating">
             <span className="fa fa-star" />
             <span className="fa fa-star" />

@@ -1,6 +1,7 @@
 import React from 'react';
 import { ITutor } from '@model/tutor.model';
 import {Address} from "@components/address";
+import Link from "next/link";
 
 interface ITutorItemProps {
   tutor?: ITutor;
@@ -12,12 +13,16 @@ export const TutorItem = (props: ITutorItemProps) => {
     <div className="course-block style-two col-lg-3 col-md-6 col-sm-12">
       <div className="inner-box">
         <div className="image">
-          <a href="#">
-            <img src={`data:${tutor.userInfo.avatarContentType};base64,${tutor.userInfo.avatar}`} />
-          </a>
+          <Link href="/tutors/[id]" as={`/tutors/${tutor.id}`}>
+            <a><img src={`data:${tutor.userInfo.avatarContentType};base64,${tutor.userInfo.avatar}`} /></a>
+          </Link>
         </div>
         <div className="lower-content">
-          <h4><a href="#">{tutor.userInfo.user.firstName} {tutor.userInfo.user.lastName}</a></h4>
+          <h4>
+            <Link href="/tutors/[id]" as={`/tutors/${tutor.id}`}>
+              <a>{tutor.userInfo.user.firstName} {tutor.userInfo.user.lastName}</a>
+            </Link>
+          </h4>
           <div className="rating">
             <span className="fa fa-star" />
             <span className="fa fa-star" />
@@ -30,7 +35,11 @@ export const TutorItem = (props: ITutorItemProps) => {
         </div>
         {/* Overlay Content Box */}
         <div className="overlay-content-box">
-          <h4>{tutor.userInfo.user.firstName} {tutor.userInfo.user.lastName}</h4>
+          <h4>
+            <Link href="/tutors/[id]" as={`/tutors/${tutor.id}`}>
+              <a>{tutor.userInfo.user.firstName} {tutor.userInfo.user.lastName}</a>
+            </Link>
+          </h4>
           <div className="rating">
             <span className="fa fa-star" />
             <span className="fa fa-star" />

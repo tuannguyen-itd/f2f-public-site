@@ -17,25 +17,25 @@ export default function Home(props) {
           {/* Banner Section */}
           <section className="banner-section">
             <div className="auto-container">
-              <div className="pattern-layer-six" style={{backgroundImage: 'url(theme/template/images/main-slider/pattern-4.png)'}} />
-              <div className="pattern-layer-seven" style={{backgroundImage: 'url(theme/template/images/main-slider/pattern-5.png)'}} />
-              <div className="pattern-layer-eight" style={{backgroundImage: 'url(theme/template/images/main-slider/icon-2.png)'}} />
+              <div className="pattern-layer-six" style={{backgroundImage: 'url(/theme/template/images/main-slider/pattern-4.png)'}} />
+              <div className="pattern-layer-seven" style={{backgroundImage: 'url(/theme/template/images/main-slider/pattern-5.png)'}} />
+              <div className="pattern-layer-eight" style={{backgroundImage: 'url(/theme/template/images/main-slider/icon-2.png)'}} />
               <div className="row clearfix">
                 {/* Image Column */}
                 <div className="image-column col-lg-6 col-md-12 col-sm-12">
                   <div className="inner-column">
-                    <div className="pattern-layer-one" style={{backgroundImage: 'url(theme/template/images/main-slider/pattern-1.png)'}} />
-                    <div className="pattern-layer-two" style={{backgroundImage: 'url(theme/template/images/main-slider/pattern-2.png)'}} />
-                    <div className="pattern-layer-three" style={{backgroundImage: 'url(theme/template/images/main-slider/icon-1.png)'}} />
-                    <div className="pattern-layer-four" style={{backgroundImage: 'url(theme/template/images/main-slider/pattern-3.png)'}} />
-                    <div className="pattern-layer-five" style={{backgroundImage: 'url(theme/template/images/main-slider/icon-2.png)'}} />
+                    <div className="pattern-layer-one" style={{backgroundImage: 'url(/theme/template/images/main-slider/pattern-1.png)'}} />
+                    <div className="pattern-layer-two" style={{backgroundImage: 'url(/theme/template/images/main-slider/pattern-2.png)'}} />
+                    <div className="pattern-layer-three" style={{backgroundImage: 'url(/theme/template/images/main-slider/icon-1.png)'}} />
+                    <div className="pattern-layer-four" style={{backgroundImage: 'url(/theme/template/images/main-slider/pattern-3.png)'}} />
+                    <div className="pattern-layer-five" style={{backgroundImage: 'url(/theme/template/images/main-slider/icon-2.png)'}} />
                     <div className="image">
-                      <img src="theme/template/images/main-slider/image-1.png" alt="" />
+                      <img src="/theme/template/images/main-slider/image-1.png" alt="" />
                     </div>
                     <div className="image-two">
-                      <img src="theme/template/images/main-slider/image-4.png" alt="" />
+                      <img src="/theme/template/images/main-slider/image-4.png" alt="" />
                     </div>
-                    <div className="image-content" style={{backgroundImage: 'url(theme/template/images/main-slider/pattern-6.png)'}}>
+                    <div className="image-content" style={{backgroundImage: 'url(/theme/template/images/main-slider/pattern-6.png)'}}>
                       <p>87% of people <br /> learning</p>
                     </div>
                   </div>
@@ -56,9 +56,9 @@ export default function Home(props) {
           {/* End Banner Section */}
           {/* Instructor Section */}
           <section className="instructor-section">
-            <div className="background-layer" style={{backgroundImage: 'url(theme/template/images/background/1.png)'}} />
-            <div className="background-layer-one" style={{backgroundImage: 'url(theme/template/images/background/pattern-1.png)'}} />
-            <div className="background-layer-two" style={{backgroundImage: 'url(theme/template/images/background/pattern-2.png)'}} />
+            <div className="background-layer" style={{backgroundImage: 'url(/theme/template/images/background/1.png)'}} />
+            <div className="background-layer-one" style={{backgroundImage: 'url(/theme/template/images/background/pattern-1.png)'}} />
+            <div className="background-layer-two" style={{backgroundImage: 'url(/theme/template/images/background/pattern-2.png)'}} />
             <div className="auto-container">
               <div className="row clearfix">
                 {/* Blocks Column */}
@@ -98,7 +98,7 @@ export default function Home(props) {
                     <p>voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non</p>
                     <a className="click-here" href="membership.html">Click here for apply</a>
                     <div className="image titlt" data-tilt data-tilt-max={4}>
-                      <img src="theme/template/images/resource/instructor.png" alt="" />
+                      <img src="/theme/template/images/resource/instructor.png" alt="" />
                     </div>
                   </div>
                 </div>
@@ -108,24 +108,24 @@ export default function Home(props) {
           {/* End Instructor Section */}
           {/* Benefit Section */}
           <section className="benefit-section">
-            <div className="background-layer-one" style={{backgroundImage: 'url(theme/template/images/background/pattern-5.png)'}} />
-            <div className="background-layer-two" style={{backgroundImage: 'url(theme/template/images/background/pattern-6.png)'}} />
+            <div className="background-layer-one" style={{backgroundImage: 'url(/theme/template/images/background/pattern-5.png)'}} />
+            <div className="background-layer-two" style={{backgroundImage: 'url(/theme/template/images/background/pattern-6.png)'}} />
             <div className="auto-container">
               <div className="row clearfix">
                 {/* Images Column */}
                 <div className="images-column col-lg-7 col-md-12 col-sm-12">
                   <div className="inner-column">
-                    <div className="pattern-layer" style={{backgroundImage: 'url(theme/template/images/background/pattern-3.png)'}} />
-                    <div className="pattern-layer-two" style={{backgroundImage: 'url(theme/template/images/background/pattern-4.png)'}} />
+                    <div className="pattern-layer" style={{backgroundImage: 'url(/theme/template/images/background/pattern-3.png)'}} />
+                    <div className="pattern-layer-two" style={{backgroundImage: 'url(/theme/template/images/background/pattern-4.png)'}} />
                     <div className="color-layer" />
                     <div className="image">
-                      <img src="theme/template/images/resource/benefit-1.jpg" alt="" />
+                      <img src="/theme/template/images/resource/benefit-1.jpg" alt="" />
                     </div>
                     <div className="image-two">
-                      <img src="theme/template/images/resource/benefit-3.jpg" alt="" />
+                      <img src="/theme/template/images/resource/benefit-3.jpg" alt="" />
                     </div>
                     <div className="image-three">
-                      <img src="theme/template/images/resource/benefit-2.jpg" alt="" />
+                      <img src="/theme/template/images/resource/benefit-2.jpg" alt="" />
                     </div>
                   </div>
                 </div>
@@ -156,7 +156,7 @@ export default function Home(props) {
           {/* End Benefit Section */}
           {/* Feature Section */}
           <section className="feature-section">
-            <div className="pattern-layer" style={{backgroundImage: 'url(theme/template/images/background/pattern-7.png)'}} />
+            <div className="pattern-layer" style={{backgroundImage: 'url(/theme/template/images/background/pattern-7.png)'}} />
             <div className="auto-container">
               <div className="row clearfix">
                 {/* Content Column */}
@@ -177,7 +177,7 @@ export default function Home(props) {
                   <div className="inner-column">
                     <div className="color-layer" />
                     <div className="image wow fadeInLeft" data-wow-delay="0ms" data-wow-duration="1500ms">
-                      <img src="theme/template/images/resource/feature.jpg" alt="" />
+                      <img src="/theme/template/images/resource/feature.jpg" alt="" />
                       <div className="overlay-box">
                         <div className="content">
                           <h2>How a degree on <br /> FutureLearn <br /> works</h2>
@@ -188,7 +188,7 @@ export default function Home(props) {
                       </div>
                     </div>
                     <div className="feature-icon wow fadeInUp" data-wow-delay="0ms" data-wow-duration="1500ms">
-                      <img src="theme/template/images/resource/feature-icon.png" alt="" />
+                      <img src="/theme/template/images/resource/feature-icon.png" alt="" />
                     </div>
                   </div>
                 </div>
@@ -198,7 +198,7 @@ export default function Home(props) {
           {/* End Benefit Section */}
           {/* Courses Section */}
           <section className="courses-section">
-            <div className="pattern-layer" style={{backgroundImage: 'url(theme/template/images/background/pattern-2.png)'}} />
+            <div className="pattern-layer" style={{backgroundImage: 'url(/theme/template/images/background/pattern-2.png)'}} />
             <div className="circle-one paroller" data-paroller-factor="-0.20" data-paroller-factor-lg="0.20" data-paroller-type="foreground" data-paroller-direction="horizontal" />
             <div className="circle-two paroller" data-paroller-factor="0.20" data-paroller-factor-lg="-0.20" data-paroller-type="foreground" data-paroller-direction="horizontal" />
             <div className="auto-container">
@@ -211,7 +211,7 @@ export default function Home(props) {
                 <div className="course-block col-lg-4 col-md-6 col-sm-12">
                   <div className="inner-box wow fadeInLeft" data-wow-delay="0ms" data-wow-duration="1500ms">
                     <div className="image">
-                      <a href="course-detail.html"><img src="theme/template/images/resource/course-1.jpg" alt="" /></a>
+                      <a href="course-detail.html"><img src="/theme/template/images/resource/course-1.jpg" alt="" /></a>
                     </div>
                     <div className="lower-content">
                       <h4><a href="course-detail.html">Growth Mindsets for Teachers and Learners</a></h4>
@@ -241,7 +241,7 @@ export default function Home(props) {
                 <div className="course-block col-lg-4 col-md-6 col-sm-12">
                   <div className="inner-box wow fadeInUp" data-wow-delay="0ms" data-wow-duration="1500ms">
                     <div className="image">
-                      <a href="course-detail.html"><img src="theme/template/images/resource/course-2.jpg" alt="" /></a>
+                      <a href="course-detail.html"><img src="/theme/template/images/resource/course-2.jpg" alt="" /></a>
                     </div>
                     <div className="lower-content">
                       <h4><a href="course-detail.html">Programming for Everybody Getting Started with Python</a></h4>
@@ -271,7 +271,7 @@ export default function Home(props) {
                 <div className="course-block col-lg-4 col-md-6 col-sm-12">
                   <div className="inner-box wow fadeInRight" data-wow-delay="0ms" data-wow-duration="1500ms">
                     <div className="image">
-                      <a href="course-detail.html"><img src="theme/template/images/resource/course-3.jpg" alt="" /></a>
+                      <a href="course-detail.html"><img src="/theme/template/images/resource/course-3.jpg" alt="" /></a>
                     </div>
                     <div className="lower-content">
                       <h4><a href="course-detail.html">Introduction to Forensic Science</a></h4>
@@ -313,7 +313,7 @@ export default function Home(props) {
                 <div className="image-column col-lg-5 col-md-12 col-sm-12">
                   <div className="inner-column">
                     <div className="image titlt" data-tilt data-tilt-max={4}>
-                      <img src="theme/template/images/resource/career.png" alt="" />
+                      <img src="/theme/template/images/resource/career.png" alt="" />
                     </div>
                   </div>
                 </div>
@@ -334,7 +334,7 @@ export default function Home(props) {
           {/* End Career Section */}
           {/* Skill Section */}
           <section className="skill-section">
-            <div className="pattern-layer" style={{backgroundImage: 'url(theme/template/images/background/pattern-8.png)'}} />
+            <div className="pattern-layer" style={{backgroundImage: 'url(/theme/template/images/background/pattern-8.png)'}} />
             <div className="auto-container">
               <div className="row clearfix">
                 {/* Skill Column */}
@@ -391,7 +391,7 @@ export default function Home(props) {
                     <div className="circle-one" />
                     <div className="circle-two" />
                     <div className="image titlt" data-tilt data-tilt-max={4}>
-                      <img src="theme/template/images/resource/skill.png" alt="" />
+                      <img src="/theme/template/images/resource/skill.png" alt="" />
                     </div>
                   </div>
                 </div>
@@ -403,10 +403,10 @@ export default function Home(props) {
           <section className="testimonial-section">
             <div className="circle-one paroller" data-paroller-factor="-0.20" data-paroller-factor-lg="0.20" data-paroller-type="foreground" data-paroller-direction="horizontal" />
             <div className="circle-two paroller" data-paroller-factor="0.20" data-paroller-factor-lg="-0.20" data-paroller-type="foreground" data-paroller-direction="horizontal" />
-            <div className="pattern-layer-two" style={{backgroundImage: 'url(theme/template/images/background/pattern-10.png)'}} />
+            <div className="pattern-layer-two" style={{backgroundImage: 'url(/theme/template/images/background/pattern-10.png)'}} />
             <div className="auto-container">
               <div className="inner-container">
-                <div className="pattern-layer" style={{backgroundImage: 'url(theme/template/images/background/pattern-9.png)'}} />
+                <div className="pattern-layer" style={{backgroundImage: 'url(/theme/template/images/background/pattern-9.png)'}} />
                 {/* Sec Title */}
                 <div className="sec-title centered">
                   <div className="title">Testimonial</div>
@@ -421,7 +421,7 @@ export default function Home(props) {
                       <div className="author-info">
                         <div className="info-inner">
                           <div className="author-image">
-                            <img src="theme/template/images/resource/author-1.jpg" alt="" />
+                            <img src="/theme/template/images/resource/author-1.jpg" alt="" />
                           </div>
                           <h6>Mahfuz Riad</h6>
                           <div className="designation">Online Teacher</div>
@@ -437,7 +437,7 @@ export default function Home(props) {
                       <div className="author-info">
                         <div className="info-inner">
                           <div className="author-image">
-                            <img src="theme/template/images/resource/author-1.jpg" alt="" />
+                            <img src="/theme/template/images/resource/author-1.jpg" alt="" />
                           </div>
                           <h6>Mahfuz Riad</h6>
                           <div className="designation">Online Teacher</div>
@@ -453,7 +453,7 @@ export default function Home(props) {
                       <div className="author-info">
                         <div className="info-inner">
                           <div className="author-image">
-                            <img src="theme/template/images/resource/author-1.jpg" alt="" />
+                            <img src="/theme/template/images/resource/author-1.jpg" alt="" />
                           </div>
                           <h6>Mahfuz Riad</h6>
                           <div className="designation">Online Teacher</div>
@@ -469,7 +469,7 @@ export default function Home(props) {
                       <div className="author-info">
                         <div className="info-inner">
                           <div className="author-image">
-                            <img src="theme/template/images/resource/author-1.jpg" alt="" />
+                            <img src="/theme/template/images/resource/author-1.jpg" alt="" />
                           </div>
                           <h6>Mahfuz Riad</h6>
                           <div className="designation">Online Teacher</div>
@@ -485,7 +485,7 @@ export default function Home(props) {
                       <div className="author-info">
                         <div className="info-inner">
                           <div className="author-image">
-                            <img src="theme/template/images/resource/author-1.jpg" alt="" />
+                            <img src="/theme/template/images/resource/author-1.jpg" alt="" />
                           </div>
                           <h6>Mahfuz Riad</h6>
                           <div className="designation">Online Teacher</div>
@@ -501,7 +501,7 @@ export default function Home(props) {
                       <div className="author-info">
                         <div className="info-inner">
                           <div className="author-image">
-                            <img src="theme/template/images/resource/author-1.jpg" alt="" />
+                            <img src="/theme/template/images/resource/author-1.jpg" alt="" />
                           </div>
                           <h6>Mahfuz Riad</h6>
                           <div className="designation">Online Teacher</div>
@@ -517,7 +517,7 @@ export default function Home(props) {
           {/* End Testimonial Section */}
           {/* News Section */}
           <section className="news-section">
-            <div className="pattern-layer" style={{backgroundImage: 'url(theme/template/images/background/pattern-11.png)'}} />
+            <div className="pattern-layer" style={{backgroundImage: 'url(/theme/template/images/background/pattern-11.png)'}} />
             <div className="auto-container">
               {/* Sec Title */}
               <div className="sec-title centered">
@@ -526,15 +526,15 @@ export default function Home(props) {
                 <div className="text">Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu <br /> fugiat nulla pariatur Duis aute irure dolor in reprehenderit in</div>
               </div>
               <div className="inner-container">
-                <div className="icon-layer-one" style={{backgroundImage: 'url(theme/template/images/icons/icon-1.png)'}} />
-                <div className="icon-layer-two" style={{backgroundImage: 'url(theme/template/images/icons/icon-2.png)'}} />
-                <div className="icon-layer-three" style={{backgroundImage: 'url(theme/template/images/icons/icon-2.png)'}} />
+                <div className="icon-layer-one" style={{backgroundImage: 'url(/theme/template/images/icons/icon-1.png)'}} />
+                <div className="icon-layer-two" style={{backgroundImage: 'url(/theme/template/images/icons/icon-2.png)'}} />
+                <div className="icon-layer-three" style={{backgroundImage: 'url(/theme/template/images/icons/icon-2.png)'}} />
                 <div className="row clearfix">
                   {/* News Block */}
                   <div className="news-block col-lg-6 col-md-6 col-sm-12">
                     <div className="inner-box wow fadeInLeft" data-wow-delay="0ms" data-wow-duration="1500ms">
                       <div className="image">
-                        <a href="#"><img src="theme/template/images/resource/news-1.jpg" alt="" /></a>
+                        <a href="#"><img src="/theme/template/images/resource/news-1.jpg" alt="" /></a>
                       </div>
                       <div className="lower-content">
                         <div className="border-layer" />
@@ -551,7 +551,7 @@ export default function Home(props) {
                   <div className="news-block col-lg-6 col-md-6 col-sm-12">
                     <div className="inner-box wow fadeInRight" data-wow-delay="0ms" data-wow-duration="1500ms">
                       <div className="image">
-                        <a href="#"><img src="theme/template/images/resource/news-2.jpg" alt="" /></a>
+                        <a href="#"><img src="/theme/template/images/resource/news-2.jpg" alt="" /></a>
                       </div>
                       <div className="lower-content">
                         <div className="border-layer" />
@@ -580,14 +580,14 @@ export default function Home(props) {
               <div className="sponsors-outer">
                 {/*Sponsors Carousel*/}
                 <ul className="sponsors-carousel owl-carousel owl-theme">
-                  <li className="slide-item"><figure className="image-box"><a href="#"><img src="theme/template/images/clients/1.png" alt="" /></a></figure></li>
-                  <li className="slide-item"><figure className="image-box"><a href="#"><img src="theme/template/images/clients/2.png" alt="" /></a></figure></li>
-                  <li className="slide-item"><figure className="image-box"><a href="#"><img src="theme/template/images/clients/3.png" alt="" /></a></figure></li>
-                  <li className="slide-item"><figure className="image-box"><a href="#"><img src="theme/template/images/clients/4.png" alt="" /></a></figure></li>
-                  <li className="slide-item"><figure className="image-box"><a href="#"><img src="theme/template/images/clients/5.png" alt="" /></a></figure></li>
-                  <li className="slide-item"><figure className="image-box"><a href="#"><img src="theme/template/images/clients/1.png" alt="" /></a></figure></li>
-                  <li className="slide-item"><figure className="image-box"><a href="#"><img src="theme/template/images/clients/2.png" alt="" /></a></figure></li>
-                  <li className="slide-item"><figure className="image-box"><a href="#"><img src="theme/template/images/clients/3.png" alt="" /></a></figure></li>
+                  <li className="slide-item"><figure className="image-box"><a href="#"><img src="/theme/template/images/clients/1.png" alt="" /></a></figure></li>
+                  <li className="slide-item"><figure className="image-box"><a href="#"><img src="/theme/template/images/clients/2.png" alt="" /></a></figure></li>
+                  <li className="slide-item"><figure className="image-box"><a href="#"><img src="/theme/template/images/clients/3.png" alt="" /></a></figure></li>
+                  <li className="slide-item"><figure className="image-box"><a href="#"><img src="/theme/template/images/clients/4.png" alt="" /></a></figure></li>
+                  <li className="slide-item"><figure className="image-box"><a href="#"><img src="/theme/template/images/clients/5.png" alt="" /></a></figure></li>
+                  <li className="slide-item"><figure className="image-box"><a href="#"><img src="/theme/template/images/clients/1.png" alt="" /></a></figure></li>
+                  <li className="slide-item"><figure className="image-box"><a href="#"><img src="/theme/template/images/clients/2.png" alt="" /></a></figure></li>
+                  <li className="slide-item"><figure className="image-box"><a href="#"><img src="/theme/template/images/clients/3.png" alt="" /></a></figure></li>
                 </ul>
               </div>
             </div>

@@ -1,19 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Col, Input, InputGroup, InputGroupAddon, Row } from 'reactstrap';
 import Layout from '@components/layout';
-import { classRoomService } from '@services';
+import { courseService } from '@services';
 import { Pagination } from '@components/pagination/pagination';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import { useRouter } from 'next/router';
 import Error from 'next/error';
-import { ClassroomItem } from '@components/classroom-item';
+import { CourseItem } from '@components/course-item';
 import { ITEMS_PER_PAGE } from '../../shared/util/pagination.constants';
 
-declare type ClassRoomsProps = InferGetServerSidePropsType<typeof getServerSideProps>;
+declare type CoursesProps = InferGetServerSidePropsType<typeof getServerSideProps>;
 
 export const getServerSideProps: GetServerSideProps<any, NodeJS.Dict<string>> = async ({ query: { search, page = 1 }, res }) => {
   const menus = [];
-  const response = await classRoomService.getEntities(
+  const response = await courseService.getEntities(
     +page - 1, ITEMS_PER_PAGE, 'id', 'desc',
     { 'name.contains': search as string },
   );
@@ -28,7 +28,7 @@ export const getServerSideProps: GetServerSideProps<any, NodeJS.Dict<string>> = 
   return { props: { response, menus } };
 };
 
-export default function ClassRooms({ menus, response, errorCode }: ClassRoomsProps) {
+export default function Courses({ menus, response, errorCode }: CoursesProps) {
   if (errorCode) return <Error statusCode={errorCode} />;
 
   const router = useRouter();
@@ -47,17 +47,17 @@ export default function ClassRooms({ menus, response, errorCode }: ClassRoomsPro
       .filter(s => s)
       .join('&');
 
-    return `/classes${params ? `?${params}` : ''}`;
+    return `/courses${params ? `?${params}` : ''}`;
   };
 
   const handlePaginateChange = value => +value && router.push(url(+value, search), undefined);
 
-  const handleSearchClassRooms = (event) => {
+  const handleSearchCourses = (event) => {
     event.preventDefault();
     router.push(url(1, search), undefined);
   };
 
-  const { data: classRooms, total } = response;
+  const { data: courses, total } = response;
 
   return (
     // @ts-ignore
@@ -432,7 +432,7 @@ export default function ClassRooms({ menus, response, errorCode }: ClassRoomsPro
                     </div>
                   </div>
                 </div>
-                <form style={{ maxWidth: '600px', width: '100%' }} className="d-inline-block mt-1" onSubmit={handleSearchClassRooms}>
+                <form style={{ maxWidth: '600px', width: '100%' }} className="d-inline-block mt-1" onSubmit={handleSearchCourses}>
                   <Row>
                     <Col>
                       <InputGroup>
@@ -457,14 +457,14 @@ export default function ClassRooms({ menus, response, errorCode }: ClassRoomsPro
         </div>
         <div className="outer-container">
           <div className="row clearfix">
-              {classRooms.length > 0 ? classRooms.map((classRoom, index) => (
-                <ClassroomItem key={index} classRoom={classRoom} />
+              {courses.length > 0 ? courses.map((course, index) => (
+                <CourseItem key={index} course={course} />
               )) : ''}
-            { !classRooms?.length ? <h3 className="text-classRoom text-error my-5">No classRoom found!</h3> : '' }
+            { !courses?.length ? <h3 className="text-course text-error my-5">No course found!</h3> : '' }
           </div>
         </div>
         <Pagination
-          visible={classRooms?.length > 0 && total}
+          visible={courses?.length > 0 && total}
           activePage={+router.query.page || 1}
           onSelect={handlePaginateChange}
           maxButtons={7}

@@ -8,7 +8,7 @@ import { useRouter } from 'next/router';
 import Error from 'next/error';
 import { TutorItem } from '@components/tutor-item';
 import { ITEMS_PER_PAGE } from '../../shared/util/pagination.constants';
-import {ClassroomItem} from "@components/classroom-item";
+import {CourseItem} from "@components/classroom-item";
 
 declare type TutorsProps = InferGetServerSidePropsType<typeof getServerSideProps>;
 

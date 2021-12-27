@@ -41,10 +41,10 @@ export default function Layout({ children }: ILayout) {
       {children}
       <footer className="main-footer">
         <div className="circle-layer" />
-        <div className="pattern-layer-one" style={{backgroundImage: 'url(theme/template/images/background/pattern-12.png)'}} />
-        <div className="pattern-layer-two" style={{backgroundImage: 'url(theme/template/images/background/pattern-13.png)'}} />
-        <div className="pattern-layer-three" style={{backgroundImage: 'url(theme/template/images/background/pattern-14.png)'}} />
-        <div className="pattern-layer-four" style={{backgroundImage: 'url(theme/template/images/background/pattern-13.png)'}} />
+        <div className="pattern-layer-one" style={{backgroundImage: 'url(/theme/template/images/background/pattern-12.png)'}} />
+        <div className="pattern-layer-two" style={{backgroundImage: 'url(/theme/template/images/background/pattern-13.png)'}} />
+        <div className="pattern-layer-three" style={{backgroundImage: 'url(/theme/template/images/background/pattern-14.png)'}} />
+        <div className="pattern-layer-four" style={{backgroundImage: 'url(/theme/template/images/background/pattern-13.png)'}} />
         <div className="auto-container">
           {/*Widgets Section*/}
           <div className="widgets-section">

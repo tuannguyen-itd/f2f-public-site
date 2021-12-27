@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Col, Input, InputGroup, InputGroupAddon, Row } from 'reactstrap';
-import { centerService, classRoomService, tutorService } from '@services';
+import { centerService, courseService, tutorService } from '@services';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import Error from 'next/error';
 import Layout from '@components/layout';
 import { ITEMS_PER_PAGE } from '../../shared/util/pagination.constants';
 import { CenterItem as ListCenters } from '@components/centers';
-import { ClassroomItem as ListClassRooms } from '@components/classRooms';
+import { ClassroomItem as ListCourses } from '@components/classRooms';
 import { TutorItem as ListTutors } from '@components/tutors';
 import { useRouter } from 'next/router';
 
@@ -19,7 +19,7 @@ export const getServerSideProps: GetServerSideProps<any, NodeJS.Dict<string>> = 
     { 'name.contains': search as string },
   );
 
-  const classRoomResponse = await classRoomService.getEntities(
+  const classRoomResponse = await courseService.getEntities(
     0, ITEMS_PER_PAGE, null, null,
     { 'name.contains': search as string },
   );
@@ -92,7 +92,7 @@ function Index({ menus, errorCode, centerResponse, classRoomResponse, tutorsResp
       <ListCenters data={centers} />
 
       <h1>Lớp Học</h1>
-      <ListClassRooms data={classRooms} />
+      <ListCourses data={classRooms} />
 
       <h1>Gia Sư</h1>
       <ListTutors data={tutors} />

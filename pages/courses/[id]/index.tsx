@@ -1,15 +1,15 @@
 import React from 'react';
-import { classRoomService } from '@services';
+import { courseService } from '@services';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import Error from 'next/error';
 import Layout from '@components/layout';
 import Link from "next/link";
 
-declare type ClassRoomProps = InferGetServerSidePropsType<typeof getServerSideProps>;
+declare type CourseProps = InferGetServerSidePropsType<typeof getServerSideProps>;
 
 export const getServerSideProps: GetServerSideProps<any, NodeJS.Dict<string>> = async ({ params: { id }, res }) => {
-  const classRoom = await classRoomService.getEntity(id);
-  if (classRoom === null) {
+  const course = await courseService.getEntity(id);
+  if (course === null) {
     res.statusCode = 404;
     return {
       props: { errorCode: 404 },
@@ -17,38 +17,24 @@ export const getServerSideProps: GetServerSideProps<any, NodeJS.Dict<string>> = 
   }
 
   return {
-    props: { classRoom },
+    props: { course },
   };
 };
 
-function ClassRoom({ classRoom, errorCode }: ClassRoomProps) {
+function Course({ course, errorCode }: CourseProps) {
   if (errorCode) return <Error statusCode={errorCode} />;
 
   return (
     // @ts-ignore
     <Layout>
-      {/*<div className="container-fluid view-container">*/}
-      {/*  {classRoom === null ? (*/}
-      {/*    <span className="badge badge-danger">error while fetch classRooms!</span>*/}
-      {/*  ) : (*/}
-      {/*    <Row className="mt-4">*/}
-      {/*      <Col md="8">*/}
-      {/*        <h1 className="h2">{classRoom.name}</h1>*/}
-
-      {/*        <Share url={`/class-rooms/${classRoom.id}`} title={classRoom.name}/>*/}
-      {/*        <div className="mt-4" />*/}
-      {/*        <Comment url={`/class-rooms/${classRoom.id}`} />*/}
-      {/*      </Col>*/}
-      {/*    </Row>*/}
-      {/*  )}*/}
-      {/*</div>*/}
       <div>
+        <pre>{JSON.stringify(course.roomTutorBooking.centerRoom.photoCenterRooms)}</pre>
         {/* Cource Detail Banner Section */}
         <section className="cource-detail-banner-section">
-          <div className="pattern-layer-one" style={{backgroundImage: 'url(theme/template/images/icons/icon-5.png)'}} />
-          <div className="pattern-layer-two" style={{backgroundImage: 'url(theme/template/images/icons/icon-6.png)'}} />
-          <div className="pattern-layer-three" style={{backgroundImage: 'url(theme/template/images/icons/icon-4.png)'}} />
-          <div className="pattern-layer-four" style={{backgroundImage: 'url(theme/template/images/icons/icon-8.png)'}} />
+          <div className="pattern-layer-one" style={{backgroundImage: 'url(/theme/template/images/icons/icon-5.png)'}} />
+          <div className="pattern-layer-two" style={{backgroundImage: 'url(/theme/template/images/icons/icon-6.png)'}} />
+          <div className="pattern-layer-three" style={{backgroundImage: 'url(/theme/template/images/icons/icon-4.png)'}} />
+          <div className="pattern-layer-four" style={{backgroundImage: 'url(/theme/template/images/icons/icon-8.png)'}} />
           <div className="auto-container">
             {/* Page Breadcrumb */}
             <ul className="page-breadcrumb">
@@ -56,11 +42,11 @@ function ClassRoom({ classRoom, errorCode }: ClassRoomProps) {
               <li>Courses Single</li>
             </ul>
             <div className="content-box">
-              <h2>{classRoom.name}</h2>
+              <h2>{course.name}</h2>
               <ul className="course-info">
                 <li><span className="icon fa fa-clock-o" />Last Update : November 23, 2020</li>
                 <li><span className="icon fa fa-language" />English</li>
-                <li><span className="icon fa fa-user" />{classRoom.amount} học viên</li>
+                <li><span className="icon fa fa-user" />{course.amount} học viên</li>
               </ul>
               <div className="development">Development courses</div>
               <div className="rating">
@@ -93,7 +79,7 @@ function ClassRoom({ classRoom, errorCode }: ClassRoomProps) {
               <div className="content-column col-lg-8 col-md-12 col-sm-12">
                 <div className="inner-column">
                   <h5>Chi tiết lớp học</h5>
-                  <p>{classRoom.description}</p>
+                  <p>{course.description}</p>
                   <div className="learn-box">
                     <h5>Nội dung lớp học</h5>
                     <ul className="learn-list">
@@ -111,18 +97,18 @@ function ClassRoom({ classRoom, errorCode }: ClassRoomProps) {
                     <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</li>
                     <li>JavaScript fundamentals: variables, if/else, operators, boolean logic, functions, arrays, objects, loops, strings, etc.</li>
                   </ul>
-                  {classRoom.center ? (
+                  {course.center ? (
                     <>
                       <h5>Trung tâm</h5>
                       <div className="author-box">
                         <div className="box-inner">
-                          {classRoom.center && classRoom.center.logo ? (
+                          {course.center && course.center.logo ? (
                             <div className="image">
-                              <img src={`data:${classRoom.center.logoContentType};base64,${classRoom.center.logo}`} />
+                              <img src={`data:${course.center.logoContentType};base64,${course.center.logo}`} />
                             </div>
                           ) : ''}
-                          <h6>{classRoom.center.name}
-                            <Link href="/centers/[id]" as={`/centers/${classRoom.centerId}`}>
+                          <h6>{course.center.name}
+                            <Link href="/centers/[id]" as={`/centers/${course.centerId}`}>
                               <a className="icon fa fa-plus" />
                             </Link>
                           </h6>
@@ -131,23 +117,23 @@ function ClassRoom({ classRoom, errorCode }: ClassRoomProps) {
                             <li><span className="icon fa fa-star-o" />4.6 Instructor Rating</li>
                             <li><span className="icon fa fa-user" />6,073 Students</li>
                           </ul>
-                          <div className="text">{classRoom.center.note}</div>
+                          <div className="text">{course.center.note}</div>
                         </div>
                       </div>
                     </>
                   ) : ''}
-                  {classRoom.tutor ? (
+                  {course.tutor ? (
                     <>
                       <h5>Gia sư</h5>
                       <div className="author-box">
                         <div className="box-inner">
-                          {classRoom.tutor.userInfo.avatar ? (
+                          {course.tutor.userInfo.avatar ? (
                             <div className="image">
-                              <img src={`data:${classRoom.tutor.userInfo.avatarContentType};base64,${classRoom.tutor.userInfo.avatar}`} />
+                              <img src={`data:${course.tutor.userInfo.avatarContentType};base64,${course.tutor.userInfo.avatar}`} />
                             </div>
                           ) : ''}
-                          <h6>{classRoom.tutor.userInfo.user.firstName} {classRoom.tutor.userInfo.user.lastName}
-                            <Link href="/tutors/[id]" as={`/tutors/${classRoom.tutorId}`}>
+                          <h6>{course.tutor.userInfo.user.firstName} {course.tutor.userInfo.user.lastName}
+                            <Link href="/tutors/[id]" as={`/tutors/${course.tutorId}`}>
                               <a className="icon fa fa-plus" />
                             </Link>
                           </h6>
@@ -156,7 +142,7 @@ function ClassRoom({ classRoom, errorCode }: ClassRoomProps) {
                             <li><span className="icon fa fa-star-o" />4.6 Instructor Rating</li>
                             <li><span className="icon fa fa-user" />6,073 Students</li>
                           </ul>
-                          <div className="text">{classRoom.tutor.userInfo.note}</div>
+                          <div className="text">{course.tutor.userInfo.note}</div>
                         </div>
                       </div>
                     </>
@@ -169,7 +155,7 @@ function ClassRoom({ classRoom, errorCode }: ClassRoomProps) {
                     <div className="comment-box">
                       {/* Comment */}
                       <div className="comment">
-                        <div className="author-thumb"><img src="theme/template/images/resource/author-5.jpg" alt="" /></div>
+                        <div className="author-thumb"><img src="/theme/template/images/resource/author-5.jpg" alt="" /></div>
                         <div className="comment-info clearfix">
                           <strong>Shopnil Mahadi</strong>
                           <div className="rating">
@@ -189,7 +175,7 @@ function ClassRoom({ classRoom, errorCode }: ClassRoomProps) {
                       </div>
                       {/* Comment */}
                       <div className="comment">
-                        <div className="author-thumb"><img src="theme/template/images/resource/author-6.jpg" alt="" /></div>
+                        <div className="author-thumb"><img src="/theme/template/images/resource/author-6.jpg" alt="" /></div>
                         <div className="comment-info clearfix">
                           <strong>Shopnil Mahadi</strong>
                           <div className="rating">
@@ -209,7 +195,7 @@ function ClassRoom({ classRoom, errorCode }: ClassRoomProps) {
                       </div>
                       {/* Comment */}
                       <div className="comment">
-                        <div className="author-thumb"><img src="theme/template/images/resource/author-7.jpg" alt="" /></div>
+                        <div className="author-thumb"><img src="/theme/template/images/resource/author-7.jpg" alt="" /></div>
                         <div className="comment-info clearfix">
                           <strong>Shopnil Mahadi</strong>
                           <div className="rating">
@@ -286,4 +272,4 @@ function ClassRoom({ classRoom, errorCode }: ClassRoomProps) {
   );
 }
 
-export default ClassRoom;
+export default Course;

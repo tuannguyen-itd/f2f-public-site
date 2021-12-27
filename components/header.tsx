@@ -32,7 +32,7 @@ export default function Header() {
               <div className="navbar-collapse collapse clearfix" id="navbarSupportedContent">
                 <ul className="navigation clearfix">
                   <li className="dropdown has-mega-menu">
-                    <Link href={'/classes'}><a href="/classes"><span>Lớp học <i className="fa fa-arrow-down" /></span></a></Link>
+                    <Link href={'/courses'}><a href="/courses"><span>Lớp học <i className="fa fa-arrow-down" /></span></a></Link>
                     <div className="mega-menu">
                       {/* Upper Box */}
                       <div className="upper-box">
@@ -56,7 +56,7 @@ export default function Header() {
                           <a href="#" className="theme-btn btn-style-five">Start teaching today</a>
                         </div>
                         <div className="side-icon">
-                          <img src="theme/template/images/resource/mega-menu-icon.png" alt="" />
+                          <img src="/theme/template/images/resource/mega-menu-icon.png" alt="" />
                         </div>
                       </div>
                     </div>
@@ -86,7 +86,7 @@ export default function Header() {
                           <a href="#" className="theme-btn btn-style-five">Start teaching today</a>
                         </div>
                         <div className="side-icon">
-                          <img src="theme/template/images/resource/mega-menu-icon.png" alt="" />
+                          <img src="/theme/template/images/resource/mega-menu-icon.png" alt="" />
                         </div>
                       </div>
                     </div>
@@ -116,7 +116,7 @@ export default function Header() {
                           <a href="#" className="theme-btn btn-style-five">Start teaching today</a>
                         </div>
                         <div className="side-icon">
-                          <img src="theme/template/images/resource/mega-menu-icon.png" alt="" />
+                          <img src="/theme/template/images/resource/mega-menu-icon.png" alt="" />
                         </div>
                       </div>
                     </div>

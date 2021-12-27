@@ -1,13 +1,13 @@
 import { baseService, IService, makeRequestUrl } from './base.service';
-import { IClassRoom } from '@model/class-room.model';
+import { ICourse } from '@model/course.model';
 
-interface IClassRoomService<T> extends IService<IClassRoom> {
-  getTopClassRooms: (query: any) => Promise<{ data: T[] } | null>;
+interface ICourseService<T> extends IService<ICourse> {
+  getTopCourses: (query: any) => Promise<{ data: T[] } | null>;
 }
 
-export const classRoomService: IClassRoomService<IClassRoom> = {
+export const courseService: ICourseService<ICourse> = {
   ...baseService,
-  apiPath: 'class-rooms',
+  apiPath: 'courses',
   v2Api: ['*'],
 
   async getEntities(page, size, sort, order, filters) {
@@ -22,8 +22,8 @@ export const classRoomService: IClassRoomService<IClassRoom> = {
     return null;
   },
 
-  async getTopClassRooms(query) {
-    const url = `${process.env.API_URL}/api/v2/class-rooms/tops?query=${query || ''}`;
+  async getTopCourses(query) {
+    const url = `${process.env.API_URL}/api/v2/courses/tops?query=${query || ''}`;
     const res = await fetch(url);
     if (res?.ok) {
       const data = await res.json();

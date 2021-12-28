@@ -4,6 +4,7 @@ import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import Error from 'next/error';
 import Layout from '@components/layout';
 import Link from "next/link";
+import RatingItem from "@components/rating-item";
 
 declare type CourseProps = InferGetServerSidePropsType<typeof getServerSideProps>;
 
@@ -28,7 +29,7 @@ function Course({ course, errorCode }: CourseProps) {
     // @ts-ignore
     <Layout>
       <div>
-        <pre>{JSON.stringify(course.roomTutorBooking.centerRoom.photoCenterRooms)}</pre>
+        <pre>{JSON.stringify(course.ratingCourses)}</pre>
         {/* Cource Detail Banner Section */}
         <section className="cource-detail-banner-section">
           <div className="pattern-layer-one" style={{backgroundImage: 'url(/theme/template/images/icons/icon-5.png)'}} />
@@ -97,8 +98,21 @@ function Course({ course, errorCode }: CourseProps) {
                     <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</li>
                     <li>JavaScript fundamentals: variables, if/else, operators, boolean logic, functions, arrays, objects, loops, strings, etc.</li>
                   </ul>
+                  {course && course.roomTutorBooking && course.roomTutorBooking.centerRoom.photoCenterRooms &&
+                  course.roomTutorBooking.centerRoom.photoCenterRooms.length > 0 ? (
+                    <div className="mt-5">
+                      <h5>Hình ảnh lớp học</h5>
+                      <div className="row">
+                        {course.roomTutorBooking.centerRoom.photoCenterRooms.map((photo) => (
+                          <div className="col-lg-2 col-sm-3">
+                            <img src={`data:${photo.imageContentType};base64,${photo.image}`} alt=""/>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  ) : null}
                   {course.center ? (
-                    <>
+                    <div className="mt-5">
                       <h5>Trung tâm</h5>
                       <div className="author-box">
                         <div className="box-inner">
@@ -120,10 +134,10 @@ function Course({ course, errorCode }: CourseProps) {
                           <div className="text">{course.center.note}</div>
                         </div>
                       </div>
-                    </>
+                    </div>
                   ) : ''}
                   {course.tutor ? (
-                    <>
+                    <div className="mt-5">
                       <h5>Gia sư</h5>
                       <div className="author-box">
                         <div className="box-inner">
@@ -145,99 +159,18 @@ function Course({ course, errorCode }: CourseProps) {
                           <div className="text">{course.tutor.userInfo.note}</div>
                         </div>
                       </div>
-                    </>
+                    </div>
                   ) : ''}
                   {/* Comment Area */}
-                  <div className="comments-area">
+                  <div className="comments-area mt-5">
                     <div className="group-title">
-                      <h5>Course Review</h5>
+                      <h5>Đánh giá</h5>
                     </div>
                     <div className="comment-box">
-                      {/* Comment */}
-                      <div className="comment">
-                        <div className="author-thumb"><img src="/theme/template/images/resource/author-5.jpg" alt="" /></div>
-                        <div className="comment-info clearfix">
-                          <strong>Shopnil Mahadi</strong>
-                          <div className="rating">
-                            <span className="fa fa-star" />
-                            <span className="fa fa-star" />
-                            <span className="fa fa-star" />
-                            <span className="fa fa-star" />
-                            <span className="fa fa-star-o" />
-                          </div>
-                          <div className="comment-time">3 weeks ago</div>
-                          <ul className="like-dislike">
-                            <li><a href="#" className="flaticon-like-1" /></li>
-                            <li><a href="#" className="flaticon-dislike" /></li>
-                          </ul>
-                        </div>
-                        <div className="text"> I have been identified as one of LebariTop Instructors and all my premium courses have recently earned the best-selling status for outstanding performance and student satisfaction.</div>
-                      </div>
-                      {/* Comment */}
-                      <div className="comment">
-                        <div className="author-thumb"><img src="/theme/template/images/resource/author-6.jpg" alt="" /></div>
-                        <div className="comment-info clearfix">
-                          <strong>Shopnil Mahadi</strong>
-                          <div className="rating">
-                            <span className="fa fa-star" />
-                            <span className="fa fa-star" />
-                            <span className="fa fa-star" />
-                            <span className="fa fa-star" />
-                            <span className="fa fa-star-o" />
-                          </div>
-                          <div className="comment-time">3 weeks ago</div>
-                          <ul className="like-dislike">
-                            <li><a href="#" className="flaticon-like-1" /></li>
-                            <li><a href="#" className="flaticon-dislike" /></li>
-                          </ul>
-                        </div>
-                        <div className="text"> I have been identified as one of LebariTop Instructors and all my premium courses have recently earned the best-selling status for outstanding performance and student satisfaction.</div>
-                      </div>
-                      {/* Comment */}
-                      <div className="comment">
-                        <div className="author-thumb"><img src="/theme/template/images/resource/author-7.jpg" alt="" /></div>
-                        <div className="comment-info clearfix">
-                          <strong>Shopnil Mahadi</strong>
-                          <div className="rating">
-                            <span className="fa fa-star" />
-                            <span className="fa fa-star" />
-                            <span className="fa fa-star" />
-                            <span className="fa fa-star" />
-                            <span className="fa fa-star-o" />
-                          </div>
-                          <div className="comment-time">3 weeks ago</div>
-                          <ul className="like-dislike">
-                            <li><a href="#" className="flaticon-like-1" /></li>
-                            <li><a href="#" className="flaticon-dislike" /></li>
-                          </ul>
-                        </div>
-                        <div className="text"> I have been identified as one of LebariTop Instructors and all my premium courses have recently earned the best-selling status for outstanding performance and student satisfaction.</div>
-                      </div>
+                      {course.ratingCourses && course.ratingCourses.length > 0 ? course.ratingCourses.map((rating, key) => (
+                        <RatingItem key={key} rating={rating} />
+                      )) : null}
                     </div>
-                  </div>
-                  {/* End Comment Area */}
-                  <div className="comment-form">
-                    <div className="group-title"><h5>Leave A Comment</h5></div>
-                    {/*Comment Form*/}
-                    <form method="post" action="blog.html">
-                      <div className="row clearfix">
-                        <div className="col-lg-6 col-md-6 col-sm-12 form-group">
-                          <input type="text" name="username" placeholder="Full Name" required />
-                        </div>
-                        <div className="col-lg-6 col-md-6 col-sm-12 form-group">
-                          <input type="email" name="email" placeholder="Email" required />
-                        </div>
-                        <div className="col-lg-12 col-md-12 col-sm-12 form-group">
-                          <input type="text" name="subject" placeholder="Subject" required />
-                        </div>
-                        <div className="col-lg-12 col-md-12 col-sm-12 form-group">
-                          <textarea className="darma" name="message" placeholder="Your Message" defaultValue={""} />
-                        </div>
-                        <div className="col-lg-12 col-md-12 col-sm-12 form-group">
-                          <button className="theme-btn btn-style-five" type="submit" name="submit-form">Write A Review</button>
-                        </div>
-                      </div>
-                    </form>
                   </div>
                 </div>
               </div>

@@ -68,7 +68,9 @@ export const CourseItem = (props: ICourseItemProps) => {
              <div className="text">{course.description}</div>
            ) : ''}
            <div className="btns-box">
-             <a href="#" className="theme-btn enrol-btn">Enrol Now</a>
+             <Link href="/courses/[id]" as={`/courses/${course.id}`}>
+              <a className="theme-btn enrol-btn">Tham gia</a>
+             </Link>
            </div>
          </div>
          {/* End Overlay Content Box */}

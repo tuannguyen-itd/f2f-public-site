@@ -29,7 +29,6 @@ function Course({ course, errorCode }: CourseProps) {
     // @ts-ignore
     <Layout>
       <div>
-        <pre>{JSON.stringify(course.ratingCourses)}</pre>
         {/* Cource Detail Banner Section */}
         <section className="cource-detail-banner-section">
           <div className="pattern-layer-one" style={{backgroundImage: 'url(/theme/template/images/icons/icon-5.png)'}} />
@@ -192,7 +191,7 @@ function Course({ course, errorCode }: CourseProps) {
                     <li>Certificate of completion</li>
                   </ul>
                   <div className="btns-box">
-                    <a href="#" className="theme-btn enrol-btn">Tham gia lớp học</a>
+                    <a target="_blank" href={`http://localhost:9000/course/${course.id}`} className="theme-btn enrol-btn">Tham gia lớp học</a>
                   </div>
                 </div>
               </div>

@@ -1,5 +1,5 @@
-import { IWard } from 'app/shared/model/ward.model';
-import { IProvince } from 'app/shared/model/province.model';
+import { IWard } from '@model/ward.model';
+import { IProvince } from '@model/province.model';
 
 export interface IDistrict {
   id?: number;

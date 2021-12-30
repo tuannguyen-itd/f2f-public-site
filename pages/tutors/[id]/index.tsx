@@ -28,6 +28,7 @@ function Tutor({ menus, tutor, errorCode }: TutorProps) {
   if (errorCode) return <Error statusCode={errorCode} />;
 
   return (
+    // @ts-ignore
     <Layout menus={menus}>
       <div className="container-fluid view-container">
         {tutor === null ? (

@@ -191,7 +191,7 @@ function Course({ course, errorCode }: CourseProps) {
                     <li>Certificate of completion</li>
                   </ul>
                   <div className="btns-box">
-                    <a target="_blank" href={`http://localhost:9000/course/${course.id}`} className="theme-btn enrol-btn">Tham gia lớp học</a>
+                    <a target="_blank" href={`${process.env.NEXT_PUBLIC_ADMIN_URL}/course/${course.id}`} className="theme-btn enrol-btn">Tham gia lớp học</a>
                   </div>
                 </div>
               </div>

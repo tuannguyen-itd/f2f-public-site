@@ -50,13 +50,13 @@ function Course({ course, errorCode }: CourseProps) {
               </ul>
               <div className="development">Development courses</div>
               <div className="rating">
-                <span className="fa fa-star" />
-                <span className="fa fa-star" />
-                <span className="fa fa-star" />
-                <span className="fa fa-star" />
-                <span className="fa fa-star-o" />
-                <strong>4.9</strong>
-                <i>(70 Review)</i>
+                <span className={`fa ${course.averageRate > 0 ? 'fa-star' : 'fa-star-o'}`} />
+                <span className={`fa ${course.averageRate > 1 ? 'fa-star' : 'fa-star-o'}`} />
+                <span className={`fa ${course.averageRate > 2 ? 'fa-star' : 'fa-star-o'}`} />
+                <span className={`fa ${course.averageRate > 3 ? 'fa-star' : 'fa-star-o'}`} />
+                <span className={`fa ${course.averageRate > 4 ? 'fa-star' : 'fa-star-o'}`} />
+                <strong>{course.averageRate}</strong>
+                {/*<i>(70 Review)</i>*/}
               </div>
               <div className="hovers">11.5 total hours . All Levels</div>
               {/* Social Box */}

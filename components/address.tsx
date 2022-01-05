@@ -1,5 +1,5 @@
 import React from 'react';
-import { IWard } from "@model/ward.model";
+import { IWard } from '@model/ward.model';
 
 interface IAddress {
   ward: IWard;

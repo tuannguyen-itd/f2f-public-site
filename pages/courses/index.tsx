@@ -8,8 +8,8 @@ import { useRouter } from 'next/router';
 import Error from 'next/error';
 import { CourseItem } from '@components/course-item';
 import { ITEMS_PER_PAGE } from '../../shared/util/pagination.constants';
-import {latLngDefault} from '../../config/constants';
-import Map from '@components/map'
+import { latLngDefault } from '../../config/constants';
+import Map from '@components/map';
 
 declare type CoursesProps = InferGetServerSidePropsType<typeof getServerSideProps>;
 
@@ -40,7 +40,7 @@ export default function Courses({ menus, response, errorCode }: CoursesProps) {
   const [location, setLocation] = useState({ lat: latLngDefault.lat, lng: latLngDefault.lng });
 
   useEffect(() => {
-    setLocation( { lat: courses[0]?.lat, lng: courses[0]?.lng });
+    setLocation({ lat: courses[0]?.lat, lng: courses[0]?.lng });
   }, [courses]);
 
   useEffect(() => {
@@ -67,7 +67,7 @@ export default function Courses({ menus, response, errorCode }: CoursesProps) {
   };
 
   const onHandleCenterHover = (course) => {
-    setLocation( { lat: course.roomTutorBooking.centerRoom.center.lat, lng: course.roomTutorBooking.centerRoom.center.lng });
+    setLocation({ lat: course.roomTutorBooking.centerRoom.center.lat, lng: course.roomTutorBooking.centerRoom.center.lng });
   };
 
   return (

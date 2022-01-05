@@ -3,8 +3,8 @@ import { courseService } from '@services';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import Error from 'next/error';
 import Layout from '@components/layout';
-import Link from "next/link";
-import RatingItem from "@components/rating-item";
+import Link from 'next/link';
+import RatingItem from '@components/rating-item';
 
 declare type CourseProps = InferGetServerSidePropsType<typeof getServerSideProps>;
 
@@ -31,10 +31,10 @@ function Course({ course, errorCode }: CourseProps) {
       <div>
         {/* Cource Detail Banner Section */}
         <section className="cource-detail-banner-section">
-          <div className="pattern-layer-one" style={{backgroundImage: 'url(/theme/template/images/icons/icon-5.png)'}} />
-          <div className="pattern-layer-two" style={{backgroundImage: 'url(/theme/template/images/icons/icon-6.png)'}} />
-          <div className="pattern-layer-three" style={{backgroundImage: 'url(/theme/template/images/icons/icon-4.png)'}} />
-          <div className="pattern-layer-four" style={{backgroundImage: 'url(/theme/template/images/icons/icon-8.png)'}} />
+          <div className="pattern-layer-one" style={{ backgroundImage: 'url(/theme/template/images/icons/icon-5.png)' }} />
+          <div className="pattern-layer-two" style={{ backgroundImage: 'url(/theme/template/images/icons/icon-6.png)' }} />
+          <div className="pattern-layer-three" style={{ backgroundImage: 'url(/theme/template/images/icons/icon-4.png)' }} />
+          <div className="pattern-layer-four" style={{ backgroundImage: 'url(/theme/template/images/icons/icon-8.png)' }} />
           <div className="auto-container">
             {/* Page Breadcrumb */}
             <ul className="page-breadcrumb">

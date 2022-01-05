@@ -1,7 +1,7 @@
 import { ITutor } from '@model/tutor.model';
 import { CourseStatus } from '@model/enumerations/course-status.model';
 import { IRatingCourse } from '@model/enumerations/rating-course.model';
-import {IRoomTutorBooking} from '@model/room-tutor-booking.model';
+import { IRoomTutorBooking } from '@model/room-tutor-booking.model';
 
 export interface ICourse {
   id?: number;

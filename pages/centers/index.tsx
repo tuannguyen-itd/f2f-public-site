@@ -6,7 +6,7 @@ import { Pagination } from '@components/pagination/pagination';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import { useRouter } from 'next/router';
 import Error from 'next/error';
-import {CenterItem} from '@components/center-item';
+import { CenterItem } from '@components/center-item';
 import { ITEMS_PER_PAGE } from '../../shared/util/pagination.constants';
 
 declare type CentersProps = InferGetServerSidePropsType<typeof getServerSideProps>;

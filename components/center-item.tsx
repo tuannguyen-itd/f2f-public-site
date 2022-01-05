@@ -1,7 +1,7 @@
 import React from 'react';
 import { ICenter } from '@model/center.model';
-import {Address} from "@components/address";
-import Link from "next/link";
+import { Address } from '@components/address';
+import Link from 'next/link';
 
 interface ICenterItemProps {
   center?: ICenter;

@@ -1,7 +1,7 @@
 import React from 'react';
 import { ITutor } from '@model/tutor.model';
-import {Address} from "@components/address";
-import Link from "next/link";
+import { Address } from '@components/address';
+import Link from 'next/link';
 
 interface ITutorItemProps {
   tutor?: ITutor;

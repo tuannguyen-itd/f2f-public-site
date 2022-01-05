@@ -1,7 +1,7 @@
 import * as React from 'react';
-import {Pagination as RTPagination, PaginationItem, PaginationLink} from 'reactstrap';
-import {ItemCount} from '@components/pagination/itemCount';
-import {ITEMS_PER_PAGE} from '../../shared/util/pagination.constants';
+import { Pagination as RTPagination, PaginationItem, PaginationLink } from 'reactstrap';
+import { ItemCount } from '@components/pagination/itemCount';
+import { ITEMS_PER_PAGE } from '../../shared/util/pagination.constants';
 
 export interface IJhiPaginationProps {
   visible: boolean;
@@ -25,19 +25,19 @@ export class Pagination extends React.Component<IJhiPaginationProps, IJhiPaginat
   }
 
   updateActivePage = currentPage => () => {
-    this.setState({currentPage});
+    this.setState({ currentPage });
     this.props.onSelect(currentPage);
-  };
+  }
 
   previousPage = () => {
-    this.setState({currentPage: this.state.currentPage - 1});
+    this.setState({ currentPage: this.state.currentPage - 1 });
     this.props.onSelect(this.state.currentPage - 1);
-  };
+  }
 
   nextPage = () => {
-    this.setState({currentPage: this.state.currentPage + 1});
+    this.setState({ currentPage: this.state.currentPage + 1 });
     this.props.onSelect(this.state.currentPage + 1);
-  };
+  }
 
   itemsToDisplay = (activePage) => {
     const items = [];
@@ -64,13 +64,13 @@ export class Pagination extends React.Component<IJhiPaginationProps, IJhiPaginat
         item.display = 'disabled';
       }
       items.push(item);
-      previousItem = {...item};
+      previousItem = { ...item };
       if (item.display === 'hidden') {
         previousItem.display = 'disabled';
       }
     }
     return items;
-  };
+  }
 
   displayPaginationItem = i => (
     <PaginationItem active={this.props.activePage === i + 1} key={i}>
@@ -78,27 +78,27 @@ export class Pagination extends React.Component<IJhiPaginationProps, IJhiPaginat
         {i + 1}
       </PaginationLink>
     </PaginationItem>
-  );
+  )
 
   cleanActivePage = () => {
-    const {totalItems, itemsPerPage, activePage} = this.props;
+    const { totalItems, itemsPerPage, activePage } = this.props;
     const cleanActivePage = totalItems === 0 ? 1 : Math.min(activePage, Math.ceil(totalItems / itemsPerPage));
 
     if (cleanActivePage !== activePage) {
       this.updateActivePage(cleanActivePage)();
     }
-  };
+  }
 
   getMaxPage = () => {
-    const {itemsPerPage, totalItems} = this.props;
+    const { itemsPerPage, totalItems } = this.props;
     const division = Math.floor(totalItems / itemsPerPage);
     const modulo = totalItems % itemsPerPage;
     return division + (modulo !== 0 ? 1 : 0);
-  };
+  }
 
   render() {
     this.cleanActivePage();
-    const {activePage, totalItems, visible} = this.props;
+    const { activePage, totalItems, visible } = this.props;
     const maxPage = this.getMaxPage();
 
     return visible ? (
@@ -109,12 +109,12 @@ export class Pagination extends React.Component<IJhiPaginationProps, IJhiPaginat
 
         <div className="justify-content-center row">
           <RTPagination>
-            <PaginationItem {...(activePage === 1 && {disabled: true})}>
+            <PaginationItem {...(activePage === 1 && { disabled: true })}>
               <PaginationLink onClick={this.updateActivePage(1)}>
                 ««
               </PaginationLink>
             </PaginationItem>
-            <PaginationItem {...(activePage === 1 && {disabled: true})}>
+            <PaginationItem {...(activePage === 1 && { disabled: true })}>
               <PaginationLink previous onClick={this.previousPage}/>
             </PaginationItem>
             {this.itemsToDisplay(activePage).map((paginationItem, i) =>
@@ -125,10 +125,10 @@ export class Pagination extends React.Component<IJhiPaginationProps, IJhiPaginat
                   <PaginationLink>...</PaginationLink>
                 </PaginationItem>
               ) : null)}
-            <PaginationItem {...(activePage === maxPage && {disabled: true})}>
+            <PaginationItem {...(activePage === maxPage && { disabled: true })}>
               <PaginationLink next onClick={this.nextPage}/>
             </PaginationItem>
-            <PaginationItem {...(activePage === maxPage && {disabled: true})}>
+            <PaginationItem {...(activePage === maxPage && { disabled: true })}>
               <PaginationLink onClick={this.updateActivePage(maxPage)}>
                 »»
               </PaginationLink>

@@ -1,7 +1,7 @@
 import React from 'react';
 import { ICourse } from '@model/course.model';
-import {Address} from "@components/address";
-import Link from "next/link";
+import { Address } from '@components/address';
+import Link from 'next/link';
 
 interface ICourseItemProps {
   course?: ICourse;

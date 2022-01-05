@@ -440,7 +440,7 @@ export default function Tutors({ menus, response, errorCode }: TutorsProps) {
                           autoFocus={true}
                           value={search}
                           onChange={$event => setSearch($event.target.value)}
-                          placeholder="Tìm lớp học" />
+                          placeholder="Tìm gia sư" />
                         <InputGroupAddon addonType="append">
                           <Button color="secondary">Tìm</Button>
                         </InputGroupAddon>

@@ -8,6 +8,8 @@ import { useRouter } from 'next/router';
 import Error from 'next/error';
 import { CourseItem } from '@components/course-item';
 import { ITEMS_PER_PAGE } from '../../shared/util/pagination.constants';
+import {latLngDefault} from '../../config/constants';
+import Map from '@components/map'
 
 declare type CoursesProps = InferGetServerSidePropsType<typeof getServerSideProps>;
 
@@ -31,8 +33,15 @@ export const getServerSideProps: GetServerSideProps<any, NodeJS.Dict<string>> = 
 export default function Courses({ menus, response, errorCode }: CoursesProps) {
   if (errorCode) return <Error statusCode={errorCode} />;
 
+  const { data: courses, total } = response;
+
   const router = useRouter();
   const [search, setSearch] = useState('');
+  const [location, setLocation] = useState({ lat: latLngDefault.lat, lng: latLngDefault.lng });
+
+  useEffect(() => {
+    setLocation( { lat: courses[0]?.lat, lng: courses[0]?.lng });
+  }, [courses]);
 
   useEffect(() => {
     setSearch(router.query.search as string || '');
@@ -57,12 +66,14 @@ export default function Courses({ menus, response, errorCode }: CoursesProps) {
     router.push(url(1, search), undefined);
   };
 
-  const { data: courses, total } = response;
+  const onHandleCenterHover = (course) => {
+    setLocation( { lat: course.roomTutorBooking.centerRoom.center.lat, lng: course.roomTutorBooking.centerRoom.center.lng });
+  };
 
   return (
     // @ts-ignore
     <Layout menus={menus}>
-      <section className="courses-page-section style-two">
+      <section className="courses-page-section style-two overflow-auto">
         <div className="auto-container">
           {/* Filter Box */}
           <div className="filter-box">
@@ -457,10 +468,21 @@ export default function Courses({ menus, response, errorCode }: CoursesProps) {
         </div>
         <div className="outer-container">
           <div className="row clearfix">
-              {courses.length > 0 ? courses.map((course, index) => (
-                <CourseItem key={index} course={course} />
-              )) : ''}
-            { !courses?.length ? <h3 className="text-course text-error my-5">No course found!</h3> : '' }
+            <div className="col-md-6">
+              <div className="row clearfix">
+                {courses.length > 0 ? courses.map((course, index) => (
+                  <div onMouseEnter={() => onHandleCenterHover(course)} key={index}>
+                    <CourseItem key={index} course={course} />
+                  </div>
+                )) : ''}
+                { !courses?.length ? <h3 className="text-course text-error my-5">No course found!</h3> : '' }
+              </div>
+            </div>
+            <div className="col-md-6">
+              <div className="map-sticky">
+                <Map mapStyle={{ height: '95vh' }} location={location} />
+              </div>
+            </div>
           </div>
         </div>
         <Pagination

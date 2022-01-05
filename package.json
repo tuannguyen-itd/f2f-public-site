@@ -11,6 +11,7 @@
     "tslint:fix": "tslint --fix -p . -c tslint.json"
   },
   "dependencies": {
+    "@react-google-maps/api": "^2.7.0",
     "bootstrap": "^4.5.0",
     "facebook-sdk": "^0.3.3",
     "moment": "^2.29.1",

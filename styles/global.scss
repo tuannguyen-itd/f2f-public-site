@@ -7,3 +7,19 @@ $font-family-base: 'Lato', sans-serif;
 $border-color: #212529;
 
 @import "public/theme/style";
+
+//custom css
+.course-block-three:hover {
+  .inner-box {
+    border-color: #43b97e;
+  }
+}
+.map-sticky {
+  position: sticky;
+  top: 20px;
+  z-index: 98;
+  margin-bottom: 30px;
+}
+.overflow-auto {
+  overflow: inherit;
+}

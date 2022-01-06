@@ -30,15 +30,17 @@ export const CourseItem = (props: ICourseItemProps) => {
               </Link>
             </div>
           ) : ''}
-          <div className="rating">
-            <span className={`fa ${course.averageRate > 0 ? 'fa-star' : 'fa-star-o'}`} />
-            <span className={`fa ${course.averageRate > 1 ? 'fa-star' : 'fa-star-o'}`} />
-            <span className={`fa ${course.averageRate > 2 ? 'fa-star' : 'fa-star-o'}`} />
-            <span className={`fa ${course.averageRate > 3 ? 'fa-star' : 'fa-star-o'}`} />
-            <span className={`fa ${course.averageRate > 4 ? 'fa-star' : 'fa-star-o'}`} />
-            <strong>{Number(course.averageRate).toFixed(1)}</strong>
-            <i>({course.ratingCourses.length} Đánh giá)</i>
-          </div>
+          {course.totalRate > 0 ? (
+            <div className="rating">
+              <span className={`fa ${course.averageRate > 0 ? 'fa-star' : 'fa-star-o'}`} />
+              <span className={`fa ${course.averageRate > 1 ? 'fa-star' : 'fa-star-o'}`} />
+              <span className={`fa ${course.averageRate > 2 ? 'fa-star' : 'fa-star-o'}`} />
+              <span className={`fa ${course.averageRate > 3 ? 'fa-star' : 'fa-star-o'}`} />
+              <span className={`fa ${course.averageRate > 4 ? 'fa-star' : 'fa-star-o'}`} />
+              <strong>{Number(course.averageRate).toFixed(1)}</strong>
+              <i>({course.ratingCourses.length} Đánh giá)</i>
+            </div>
+          ) : ''}
           {course.tutor && course.tutor.userInfo.ward ? (
             <div className="text">
               <Address ward={course.tutor.userInfo.ward}/>

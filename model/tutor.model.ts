@@ -8,6 +8,10 @@ export interface ITutor {
   degree?: DegreeType;
   userInfoId?: number;
   userInfo?: IUserInfo;
+  averageRate?: number;
+  totalRate?: number;
+  totalCourse?: number;
+  totalLearner?: number;
 }
 
 export const defaultValue: Readonly<ITutor> = {};

@@ -49,15 +49,17 @@ function Course({ course, errorCode }: CourseProps) {
                 <li><span className="icon fa fa-user" />{course.amount} học viên</li>
               </ul>
               <div className="development">Development courses</div>
-              <div className="rating">
-                <span className={`fa ${course.averageRate > 0 ? 'fa-star' : 'fa-star-o'}`} />
-                <span className={`fa ${course.averageRate > 1 ? 'fa-star' : 'fa-star-o'}`} />
-                <span className={`fa ${course.averageRate > 2 ? 'fa-star' : 'fa-star-o'}`} />
-                <span className={`fa ${course.averageRate > 3 ? 'fa-star' : 'fa-star-o'}`} />
-                <span className={`fa ${course.averageRate > 4 ? 'fa-star' : 'fa-star-o'}`} />
-                <strong>{course.averageRate}</strong>
-                {/*<i>(70 Review)</i>*/}
-              </div>
+              {course.totalRate > 0 ? (
+                <div className="rating">
+                  <span className={`fa ${course.averageRate > 0 ? 'fa-star' : 'fa-star-o'}`} />
+                  <span className={`fa ${course.averageRate > 1.5 ? 'fa-star' : 'fa-star-o'}`} />
+                  <span className={`fa ${course.averageRate > 2.5 ? 'fa-star' : 'fa-star-o'}`} />
+                  <span className={`fa ${course.averageRate > 3.5 ? 'fa-star' : 'fa-star-o'}`} />
+                  <span className={`fa ${course.averageRate > 4.5 ? 'fa-star' : 'fa-star-o'}`} />
+                  <strong>{Number(course.averageRate).toFixed(1)}</strong>
+                  <i>({course.totalRate} Đánh giá)</i>
+                </div>
+              ) : ''}
               <div className="hovers">11.5 total hours . All Levels</div>
               {/* Social Box */}
               <ul className="social-box">

@@ -62,7 +62,7 @@ export default function Tutors({ menus, response, errorCode }: TutorsProps) {
   return (
     // @ts-ignore
     <Layout menus={menus}>
-      <section className="courses-page-section style-two">
+      <section className="courses-page-section style-two overflow-auto">
         <div className="auto-container">
           {/* Filter Box */}
           <div className="filter-box">

@@ -10,46 +10,31 @@ interface ITutorItemProps {
 export const TutorItem = (props: ITutorItemProps) => {
   const { tutor } = props;
   return (
-    <div className="course-block style-two col-lg-3 col-md-6 col-sm-12">
+    <div className="course-block-three col-lg-12">
       <div className="inner-box">
         <div className="image">
           <Link href="/tutors/[id]" as={`/tutors/${tutor.id}`}>
             <a><img src={`data:${tutor.userInfo.avatarContentType};base64,${tutor.userInfo.avatar}`} /></a>
           </Link>
         </div>
-        <div className="lower-content">
+        <div className="content">
           <h4>
             <Link href="/tutors/[id]" as={`/tutors/${tutor.id}`}>
               <a>{tutor.userInfo.user.firstName} {tutor.userInfo.user.lastName}</a>
             </Link>
           </h4>
-          <div className="rating">
-            <span className="fa fa-star" />
-            <span className="fa fa-star" />
-            <span className="fa fa-star" />
-            <span className="fa fa-star" />
-            <span className="fa fa-star-o" />
-            <strong>4.9</strong>
-            <i>(70 Review)</i>
-          </div>
-        </div>
-        {/* Overlay Content Box */}
-        <div className="overlay-content-box">
-          <h4>
-            <Link href="/tutors/[id]" as={`/tutors/${tutor.id}`}>
-              <a>{tutor.userInfo.user.firstName} {tutor.userInfo.user.lastName}</a>
-            </Link>
-          </h4>
-          <div className="rating">
-            <span className="fa fa-star" />
-            <span className="fa fa-star" />
-            <span className="fa fa-star" />
-            <span className="fa fa-star" />
-            <span className="fa fa-star-o" />
-            <strong>4.9</strong>
-            <i>(70 Review)</i>
-          </div>
-          {tutor && tutor.userInfo.ward ? (
+          {tutor.totalRate > 0 ? (
+            <div className="rating">
+              <span className={`fa ${tutor.averageRate > 0 ? 'fa-star' : 'fa-star-o'}`} />
+              <span className={`fa ${tutor.averageRate > 1 ? 'fa-star' : 'fa-star-o'}`} />
+              <span className={`fa ${tutor.averageRate > 2 ? 'fa-star' : 'fa-star-o'}`} />
+              <span className={`fa ${tutor.averageRate > 3 ? 'fa-star' : 'fa-star-o'}`} />
+              <span className={`fa ${tutor.averageRate > 4 ? 'fa-star' : 'fa-star-o'}`} />
+              <strong>{Number(tutor.averageRate).toFixed(1)}</strong>
+              <i>({tutor.totalRate} Đánh giá)</i>
+            </div>
+          ) : ''}
+          {tutor.userInfo && tutor.userInfo.ward ? (
             <div className="text">
               <Address ward={tutor.userInfo.ward}/>
             </div>
@@ -57,8 +42,10 @@ export const TutorItem = (props: ITutorItemProps) => {
           {tutor.userInfo && tutor.userInfo.note ? (
             <div className="text">{tutor.userInfo.note}</div>
           ) : ''}
+          <Link href="/tutors/[id]" as={`/tutors/${tutor.id}`}>
+            <a className="theme-btn btn-style-one"><span className="txt">Xem Hồ Sơ</span></a>
+          </Link>
         </div>
-        {/* End Overlay Content Box */}
       </div>
     </div>
   );

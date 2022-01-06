@@ -18,6 +18,7 @@ export interface ICourse {
   tutor?: ITutor;
   roomTutorBooking?: IRoomTutorBooking;
   averageRate?: number;
+  totalRate?: number;
 }
 
 export const defaultValue: Readonly<ICourse> = {};

@@ -32,7 +32,7 @@ export default function Header() {
               <div className="navbar-collapse collapse clearfix" id="navbarSupportedContent">
                 <ul className="navigation clearfix">
                   <li className="dropdown has-mega-menu">
-                    <Link href={'/courses'}><a href="/courses"><span>Lớp học <i className="fa fa-arrow-down" /></span></a></Link>
+                    <Link href={'/courses'}><a href="/courses"><span>Khóa học <i className="fa fa-arrow-down" /></span></a></Link>
                     <div className="mega-menu">
                       {/* Upper Box */}
                       <div className="upper-box">
@@ -92,7 +92,7 @@ export default function Header() {
                     </div>
                   </li>
                   <li className="dropdown has-mega-menu">
-                    <Link href={'/tutors'}><a href="/centers"><span>Gia sư <i className="fa fa-arrow-down" /></span></a></Link>
+                    <Link href={'/tutors'}><a href="/tutors"><span>Gia sư <i className="fa fa-arrow-down" /></span></a></Link>
                     <div className="mega-menu">
                       {/* Upper Box */}
                       <div className="upper-box">

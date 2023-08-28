@@ -7,8 +7,8 @@ export interface ICourse {
   id?: number;
   name?: string;
   description?: any;
-  photoContentType?: string;
-  photo?: any;
+  image_content_type?: string;
+  image?: any;
   status?: CourseStatus;
   amount?: number;
   date?: string;

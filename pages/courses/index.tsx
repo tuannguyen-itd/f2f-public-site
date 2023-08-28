@@ -466,23 +466,23 @@ export default function Courses({ menus, response, errorCode }: CoursesProps) {
             </div>
           </div>
         </div>
-        <div className="outer-container">
+        <div className="auto-container">
           <div className="row clearfix">
-            <div className="col-md-6">
+            <div className="col-md-12">
               <div className="row clearfix">
                 {courses.length > 0 ? courses.map((course, index) => (
-                  <div onMouseEnter={() => onHandleCenterHover(course)} key={index}>
+                  <div /*onMouseEnter={() => onHandleCenterHover(course)}*/ key={index}>
                     <CourseItem key={index} course={course} />
                   </div>
                 )) : ''}
                 { !courses?.length ? <h3 className="text-course text-error my-5">No course found!</h3> : '' }
               </div>
             </div>
-            <div className="col-md-6">
-              <div className="map-sticky">
-                <Map mapStyle={{ height: '95vh' }} location={location} />
-              </div>
-            </div>
+            {/*<div className="col-md-6">*/}
+            {/*  <div className="map-sticky">*/}
+            {/*    <Map mapStyle={{ height: '95vh' }} location={location} />*/}
+            {/*  </div>*/}
+            {/*</div>*/}
           </div>
         </div>
         <Pagination

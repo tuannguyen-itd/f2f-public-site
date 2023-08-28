@@ -5,13 +5,13 @@
     "max-line-length": [
       true,
       {
-        "limit": 140,
+        "limit": 200,
         "ignore-pattern": "^import |^export {(.*?)}",
         "check-strings": true,
         "check-regex": true
       }
     ],
-    "no-console": [true, "log", "debug"],
+    "no-console": [false, "log", "debug"], //defauld : "no-console": [true, "log", "debug"],
     "import-name": false,
     "align": false,
     "function-name": [

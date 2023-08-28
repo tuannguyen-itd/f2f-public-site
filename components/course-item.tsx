@@ -14,7 +14,7 @@ export const CourseItem = (props: ICourseItemProps) => {
       <div className="inner-box">
         <div className="image">
           <Link href="/courses/[id]" as={`/courses/${course.id}`}>
-            <a><img src={`data:${course.photoContentType};base64,${course.photo}`} /></a>
+            <a><img src={`data:${course.image_content_type};base64,${course.image}`} /></a>
           </Link>
         </div>
         <div className="content">

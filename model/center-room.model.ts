@@ -11,7 +11,7 @@ export interface ICenterRoom {
   name?: string;
   description?: any;
   photoContentType?: string;
-  photo?: any;
+  photos?: any;
   status?: CenterRoomStatus;
   date?: string;
   location?: string;

@@ -11,7 +11,7 @@ export interface ICenterRoom {
   name?: string;
   description?: any;
   photoContentType?: string;
-  photo?: any;
+  photos?: any[];
   status?: CenterRoomStatus;
   date?: string;
   location?: string;
@@ -25,6 +25,7 @@ export interface ICenterRoom {
   tutorId?: number;
   center?: ICenter;
   tutor?: ITutor;
+  place?: any[];
 }
 
 export const defaultValue: Readonly<ICenterRoom> = {};

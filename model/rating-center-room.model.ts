@@ -5,6 +5,7 @@ export interface IRatingCenterRoom {
   createdAt?: string;
   centerRoomId?: number;
   userInfoId?: number;
+  averageRate?: number;
 }
 
 export const defaultValue: Readonly<IRatingCenterRoom> = {};

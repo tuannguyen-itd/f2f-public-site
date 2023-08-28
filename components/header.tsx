@@ -23,8 +23,9 @@ export default function Header() {
             <nav className="main-menu navbar-expand-md">
               <div className="navbar-header">
                 {/* Toggle Button */}
-                {/* tslint:disable-next-line:max-line-length */}
-                <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <button className="navbar-toggler" type="button" data-toggle="collapse"
+                        data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
                   <span className="icon-bar" />
                   <span className="icon-bar" />
                   <span className="icon-bar" />
@@ -32,102 +33,125 @@ export default function Header() {
               </div>
               <div className="navbar-collapse collapse clearfix" id="navbarSupportedContent">
                 <ul className="navigation clearfix">
-                  {/*<li className="dropdown has-mega-menu">*/}
-                  {/*  <Link href={'/courses'}><a href="/courses"><span>Khóa học <i className="fa fa-arrow-down" /></span></a></Link>*/}
-                  {/*  <div className="mega-menu">*/}
-                  {/*    /!* Upper Box *!/*/}
-                  {/*    <div className="upper-box">*/}
-                  {/*      <div className="page-links-box">*/}
-                  {/*        <a href="course.html" className="link"><span className="icon flaticon-bullhorn" />Marketing</a>*/}
-                  {/*        <a href="course-2.html" className="link"><span className="icon flaticon-cyclist" />Lifestyle</a>*/}
-                  {/*        <a href="course-3.html" className="link"><span className="icon flaticon-bar-chart" />Business</a>*/}
-                  {/*        <a href="course-4.html" className="link"><span className="icon flaticon-software" />Software</a>*/}
-                  {/*        <a href="course-3.html" className="link"><span className="icon flaticon-atom" />Science</a>*/}
-                  {/*        <a href="course.html" className="link"><span className="icon flaticon-webpage" />IT Management</a>*/}
-                  {/*        <a href="course-2.html" className="link"><span className="icon flaticon-language" />Language</a>*/}
-                  {/*        <a href="course-3.html" className="link"><span className="icon flaticon-team" />Human Resources</a>*/}
-                  {/*        <a href="course-4.html" className="link"><span className="icon flaticon-healthcare" />Health Care</a>*/}
-                  {/*      </div>*/}
-                  {/*    </div>*/}
-                  {/*    /!* Lower Box *!/*/}
-                  {/*    <div className="lower-box">*/}
-                  {/*      <h3>Become an Instructor</h3>*/}
-                  {/*      /!* tslint:disable-next-line:max-line-length *!/*/}
-                  {/*      <div className="text">Top instructors from around the Neque convallis a cras semper auctor. <br /> Libero id faucibus nisl tincidunt egetnvallis </div>*/}
-                  {/*      <div className="btn-box">*/}
-                  {/*        <a href="#" className="theme-btn btn-style-five">Start teaching today</a>*/}
-                  {/*      </div>*/}
-                  {/*      <div className="side-icon">*/}
-                  {/*        <img src="/theme/template/images/resource/mega-menu-icon.png" alt="" />*/}
-                  {/*      </div>*/}
-                  {/*    </div>*/}
-                  {/*  </div>*/}
-                  {/*</li>*/}
-                  {/*<li className="dropdown has-mega-menu">*/}
-                  {/*  <Link href={'/centers'}><a href="/centers"><span>Trung tâm <i className="fa fa-arrow-down" /></span></a></Link>*/}
-                  {/*  <div className="mega-menu">*/}
-                  {/*    /!* Upper Box *!/*/}
-                  {/*    <div className="upper-box">*/}
-                  {/*      <div className="page-links-box">*/}
-                  {/*        <a href="course.html" className="link"><span className="icon flaticon-bullhorn" />Marketing</a>*/}
-                  {/*        <a href="course-2.html" className="link"><span className="icon flaticon-cyclist" />Lifestyle</a>*/}
-                  {/*        <a href="course-3.html" className="link"><span className="icon flaticon-bar-chart" />Business</a>*/}
-                  {/*        <a href="course-4.html" className="link"><span className="icon flaticon-software" />Software</a>*/}
-                  {/*        <a href="course-3.html" className="link"><span className="icon flaticon-atom" />Science</a>*/}
-                  {/*        <a href="course.html" className="link"><span className="icon flaticon-webpage" />IT Management</a>*/}
-                  {/*        <a href="course-2.html" className="link"><span className="icon flaticon-language" />Language</a>*/}
-                  {/*        <a href="course-3.html" className="link"><span className="icon flaticon-team" />Human Resources</a>*/}
-                  {/*        <a href="course-4.html" className="link"><span className="icon flaticon-healthcare" />Health Care</a>*/}
-                  {/*      </div>*/}
-                  {/*    </div>*/}
-                  {/*    /!* Lower Box *!/*/}
-                  {/*    <div className="lower-box">*/}
-                  {/*      <h3>Become an Instructor</h3>*/}
-                  {/*      /!* tslint:disable-next-line:max-line-length *!/*/}
-                  {/*      <div className="text">Top instructors from around the Neque convallis a cras semper auctor. <br /> Libero id faucibus nisl tincidunt egetnvallis </div>*/}
-                  {/*      <div className="btn-box">*/}
-                  {/*        <a href="#" className="theme-btn btn-style-five">Start teaching today</a>*/}
-                  {/*      </div>*/}
-                  {/*      <div className="side-icon">*/}
-                  {/*        <img src="/theme/template/images/resource/mega-menu-icon.png" alt="" />*/}
-                  {/*      </div>*/}
-                  {/*    </div>*/}
-                  {/*  </div>*/}
-                  {/*</li>*/}
-                  {/*<li className="dropdown has-mega-menu">*/}
-                  {/*  <Link href={'/tutors'}><a href="/tutors"><span>Gia sư <i className="fa fa-arrow-down" /></span></a></Link>*/}
-                  {/*  <div className="mega-menu">*/}
-                  {/*    /!* Upper Box *!/*/}
-                  {/*    <div className="upper-box">*/}
-                  {/*      <div className="page-links-box">*/}
-                  {/*        <a href="course.html" className="link"><span className="icon flaticon-bullhorn" />Marketing</a>*/}
-                  {/*        <a href="course-2.html" className="link"><span className="icon flaticon-cyclist" />Lifestyle</a>*/}
-                  {/*        <a href="course-3.html" className="link"><span className="icon flaticon-bar-chart" />Business</a>*/}
-                  {/*        <a href="course-4.html" className="link"><span className="icon flaticon-software" />Software</a>*/}
-                  {/*        <a href="course-3.html" className="link"><span className="icon flaticon-atom" />Science</a>*/}
-                  {/*        <a href="course.html" className="link"><span className="icon flaticon-webpage" />IT Management</a>*/}
-                  {/*        <a href="course-2.html" className="link"><span className="icon flaticon-language" />Language</a>*/}
-                  {/*        <a href="course-3.html" className="link"><span className="icon flaticon-team" />Human Resources</a>*/}
-                  {/*        <a href="course-4.html" className="link"><span className="icon flaticon-healthcare" />Health Care</a>*/}
-                  {/*      </div>*/}
-                  {/*    </div>*/}
-                  {/*    /!* Lower Box *!/*/}
-                  {/*    <div className="lower-box">*/}
-                  {/*      <h3>Become an Instructor</h3>*/}
-                  {/*      /!* tslint:disable-next-line:max-line-length *!/*/}
-                  {/*      <div className="text">Top instructors from around the Neque convallis a cras semper auctor. <br /> Libero id faucibus nisl tincidunt egetnvallis </div>*/}
-                  {/*      <div className="btn-box">*/}
-                  {/*        <a href="#" className="theme-btn btn-style-five">Start teaching today</a>*/}
-                  {/*      </div>*/}
-                  {/*      <div className="side-icon">*/}
-                  {/*        <img src="/theme/template/images/resource/mega-menu-icon.png" alt="" />*/}
-                  {/*      </div>*/}
-                  {/*    </div>*/}
-                  {/*  </div>*/}
-                  {/*</li>*/}
-
+                    <li className="dropdown has-mega-menu">
+                      <Link href={'/courses'}><a href="/courses"><span>COURSES<i className="fa fa-arrow-down" /></span></a></Link>
+                      <div className="mega-menu">
+                        {/* Upper Box */}
+                        <div className="upper-box">
+                          <div className="page-links-box">
+                            <a href="course.html" className="link"><span className="icon flaticon-bullhorn" />Marketing</a>
+                            <a href="course-2.html" className="link"><span className="icon flaticon-cyclist" />Lifestyle</a>
+                            <a href="course-3.html" className="link"><span className="icon flaticon-bar-chart" />Business</a>
+                            <a href="course-4.html" className="link"><span className="icon flaticon-software" />Software</a>
+                            <a href="course-3.html" className="link"><span className="icon flaticon-atom" />Science</a>
+                            <a href="course.html" className="link"><span className="icon flaticon-webpage" />IT Management</a>
+                            <a href="course-2.html" className="link"><span className="icon flaticon-language" />Language</a>
+                            <a href="course-3.html" className="link"><span className="icon flaticon-team" />Human Resources</a>
+                            <a href="course-4.html" className="link"><span className="icon flaticon-healthcare" />Health Care</a>
+                          </div>
+                        </div>
+                        {/* Lower Box */}
+                        <div className="lower-box">
+                          <h3>Become an Instructor</h3>
+                          <div className="text">Top instructors from around the Neque convallis a cras semper auctor. <br /> Libero id faucibus nisl tincidunt egetnvallis </div>
+                          <div className="btn-box">
+                            <a href="#" className="theme-btn btn-style-five">Start teaching today</a>
+                          </div>
+                          <div className="side-icon">
+                            <img src="/theme/template/images/resource/mega-menu-icon.png" alt="" />
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+                    {/*<li className="dropdown has-mega-menu">*/}
+                    {/*  <Link href={'/centers'}><a href="/centers"><span>Trung tâm <i className="fa fa-arrow-down" /></span></a></Link>*/}
+                    {/*  <div className="mega-menu">*/}
+                    {/*    /!* Upper Box *!/*/}
+                    {/*    <div className="upper-box">*/}
+                    {/*      <div className="page-links-box">*/}
+                    {/*        <a href="course.html" className="link"><span className="icon flaticon-bullhorn" />Marketing</a>*/}
+                    {/*        <a href="course-2.html" className="link"><span className="icon flaticon-cyclist" />Lifestyle</a>*/}
+                    {/*        <a href="course-3.html" className="link"><span className="icon flaticon-bar-chart" />Business</a>*/}
+                    {/*        <a href="course-4.html" className="link"><span className="icon flaticon-software" />Software</a>*/}
+                    {/*        <a href="course-3.html" className="link"><span className="icon flaticon-atom" />Science</a>*/}
+                    {/*        <a href="course.html" className="link"><span className="icon flaticon-webpage" />IT Management</a>*/}
+                    {/*        <a href="course-2.html" className="link"><span className="icon flaticon-language" />Language</a>*/}
+                    {/*        <a href="course-3.html" className="link"><span className="icon flaticon-team" />Human Resources</a>*/}
+                    {/*        <a href="course-4.html" className="link"><span className="icon flaticon-healthcare" />Health Care</a>*/}
+                    {/*      </div>*/}
+                    {/*    </div>*/}
+                    {/*    /!* Lower Box *!/*/}
+                    {/*    <div className="lower-box">*/}
+                    {/*      <h3>Become an Instructor</h3>*/}
+                    {/*      <div className="text">Top instructors from around the Neque convallis a cras semper auctor. <br /> Libero id faucibus nisl tincidunt egetnvallis </div>*/}
+                    {/*      <div className="btn-box">*/}
+                    {/*        <a href="#" className="theme-btn btn-style-five">Start teaching today</a>*/}
+                    {/*      </div>*/}
+                    {/*      <div className="side-icon">*/}
+                    {/*        <img src="/theme/template/images/resource/mega-menu-icon.png" alt="" />*/}
+                    {/*      </div>*/}
+                    {/*    </div>*/}
+                    {/*  </div>*/}
+                    {/*</li>*/}
+                    {/*<li className="dropdown has-mega-menu">*/}
+                    {/*  <Link href={'/tutors'}><a href="/tutors"><span>Gia sư <i className="fa fa-arrow-down" /></span></a></Link>*/}
+                    {/*  <div className="mega-menu">*/}
+                    {/*    /!* Upper Box *!/*/}
+                    {/*    <div className="upper-box">*/}
+                    {/*      <div className="page-links-box">*/}
+                    {/*        <a href="course.html" className="link"><span className="icon flaticon-bullhorn" />Marketing</a>*/}
+                    {/*        <a href="course-2.html" className="link"><span className="icon flaticon-cyclist" />Lifestyle</a>*/}
+                    {/*        <a href="course-3.html" className="link"><span className="icon flaticon-bar-chart" />Business</a>*/}
+                    {/*        <a href="course-4.html" className="link"><span className="icon flaticon-software" />Software</a>*/}
+                    {/*        <a href="course-3.html" className="link"><span className="icon flaticon-atom" />Science</a>*/}
+                    {/*        <a href="course.html" className="link"><span className="icon flaticon-webpage" />IT Management</a>*/}
+                    {/*        <a href="course-2.html" className="link"><span className="icon flaticon-language" />Language</a>*/}
+                    {/*        <a href="course-3.html" className="link"><span className="icon flaticon-team" />Human Resources</a>*/}
+                    {/*        <a href="course-4.html" className="link"><span className="icon flaticon-healthcare" />Health Care</a>*/}
+                    {/*      </div>*/}
+                    {/*    </div>*/}
+                    {/*    /!* Lower Box *!/*/}
+                    {/*    <div className="lower-box">*/}
+                    {/*      <h3>Become an Instructor</h3>*/}
+                    {/*      <div className="text">Top instructors from around the Neque convallis a cras semper auctor. <br /> Libero id faucibus nisl tincidunt egetnvallis </div>*/}
+                    {/*      <div className="btn-box">*/}
+                    {/*        <a href="#" className="theme-btn btn-style-five">Start teaching today</a>*/}
+                    {/*      </div>*/}
+                    {/*      <div className="side-icon">*/}
+                    {/*        <img src="/theme/template/images/resource/mega-menu-icon.png" alt="" />*/}
+                    {/*      </div>*/}
+                    {/*    </div>*/}
+                    {/*  </div>*/}
+                    {/*</li>*/}
                   <li className="dropdown has-mega-menu">
-                    <Link href={'/rooms'}><a href="/rooms"><span>Phòng học <i className="fa fa-arrow-down" /></span></a></Link>
+                    <Link href={'/landlord'}><a href="/landlord"><span>Landlord<i className="fa fa-arrow-down" /></span></a></Link>
+                    <div className="mega-menu">
+                      {/* Upper Box */}
+                      <div className="upper-box">
+                        <div className="page-links-box">
+                          <a href="course.html" className="link"><span className="icon flaticon-bullhorn" />Marketing</a>
+                          <a href="course-2.html" className="link"><span className="icon flaticon-cyclist" />Lifestyle</a>
+                          <a href="course-3.html" className="link"><span className="icon flaticon-bar-chart" />Business</a>
+                          <a href="course-4.html" className="link"><span className="icon flaticon-software" />Software</a>
+                          <a href="course-3.html" className="link"><span className="icon flaticon-atom" />Science</a>
+                          <a href="course.html" className="link"><span className="icon flaticon-webpage" />IT Management</a>
+                          <a href="course-2.html" className="link"><span className="icon flaticon-language" />Language</a>
+                          <a href="course-3.html" className="link"><span className="icon flaticon-team" />Human Resources</a>
+                          <a href="course-4.html" className="link"><span className="icon flaticon-healthcare" />Health Care</a>
+                        </div>
+                      </div>
+                      {/* Lower Box */}
+                      <div className="lower-box">
+                        <h3>Become an Instructor</h3>
+                        <div className="text">Top instructors from around the Neque convallis a cras semper auctor. <br /> Libero id faucibus nisl tincidunt egetnvallis </div>
+                        <div className="btn-box">
+                          <a href="#" className="theme-btn btn-style-five">Start teaching today</a>
+                        </div>
+                        <div className="side-icon">
+                          <img src="/theme/template/images/resource/mega-menu-icon.png" alt="" />
+                        </div>
+                      </div>
+                    </div>
                   </li>
                 </ul>
               </div>

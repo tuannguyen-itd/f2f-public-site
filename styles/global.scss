@@ -23,3 +23,35 @@ $border-color: #212529;
 .overflow-auto {
   overflow: inherit;
 }
+.profile-box{
+  .box-inner{
+    display: flex;
+    z-index: 999;
+    position: relative;
+  }
+}
+//room
+.room-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+//courses
+.social-box li {
+  position: relative;
+  color: #ffffff;
+  font-size: 15px;
+  width: 34px;
+  height: 34px;
+  line-height: 34px;
+  text-align: center;
+  border-radius: 50px;
+  display: inline-block;
+  margin: 10px 10px 0 0;
+}
+.content-box{
+  .box-descrip{
+    font-size: 15px;
+  }
+
+}

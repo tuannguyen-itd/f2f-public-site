@@ -5,6 +5,7 @@ import Error from 'next/error';
 import Layout from '@components/layout';
 import Link from 'next/link';
 import RatingItem from '@components/rating-item';
+import { formatDate } from "../../../config/constants";
 
 declare type CourseProps = InferGetServerSidePropsType<typeof getServerSideProps>;
 
@@ -16,7 +17,6 @@ export const getServerSideProps: GetServerSideProps<any, NodeJS.Dict<string>> = 
       props: { errorCode: 404 },
     };
   }
-
   return {
     props: { course },
   };
@@ -24,13 +24,13 @@ export const getServerSideProps: GetServerSideProps<any, NodeJS.Dict<string>> = 
 
 function Course({ course, errorCode }: CourseProps) {
   if (errorCode) return <Error statusCode={errorCode} />;
-
+  console.log(course)
   return (
     // @ts-ignore
     <Layout>
       <div>
         {/* Cource Detail Banner Section */}
-        <section className="cource-detail-banner-section">
+        <section className="contact-banner-section">
           <div className="pattern-layer-one" style={{ backgroundImage: 'url(/theme/template/images/icons/icon-5.png)' }} />
           <div className="pattern-layer-two" style={{ backgroundImage: 'url(/theme/template/images/icons/icon-6.png)' }} />
           <div className="pattern-layer-three" style={{ backgroundImage: 'url(/theme/template/images/icons/icon-4.png)' }} />
@@ -38,36 +38,46 @@ function Course({ course, errorCode }: CourseProps) {
           <div className="auto-container">
             {/* Page Breadcrumb */}
             <ul className="page-breadcrumb">
-              <li><a href="index.html">Home</a></li>
-              <li>Courses Single</li>
+              <li><a href="/">Home</a></li>
+              <li><a href="/courses">Courses</a></li>
+              <li>{course.name}</li>
             </ul>
             <div className="content-box">
               <h2>{course.name}</h2>
-              <ul className="course-info">
-                <li><span className="icon fa fa-clock-o" />Last Update : November 23, 2020</li>
-                <li><span className="icon fa fa-language" />English</li>
-                <li><span className="icon fa fa-user" />{course.amount} học viên</li>
-              </ul>
-              <div className="development">Development courses</div>
-              {course.totalRate > 0 ? (
-                <div className="rating">
-                  <span className={`fa ${course.averageRate > 0 ? 'fa-star' : 'fa-star-o'}`} />
-                  <span className={`fa ${course.averageRate > 1.5 ? 'fa-star' : 'fa-star-o'}`} />
-                  <span className={`fa ${course.averageRate > 2.5 ? 'fa-star' : 'fa-star-o'}`} />
-                  <span className={`fa ${course.averageRate > 3.5 ? 'fa-star' : 'fa-star-o'}`} />
-                  <span className={`fa ${course.averageRate > 4.5 ? 'fa-star' : 'fa-star-o'}`} />
-                  <strong>{Number(course.averageRate).toFixed(1)}</strong>
-                  <i>({course.totalRate} Đánh giá)</i>
-                </div>
-              ) : ''}
-              <div className="hovers">11.5 total hours . All Levels</div>
-              {/* Social Box */}
-              <ul className="social-box">
-                <span className="fa fa-share-alt" />
-                <li className="twitter"><a target="_blank" href="http://twitter.com/" className="fa fa-twitter" /></li>
-                <li className="pinterest"><a target="_blank" href="http://pinterest.com/" className="fa fa-pinterest-p" /></li>
-                <li className="facebook"><a target="_blank" href="http://facebook.com/" className="fa fa-facebook-f" /></li>
-                <li className="dribbble"><a target="_blank" href="http://dribbble.com/" className="fa fa-dribbble" /></li>
+              <div className="box-descrip">
+                <ul className="course-info">
+                  <li><span className="icon fa fa-clock-o mr-2" />Last Update : {formatDate(course.date)}</li>
+                  <li><span className="icon fa fa-language mr-2" />English</li>
+                  <li><span className="icon fa fa-user mr-2" />{course.amount} học viên</li>
+                </ul>
+                {course && course.status && (
+                  <div>
+                    Trạng thái:{' '}
+                    <span className={course.status === 'CLOSE' ? 'text-danger' : 'text-success'}>
+                      {course.status}
+                    </span>
+                  </div>
+                )}
+                <div className="development">Development courses</div>
+                {/*{course.totalRate > 0 ? (*/}
+                {/*  <div className="rating">*/}
+                {/*    <span className={`fa ${course.averageRate > 0 ? 'fa-star' : 'fa-star-o'}`} />*/}
+                {/*    <span className={`fa ${course.averageRate > 1.5 ? 'fa-star' : 'fa-star-o'}`} />*/}
+                {/*    <span className={`fa ${course.averageRate > 2.5 ? 'fa-star' : 'fa-star-o'}`} />*/}
+                {/*    <span className={`fa ${course.averageRate > 3.5 ? 'fa-star' : 'fa-star-o'}`} />*/}
+                {/*    <span className={`fa ${course.averageRate > 4.5 ? 'fa-star' : 'fa-star-o'}`} />*/}
+                {/*    <strong>{Number(course.averageRate).toFixed(1)}</strong>*/}
+                {/*    <i>({course.totalRate} Đánh giá)</i>*/}
+                {/*  </div>*/}
+                {/*) : ''}*/}
+                <div className="hovers">11.5 total hours . All Levels</div>
+                {/* Social Box */}
+              </div>
+              <ul className="social-box d-flex ">
+                <li className="twitter bg-primary"><a target="_blank" href="http://twitter.com/" className="fa fa-twitter text-white" /></li>
+                <li className="pinterest bg-danger"><a target="_blank" href="http://pinterest.com/" className="fa fa-pinterest-p text-white" /></li>
+                <li className="facebook bg-primary" style={{ backgroundColor: '#3b5999' }}><a target="_blank" href="http://facebook.com/" className="fa fa-facebook-f text-white" /></li>
+                <li className="dribbble" style={{ backgroundColor: '#ea4c89' }}><a target="_blank" href="http://dribbble.com/" className="fa fa-dribbble text-white" /></li>
               </ul>
             </div>
           </div>
@@ -193,7 +203,7 @@ function Course({ course, errorCode }: CourseProps) {
                     <li>Certificate of completion</li>
                   </ul>
                   <div className="btns-box">
-                    <a target="_blank" href={`${process.env.NEXT_PUBLIC_ADMIN_URL}/course/${course.id}`} className="theme-btn enrol-btn">Tham gia lớp học</a>
+                    <a target="_blank" href={`${process.env.NEXT_PUBLIC_ADMIN_URL}/course/${course.id}`} className="theme-btn enrol-btn" >Tham gia lớp học</a>
                   </div>
                 </div>
               </div>

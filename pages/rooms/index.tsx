@@ -7,11 +7,12 @@ import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import { useRouter } from 'next/router';
 import Error from 'next/error';
 import { CourseItem } from '@components/course-item';
-import { RoomItem } from '@components/room-item';
+import { LandlordRoomItem } from '@components/landlord-room-item';
 import { ITEMS_PER_PAGE } from '../../shared/util/pagination.constants';
 import { latLngDefault } from '../../config/constants';
 import Map from '@components/map';
 import { roomService } from '@services/room.service';
+import {RoomItem} from "@components/room-item";
 
 declare type RoomsProps = InferGetServerSidePropsType<typeof getServerSideProps>;
 

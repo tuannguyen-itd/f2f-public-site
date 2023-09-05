@@ -162,7 +162,7 @@ export default function Landlord({ menus, response, errorCode }: CoursesProps) {
                     </div>
                   </div>
                 </div>
-                <form style={{ maxWidth: '600px', width: '100%' }} className="d-inline-block mt-1" onSubmit={handleSearchCourses}>
+                <form className="d-inline-block mt-1 leanlord-search" onSubmit={handleSearchCourses}>
                   <Row>
                     <Col>
                       <InputGroup>

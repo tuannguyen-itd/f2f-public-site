@@ -9,11 +9,10 @@ interface ILandlordProps {
 
 export const LandlordItem = (props: ILandlordProps) => {
   const { landlord } = props;
-
   return (
     <div className="course-block-three col-lg-12">
       <div className="inner-box">
-        <div className="image">
+        <div className="image d-flex justify-content-center align-items-center h-100">
           <Link href="/landlord/[id]" as={`/landlord/${landlord.id}`}>
             <a><img src={`data:${landlord.logoContentType};base64,${landlord.logo}`} /></a>
           </Link>
@@ -25,7 +24,13 @@ export const LandlordItem = (props: ILandlordProps) => {
             </Link>
           ) : ''}
           {landlord.note ? (
-            <div className="text">{landlord.note}</div>
+            <div className="text">
+              {landlord.note.length > 150 ? (
+                <p>{landlord.note.slice(0, 150)}...</p>
+              ) : (
+                <p>{landlord.note}</p>
+              )}
+            </div>
           ) : ''}
           <Link href="/landlord/[id]" as={`/landlord/${landlord.id}`}>
             <a className="theme-btn btn-style-one mt-2"><span className="txt">Chi Tiết</span></a>

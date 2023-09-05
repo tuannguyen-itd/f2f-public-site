@@ -77,6 +77,7 @@ export default function Courses({ menus, response, errorCode }: CoursesProps) {
         <div className="auto-container">
           {/* Filter Box */}
           <div className="filter-box">
+
             <div className="box-inner">
               <div className="clearfix">
                 <div className="pull-left clearfix">
@@ -443,7 +444,7 @@ export default function Courses({ menus, response, errorCode }: CoursesProps) {
                     </div>
                   </div>
                 </div>
-                <form style={{ maxWidth: '600px', width: '100%' }} className="d-inline-block mt-1" onSubmit={handleSearchCourses}>
+                <form className="d-inline-block mt-1 leanlord-search" onSubmit={handleSearchCourses}>
                   <Row>
                     <Col>
                       <InputGroup>
@@ -467,11 +468,14 @@ export default function Courses({ menus, response, errorCode }: CoursesProps) {
           </div>
         </div>
         <div className="auto-container">
+          <h2 className="text-dark text-uppercase font-weight-bold pb-4 title-list-course">
+            Khóa học Chinh phục sự thành công
+          </h2>
           <div className="row clearfix">
             <div className="col-md-12">
               <div className="row clearfix">
                 {courses.length > 0 ? courses.map((course, index) => (
-                  <div /*onMouseEnter={() => onHandleCenterHover(course)}*/ key={index}>
+                  <div className="w-100" key={index}>
                     <CourseItem key={index} course={course} />
                   </div>
                 )) : ''}

@@ -1,5 +1,6 @@
-import { ICenterRoom } from '@model/center-room.model';
 // import { IWard } from "app/shared/model/ward.model";
+
+import { IRoom } from '@model/room.model';
 
 export interface IPlace {
   id?: number;
@@ -12,7 +13,7 @@ export interface IPlace {
   lat?: number;
   lng?: number;
   note?: any;
-  rooms?: ICenterRoom[];
+  rooms?: IRoom[];
   // ward?: IWard;
   landlordId?: number;
 }

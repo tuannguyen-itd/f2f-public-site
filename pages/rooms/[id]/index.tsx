@@ -156,7 +156,7 @@ function Room({ room, rating, errorCode }: RoomProps) {
                  </h6>
                 <h6 className="text-dark"></h6>
                 <div className="btns-box text-center">
-                  <Link href={process.env.NEXT_PUBLIC_ADMIN_URL}/room/${room.id} as={`http://localhost:9000/room/${room.id}`}>
+                  <Link href={`${process.env.NEXT_PUBLIC_ADMIN_URL}/room/${room.id}} as={${process.env.NEXT_PUBLIC_ADMIN_URL}/room/${room.id}`}>
                   <a className="theme-btn enrol-btn ">Liên hệ</a>
                   </Link>
                   <Link href={'/landlords/{id}'} as={`/landlords/${room.place.landlord.id}`}>

@@ -1,25 +1,22 @@
 import React from 'react';
-import { ICenterRoom } from '@model/center-room.model';
 import Link from 'next/link';
+import { IRoom } from '@model/room.model';
 
 interface IRoomItemProps {
-  room?: ICenterRoom;
+  room?: IRoom;
 }
 
 export const RoomItem = (props: IRoomItemProps) => {
   const { room } = props;
-  // tslint:disable-next-line:no-console
-  console.log(props);
-  // tslint:disable-next-line:max-line-length
-  const location = room.place != null && room.place.ward != null && room.place.ward.district != null && room.place.ward.district.province != null
-    // tslint:disable-next-line:prefer-template
-    ? room.place.ward.name + ', ' + room.place.ward.district.name + ', ' + room.place.ward.district.province.name
-    : room.location;
+  // const location = room.place != null && room.place.ward != null && room.place.ward.district != null && room.place.ward.district.province != null
+  //   ? room.place.ward.name + ', ' + room.place.ward.district.name + ', ' + room.place.ward.district.province.name
+  //   : room.location;
+  const location = null;
 
   return (
     <div className="course-block col-lg-12 col-md-6 col-12">
       <div className="inner-box wow fadeInLeft animated" data-wow-delay="0ms" data-wow-duration="1500ms"
-        style={{ visibility: 'visible', animationDuration: '1500ms', animationDelay: '0ms', animationName: 'fadeInLeft' }}>
+           style={{ visibility: 'visible', animationDuration: '1500ms', animationDelay: '0ms', animationName: 'fadeInLeft' }}>
         <div className="image d-flex align-items-center" style={{ width: '555px', height: '435px' }}>
           <Link href="/rooms/[id]" as={`/rooms/${room.id}`}>
             <a>
@@ -42,11 +39,8 @@ export const RoomItem = (props: IRoomItemProps) => {
           </div>
           <div className="clearfix">
             <div className="pull-left">
-              {/* tslint:disable-next-line:prefer-template */}
-              {/*{room.description.length <= 100 ? room.description : room.description.slice(0, 50) + '...'}*/}
             </div>
             <div className="pull-right">
-
               <Link href="/rooms/[id]" as={`/rooms/${room.id}`}>
                 <a className="enroll-now">Chi tiết</a>
               </Link>

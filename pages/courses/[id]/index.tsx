@@ -1,16 +1,17 @@
 import React from 'react';
-import { courseService } from '@services';
+import { courseService, ratingService } from '@services';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import Error from 'next/error';
 import Layout from '@components/layout';
 import Link from 'next/link';
 import RatingItem from '@components/rating-item';
-import { formatDate } from "../../../config/constants";
+import { formatDate } from '../../../config/constants';
 
 declare type CourseProps = InferGetServerSidePropsType<typeof getServerSideProps>;
 
 export const getServerSideProps: GetServerSideProps<any, NodeJS.Dict<string>> = async ({ params: { id }, res }) => {
   const course = await courseService.getEntity(id);
+  const rating = await ratingService.getRatingByCourse(id);
   if (course === null) {
     res.statusCode = 404;
     return {
@@ -18,32 +19,35 @@ export const getServerSideProps: GetServerSideProps<any, NodeJS.Dict<string>> = 
     };
   }
   return {
-    props: { course },
+    props: { course, rating },
   };
 };
 
-function Course({ course, errorCode }: CourseProps) {
+function Course({ course, errorCode, rating }: CourseProps) {
   if (errorCode) return <Error statusCode={errorCode} />;
-  console.log(course)
+  console.log(rating);
+
   return (
     // @ts-ignore
     <Layout>
       <div>
-        {/* Cource Detail Banner Section */}
         <section className="contact-banner-section">
-          <div className="pattern-layer-one" style={{ backgroundImage: 'url(/theme/template/images/icons/icon-5.png)' }} />
-          <div className="pattern-layer-two" style={{ backgroundImage: 'url(/theme/template/images/icons/icon-6.png)' }} />
-          <div className="pattern-layer-three" style={{ backgroundImage: 'url(/theme/template/images/icons/icon-4.png)' }} />
-          <div className="pattern-layer-four" style={{ backgroundImage: 'url(/theme/template/images/icons/icon-8.png)' }} />
+            <div className="pattern-layer-one" style={{ backgroundImage: 'url(/theme/template/images/icons/icon-5.png)' }} />
+            <div className="pattern-layer-two" style={{ backgroundImage: 'url(/theme/template/images/icons/icon-6.png)' }} />
+            <div className="pattern-layer-three" style={{ backgroundImage: 'url(/theme/template/images/icons/icon-4.png)' }} />
+            <div className="pattern-layer-four" style={{ backgroundImage: 'url(/theme/template/images/icons/icon-8.png)' }} />
           <div className="auto-container">
-            {/* Page Breadcrumb */}
             <ul className="page-breadcrumb">
-              <li><a href="/">Home</a></li>
-              <li><a href="/courses">Courses</a></li>
+              <Link href="/" as={'/'}>
+                <li><a >Home</a></li>
+              </Link>
+              <Link href="/courses" as={'/courses'}>
+              <li><a>Courses</a></li>
+              </Link>
               <li>{course.name}</li>
             </ul>
             <div className="content-box">
-              <h2>{course.name}</h2>
+              <h1 className="text-dark"><strong>{course.name}</strong></h1>
               <div className="box-descrip">
                 <ul className="course-info">
                   <li><span className="icon fa fa-clock-o mr-2" />Last Update : {formatDate(course.date)}</li>
@@ -76,24 +80,24 @@ function Course({ course, errorCode }: CourseProps) {
               <ul className="social-box d-flex ">
                 <li className="twitter bg-primary"><a target="_blank" href="http://twitter.com/" className="fa fa-twitter text-white" /></li>
                 <li className="pinterest bg-danger"><a target="_blank" href="http://pinterest.com/" className="fa fa-pinterest-p text-white" /></li>
-                <li className="facebook bg-primary" style={{ backgroundColor: '#3b5999' }}><a target="_blank" href="http://facebook.com/" className="fa fa-facebook-f text-white" /></li>
-                <li className="dribbble" style={{ backgroundColor: '#ea4c89' }}><a target="_blank" href="http://dribbble.com/" className="fa fa-dribbble text-white" /></li>
+                <li className="facebook bg-primary"><a target="_blank" href="http://facebook.com/" className="fa fa-facebook-f text-white" /></li>
+                <li className="dribbble custom-pink"><a target="_blank" href="http://dribbble.com/" className="fa fa-dribbble text-white" /></li>
               </ul>
             </div>
           </div>
         </section>
-        {/* End Cource Detail Banner Section */}
-        {/* Course Detail Section */}
         <section className="course-detail-section">
           <div className="auto-container">
             <div className="row clearfix">
-              {/* Content Column */}
               <div className="content-column col-lg-8 col-md-12 col-sm-12">
                 <div className="inner-column">
-                  <h5>Chi tiết lớp học</h5>
+                  <h2>Chi tiết lớp học</h2>
+                  <div className="py-4">
+                    <img className="w-100" src={`data:${course.image_content_type};base64,${course.image}`} />
+                  </div>
                   <p>{course.description}</p>
                   <div className="learn-box">
-                    <h5>Nội dung lớp học</h5>
+                    <h2>Nội dung lớp học</h2>
                     <ul className="learn-list">
                       <li>JavaScript fundamentals: variables, if/else, operators, boolean logic, functions, arrays, objects, loops, strings, etc.</li>
                       <li>Become job-ready by understanding how JavaScript really works behind the scenes</li>
@@ -172,20 +176,35 @@ function Course({ course, errorCode }: CourseProps) {
                       </div>
                     </div>
                   ) : ''}
-                  {/* Comment Area */}
                   <div className="comments-area mt-5">
-                    <div className="group-title">
+                    <div className="group-title d-flex">
                       <h5>Đánh giá</h5>
                     </div>
                     <div className="comment-box">
-                      {course.ratingCourses && course.ratingCourses.length > 0 ? course.ratingCourses.map((rating, key) => (
-                        <RatingItem key={key} rating={rating} />
-                      )) : null}
+                      {rating.length > 0 ? (
+                        rating.map((item, index) => (
+                          <div className="comment" key={index}>
+                            <div className="author-thumb"><img src={ `data:${item.userInfo.avatarContentType};base64,${item.userInfo.avatar}`} alt="" /></div>
+                            <div className="comment-info clearfix">
+                              <strong>{`${item.userInfo.user.firstName} ${item.userInfo.user.lastName}`}</strong>
+                              {item.rate >= 0 ? (
+                                <div className="rating">
+                                  <span className={`fa ${item.rate >= 0.5 ? 'fa-star' : 'fa-star-o'}`} />
+                                  <span className={`fa ${item.rate >= 1.5 ? 'fa-star' : 'fa-star-o'}`} />
+                                  <span className={`fa ${item.rate >= 2.5 ? 'fa-star' : 'fa-star-o'}`} />
+                                  <span className={`fa ${item.rate >= 3.5 ? 'fa-star' : 'fa-star-o'}`} />
+                                  <span className={`fa ${item.rate >= 4.5 ? 'fa-star' : 'fa-star-o'}`} />
+                                </div>
+                              ) : ''}
+                            </div>
+                            <div className="text"> {item.comment}
+                            </div>
+                          </div>
+                        ))) : ('')}
                     </div>
                   </div>
                 </div>
               </div>
-              {/* Info Column */}
               <div className="info-column col-lg-4 col-md-12 col-sm-12">
                 <div className="inner-column">
                   <h5>Khóa học này bao gồm:</h5>
@@ -210,7 +229,6 @@ function Course({ course, errorCode }: CourseProps) {
             </div>
           </div>
         </section>
-        {/* End Course Detail Section */}
       </div>
     </Layout>
   );

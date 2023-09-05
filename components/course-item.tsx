@@ -15,7 +15,11 @@ export const CourseItem = (props: ICourseItemProps) => {
         <div className="inner-box d-flex overflow-hidden pl-0 pt-0" style={{ minHeight: '10px' }}>
             <div className="image d-flex align-items-center justify-content-center position-relative mr-2"  style={{ width: '368px' }}>
             <Link href="/courses/[id]" as={`/courses/${course.id}`}>
-              <a><img src={`data:${course.image_content_type};base64,${course.image}`} /></a>
+              {course.image ? (
+                <a><img src={`data:${course.image_content_type};base64,${course.image}`} /></a>
+              ) : (
+                <a><img src="/theme/template/images/resource/course-34.jpg" /></a>
+              )}
             </Link>
           </div>
           <div className="content">

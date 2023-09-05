@@ -71,6 +71,7 @@ function Landlord({ landlord, room, id, errorCode }: LandlordProps) {
                 {landlord?.note}
               </div>
             </div>
+            <h2 className="text-dark mt-5 mb-4">Danh Sách Phòng Của {landlord?.name}</h2>
             <div className="auto-container">
               <div className="row clearfix">
                 {room.length > 0 ? room.map((room, index) => (

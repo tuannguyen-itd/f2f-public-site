@@ -13,7 +13,11 @@ export const LandlordRoomItem = (props: IRoomProps) => {
     <div className="course-block col-lg-4 col-md-6 col-sm-12">
       <div className="inner-box wow fadeInLeft" data-wow-delay="0ms" data-wow-duration="1500ms">
         <div className="image roomLandlord-img">
-          <a href="course-detail.html"><img src={`data:${room?.photos[0]?.imageContentType};base64,${room?.photos[0]?.image}`} alt={room?.name}/></a>
+          {room?.photos[0]?.image ? (
+            <a href="#"><img src={`data:${room?.photos[0]?.imageContentType};base64,${room?.photos[0]?.image}`} alt={room?.name}/></a>
+          ) : (
+            <a href="#"><img src="/theme/template/images/resource/course-1.jpg" /></a>
+          )}
         </div>
         <div className="lower-content">
           <h4 className="room-name "><a href="course-detail.html">{room?.name}</a></h4>

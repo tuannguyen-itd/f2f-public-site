@@ -14,7 +14,11 @@ export const LandlordItem = (props: ILandlordProps) => {
       <div className="inner-box">
         <div className="image d-flex justify-content-center align-items-center h-100">
           <Link href="/landlord/[id]" as={`/landlord/${landlord.id}`}>
-            <a><img src={`data:${landlord.logoContentType};base64,${landlord.logo}`} /></a>
+            {landlord.logo ? (
+              <a><img src={`data:${landlord.logoContentType};base64,${landlord.logo}`} /></a>
+            ) : (
+              <a href="#"><img src="/theme/template/images/resource/author-9.jpg" /></a>
+            )}
           </Link>
         </div>
         <div className="content">

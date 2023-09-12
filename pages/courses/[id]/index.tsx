@@ -47,7 +47,7 @@ function Course({ course, errorCode, rating }: CourseProps) {
               <li>{course.name}</li>
             </ul>
             <div className="content-box">
-              <h1 className="text-dark"><strong>{course.name}</strong></h1>
+              <h1 className="text-dark box-cource-name"><strong>{course.name}</strong></h1>
               <div className="box-descrip">
                 <ul className="course-info">
                   <li><span className="icon fa fa-clock-o mr-2" />Last Update : {formatDate(course.date)}</li>
@@ -91,9 +91,14 @@ function Course({ course, errorCode, rating }: CourseProps) {
             <div className="row clearfix">
               <div className="content-column col-lg-8 col-md-12 col-sm-12">
                 <div className="inner-column">
-                  <h2>Chi tiết lớp học</h2>
+                  <h2 className="detail-course text-dark">Chi tiết lớp học</h2>
                   <div className="py-4">
-                    <img className="w-100" src={`data:${course.image_content_type};base64,${course.image}`} />
+                    {course.image ? (
+                      <img className="w-100" src={`data:${course.image_content_type};base64,${course.image}`} />
+
+                    ) : (
+                      <a><img src="/theme/template/images/resource/news-25.jpg" /></a>
+                      )}
                   </div>
                   <p>{course.description}</p>
                   <div className="learn-box">

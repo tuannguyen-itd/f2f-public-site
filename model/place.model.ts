@@ -1,6 +1,5 @@
-// import { IWard } from "app/shared/model/ward.model";
-
 import { IRoom } from '@model/room.model';
+import { IWard } from '@model/ward.model';
 
 export interface IPlace {
   id?: number;
@@ -14,8 +13,9 @@ export interface IPlace {
   lng?: number;
   note?: any;
   rooms?: IRoom[];
-  // ward?: IWard;
+  wardId?: number;
   landlordId?: number;
+  ward?: IWard;
 }
 
 export const defaultValue: Readonly<IPlace> = {};

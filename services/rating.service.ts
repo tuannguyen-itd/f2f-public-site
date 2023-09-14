@@ -1,8 +1,7 @@
 import { baseService, IService, makeRequestUrl } from './base.service';
+import { IRoom } from '@model/room.model';
 
-import { ICenterRoom } from '@model/center-room.model';
-
-interface IRoomService<T> extends IService<ICenterRoom> {
+interface IRoomService<T> extends IService<IRoom> {
   getTopRooms: (query: any) => Promise<{ data: T[] } | null>;
   getRatingByCourse: (id: string | number) => Promise<T | null>;
 }

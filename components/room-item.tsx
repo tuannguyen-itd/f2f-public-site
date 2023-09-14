@@ -8,10 +8,6 @@ interface IRoomItemProps {
 
 export const RoomItem = (props: IRoomItemProps) => {
   const { room } = props;
-  // const location = room.place != null && room.place.ward != null && room.place.ward.district != null && room.place.ward.district.province != null
-  //   ? room.place.ward.name + ', ' + room.place.ward.district.name + ', ' + room.place.ward.district.province.name
-  //   : room.location;
-  const location = null;
 
   return (
     <div className="course-block col-lg-12 col-md-6 col-12">
@@ -31,11 +27,11 @@ export const RoomItem = (props: IRoomItemProps) => {
           </Link>
         </div>
         <div className="lower-content">
-          <h4> <Link href="/rooms/[id]" as={`/rooms/${room.id}`}>
+          <h1> <Link href="/rooms/[id]" as={`/rooms/${room.id}`}>
             <a>{room.name}</a>
-          </Link></h4>
+          </Link></h1>
           <div className="uni-name">
-            {location}
+            {room.location}
           </div>
           <div className="clearfix">
             <div className="pull-left">

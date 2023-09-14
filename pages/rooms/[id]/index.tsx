@@ -30,7 +30,6 @@ function Room({ room, rating, errorCode }: RoomProps) {
   if (errorCode) return <Error statusCode={errorCode} />;
   const location = room && room.place ? { lat: room.place.lat, lng: room.place.lng } : null;
   return (
-    // @ts-ignore
     <Layout>
       <section className="contact-banner-section event-detail-banner-section">
         <div className="pattern-layer-one" style={{ backgroundImage: 'url(/theme/template/images/icons/icon-5.png)' }} />
@@ -49,7 +48,7 @@ function Room({ room, rating, errorCode }: RoomProps) {
             <li>{room.name}</li>
           </ul>
           <div className="content-box">
-            <h2>{room.name}</h2>
+            <h1>{room.name}</h1>
           </div>
         </div>
       </section>
@@ -63,10 +62,8 @@ function Room({ room, rating, errorCode }: RoomProps) {
                   <div className="carousel-inner">
                     {room.photos && Array.isArray(room.photos) && room.photos.length > 0 ? (
                       room.photos.map((photo, index) => (
-                        // tslint:disable-next-line:max-line-length
                         <div className={`carousel-item ${index === 0 ? 'active' : ''}`} key={photo.id} style={{ height:'100%', width: '100%' }}>
                           {photo.imageContentType ? (
-                            // tslint:disable-next-line:max-line-length
                             <img src={`data:${photo.imageContentType};base64,${photo.image}`} alt=""  style={{ height:'500px', width: '100%' }}/>
                           ) : null}
                         </div>
@@ -83,8 +80,8 @@ function Room({ room, rating, errorCode }: RoomProps) {
                   </a>
                 </div>
                 {/* end slider */}
-                <div className="learn-box" style={{ marginTop: '10px' }}>
-                  {/*<h5>Thông tin phòng học {room.name}</h5>*/}
+                <div className="learn-box mt-5">
+                  <h2>Thông tin phòng học {room.name}</h2>
                   <ul className="learn-list">
                     <li>
                       <p>Địa chỉ:
@@ -100,20 +97,19 @@ function Room({ room, rating, errorCode }: RoomProps) {
                     </li>
                   </ul>
                 </div>
-                <h5>Vị trí</h5>
+                <h2>Vị trí</h2>
                 <div className="map">
                   <Map mapStyle={{ height: '500px' }} location={location} />
                 </div>
                 <div className="comments-area mt-5">
                   <div className="group-title">
-                    <h5>Đánh giá lớp học</h5>
+                    <h2>Đánh giá lớp học</h2>
                   </div>
 
                   <div className="comment-box">
                     {rating.length > 0 ? (
                       rating.map((item, index) => (
                         <div className="comment" key={index}>
-                          {/* tslint:disable-next-line:max-line-length */}
                           <div className="author-thumb"><img src={ `data:${item.userInfo.avatarContentType};base64,${item.userInfo.avatar}`} alt="" /></div>
                           <div className="comment-info clearfix">
                             {/* tslint:disable-next-line:prefer-template */}
@@ -137,22 +133,21 @@ function Room({ room, rating, errorCode }: RoomProps) {
               </div>
             </div>
             <div className="info-column col-lg-4 col-md-12 col-sm-12" >
-              {/* tslint:disable-next-line:max-line-length */}
-              <div className="inner-column" style={{ marginTop: '-100px', position: 'fixed', width: '20%', marginLeft: '20px', zIndex: '9' }}>
-                <div className="image d-flex align-items-center" style={{ width: '150px', height: '100px' }}>
+              <div className="inner-column mt-5">
+                <div className="image w-100 d-flex align-items-center justify-content-center">
                   <Link href="/rooms/[id]" as={`/rooms/${room.id}`}>
                     <a>
                       {room.place.landlord.logoContentType ? (
-                        <img src={`data:${room.place.landlord.logoContentType};base64,${room.place.landlord.logo}`} alt="" />
+                        <img src={`data:${room.place.landlord.logoContentType};base64,${room.place.landlord.logo}`} alt="Thông tin liên hệ" />
                       ) : null}
                     </a>
                   </Link>
                 </div>
-                <h5>Thông tin liên hệ:</h5>
-                <h6 className="text-dark">
+                <h2 className="text-nowrap mt-3 ">Thông tin liên hệ</h2>
+                <h3 className="text-dark">
                       {room.place.landlord.name}
-                 </h6>
-                <h6 className="text-dark"></h6>
+                 </h3>
+                {/*<h3 className="text-dark"></h3>*/}
                 <div className="btns-box text-center">
                   <Link href={`${process.env.NEXT_PUBLIC_ADMIN_URL}/room/${room.id}`} as={`${process.env.NEXT_PUBLIC_ADMIN_URL}/room/${room.id}`}>
                   <a className="theme-btn enrol-btn ">Liên hệ</a>

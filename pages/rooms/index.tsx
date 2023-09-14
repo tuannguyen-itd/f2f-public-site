@@ -12,7 +12,7 @@ import { ITEMS_PER_PAGE } from '../../shared/util/pagination.constants';
 import { latLngDefault } from '../../config/constants';
 import Map from '@components/map';
 import { roomService } from '@services/room.service';
-import {RoomItem} from "@components/room-item";
+import { RoomItem } from '@components/room-item';
 
 declare type RoomsProps = InferGetServerSidePropsType<typeof getServerSideProps>;
 
@@ -470,6 +470,7 @@ export default function Rooms({ menus, response, errorCode }: RoomsProps) {
           </div>
         </div>
         <div className="outer-container">
+          <h1 className="w-100 d-flex justify-content-center align-content-center my-5 lower-content">DANH SÁCH CÁC KHÓA HỌC NỔI BẬT</h1>
           <div className="row clearfix d-flex justify-content-center">
               {rooms.length > 0 ? rooms.map((room, index) => (
                 <div onMouseEnter={() => onHandleCenterHover(room)} key={index}>

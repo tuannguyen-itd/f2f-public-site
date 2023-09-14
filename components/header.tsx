@@ -37,7 +37,10 @@ export default function Header() {
                     <Link href={'/courses'}><a><span>COURSES<i className="fa fa-arrow-down" /></span></a></Link>
                   </li>
                   <li className="dropdown has-mega-menu">
-                    <Link href={'/landlord'}><a><span>Landlord<i className="fa fa-arrow-down" /></span></a></Link>
+                    <Link href={'/landlord'}><a><span>LANDLORDS<i className="fa fa-arrow-down" /></span></a></Link>
+                  </li>
+                  <li className="dropdown has-mega-menu">
+                    <Link href={'/rooms'} as={'/rooms'}><a ><span>ROOMS </span></a></Link>
                   </li>
                 </ul>
               </div>

@@ -137,9 +137,18 @@ export default function Home(props) {
                       <h2>Benefit from our <br /> online learning expertise <br /> Earn professional </h2>
                     </div>
                     <ul className="list-style-one">
-                      <li><span className="icon flaticon-double-check" /><strong>Online degrees</strong>Vendors, suppliers and companies with online access to your technology can be your weakest link</li>
-                      <li><span className="icon flaticon-double-check" /><strong>Short courses</strong>Vendors, suppliers and companies with online access to your technology can be your weakest link</li>
-                      <li><span className="icon flaticon-double-check" /><strong>Learn with experts</strong>Vendors, suppliers and companies with online access to your technology can be your weakest link</li>
+                      <li><span className="icon flaticon-double-check" />
+                          <strong>Online degrees</strong>
+                        Vendors, suppliers and companies with online access to your technology can be your weakest link
+                      </li>
+                      <li><span className="icon flaticon-double-check" />
+                          <strong>Short courses</strong>
+                        Vendors, suppliers and companies with online access to your technology can be your weakest link
+                      </li>
+                      <li><span className="icon flaticon-double-check" />
+                          <strong>Learn with experts</strong>
+                        Vendors, suppliers and companies with online access to your technology can be your weakest link
+                      </li>
                     </ul>
                     <div className="btn-box">
                       <a href="about.html" className="theme-btn btn-style-two"><span className="txt">Join For free</span></a>
@@ -322,7 +331,8 @@ export default function Home(props) {
                   <div className="inner-column">
                     <h5>The International Admissions Bulletin</h5>
                     <div className="text">
-                      <p>Ut enim ad minim veniam aliquip amet, nostrud exercitation ullamco. Pharetra massaultricies mi quis hendrerit. Elit eget gravida cum sociis.Ut enim ad minim veniam aliquip amet, </p>
+                      <p>Ut enim ad minim veniam aliquip amet,
+                        nostrud exercitation ullamco. Pharetra massaultricies mi quis hendrerit. Elit eget gravida cum sociis.Ut enim ad minim veniam aliquip amet, </p>
                       <p>nostrud exercitation ullamco. Pharetra massaultricies mi quis hendrerit. Elit eget gravida cum sociis.</p>
                     </div>
                     <a href="about.html" className="theme-btn btn-style-three">Read it now <span className="fa fa-caret-right" /></a>
@@ -344,7 +354,8 @@ export default function Home(props) {
                     <div className="sec-title">
                       <div className="title">Our Status valu</div>
                       <h2>Differentiate your classroom <br /> What makes us special?</h2>
-                      <div className="text">Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur</div>
+                      <div className="text">Duis aute irure dolor in reprehenderit
+                        in voluptate velit esse cillum dolore eu fugiat nulla pariatur</div>
                     </div>
                     {/* Skills */}
                     <div className="skills">

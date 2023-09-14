@@ -14,8 +14,6 @@ declare type RoomProps = InferGetServerSidePropsType<typeof getServerSideProps>;
 export const getServerSideProps: GetServerSideProps<any, NodeJS.Dict<string>> = async ({ params: { id }, res }) => {
   const room = await roomService.getEntity(id);
   const rating = await  ratingService.getEntity(id);
-  // tslint:disable-next-line:no-console
-  console.log(rating)
   if (room === null) {
     res.statusCode = 404;
     return {
@@ -156,10 +154,10 @@ function Room({ room, rating, errorCode }: RoomProps) {
                  </h6>
                 <h6 className="text-dark"></h6>
                 <div className="btns-box text-center">
-                  <Link href={`${process.env.NEXT_PUBLIC_ADMIN_URL}/room/${room.id}} as={${process.env.NEXT_PUBLIC_ADMIN_URL}/room/${room.id}`}>
+                  <Link href={`${process.env.NEXT_PUBLIC_ADMIN_URL}/room/${room.id}`} as={`${process.env.NEXT_PUBLIC_ADMIN_URL}/room/${room.id}`}>
                   <a className="theme-btn enrol-btn ">Liên hệ</a>
                   </Link>
-                  <Link href={'/landlords/{id}'} as={`/landlords/${room.place.landlord.id}`}>
+                  <Link href={'/landlord/{id}'} as={`/landlord/${room.place.landlord.id}`}>
                    <a href="#" className="theme-btn wishlist-btn">Các phòng khác</a>
                   </Link>
                 </div>

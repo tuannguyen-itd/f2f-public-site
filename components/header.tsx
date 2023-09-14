@@ -34,10 +34,10 @@ export default function Header() {
               <div className="navbar-collapse collapse clearfix" id="navbarSupportedContent">
                 <ul className="navigation clearfix">
                   <li className="dropdown has-mega-menu">
-                    <Link href={'/courses'}><a href="/courses"><span>COURSES<i className="fa fa-arrow-down" /></span></a></Link>
+                    <Link href={'/courses'}><a><span>COURSES<i className="fa fa-arrow-down" /></span></a></Link>
                   </li>
                   <li className="dropdown has-mega-menu">
-                    <Link href={'/landlord'}><a href="/landlord"><span>Landlord<i className="fa fa-arrow-down" /></span></a></Link>
+                    <Link href={'/landlord'}><a><span>Landlord<i className="fa fa-arrow-down" /></span></a></Link>
                   </li>
                 </ul>
               </div>

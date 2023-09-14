@@ -5,7 +5,7 @@ import Error from 'next/error';
 import Layout from '@components/layout';
 import { LandlordRoomItem } from '@components/landlord-room-item';
 import { useRouter } from 'next/router';
-import Link from "next/link";
+import Link from 'next/link';
 
 declare type LandlordProps = InferGetServerSidePropsType<typeof getServerSideProps>;
 
@@ -27,7 +27,6 @@ export const getServerSideProps: GetServerSideProps<any, NodeJS.Dict<string>> = 
 
 function Landlord({ landlord, room, id, errorCode }: LandlordProps) {
   if (errorCode) return <Error statusCode={errorCode} />;
-  console.log(room)
   const router = useRouter();
 
   const url = (id, page) => {

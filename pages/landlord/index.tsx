@@ -30,7 +30,6 @@ export const getServerSideProps: GetServerSideProps<any, NodeJS.Dict<string>> = 
 
 export default function Landlord({ menus, response, errorCode }: CoursesProps) {
   if (errorCode) return <Error statusCode={errorCode} />;
-  console.log(response)
   const { data: landlord, total } = response;
 
   const router = useRouter();
@@ -38,7 +37,6 @@ export default function Landlord({ menus, response, errorCode }: CoursesProps) {
 
   useEffect(() => {
     setSearch(router.query.search as string || '');
-    console.log(response);
   }, [router.query]);
 
   const url = (page, searchStr) => {

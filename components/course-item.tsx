@@ -2,7 +2,7 @@ import React from 'react';
 import { ICourse } from '@model/course.model';
 import { Address } from '@components/address';
 import Link from 'next/link';
-import { formatDate } from "../config/constants";
+import { formatDate } from '../config/constants';
 
 interface ICourseItemProps {
   course?: ICourse;

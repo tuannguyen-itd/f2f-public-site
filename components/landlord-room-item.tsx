@@ -10,18 +10,23 @@ interface IRoomProps {
 export const LandlordRoomItem = (props: IRoomProps) => {
   const { room } = props;
   return (
-    <div className="course-block col-lg-4 col-md-6 col-sm-12">
+    <div className="course-block col-md-4">
       <div className="inner-box wow fadeInLeft" data-wow-delay="0ms" data-wow-duration="1500ms">
-        <div className="image roomLandlord-img">
+        <div className="image roomLandlord-img" style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           {room?.photos[0]?.image ? (
-            <a href="#"><img src={`data:${room?.photos[0]?.imageContentType};base64,${room?.photos[0]?.image}`} alt={room?.name}/></a>
+            <img
+              src={`data:${room?.photos[0]?.imageContentType};base64,${room?.photos[0]?.image}`}
+              alt={room?.name}
+              style={{ maxWidth: '100%', maxHeight: '100%' }}
+            />
           ) : (
-            <a href="#"><img src="/theme/template/images/resource/course-1.jpg" /></a>
+            <img src="/theme/template/images/resource/course-1.jpg" alt={room?.name} />
           )}
         </div>
         <div className="lower-content">
           <h4 className="room-name "><a href="course-detail.html">{room?.name}</a></h4>
-          <div className="uni-name">Địa chỉ: {room?.location}</div>
+          <div className="uni-name">Địa chỉ: {room?.place?.ward?.name}, {room?.place?.ward?.district?.name}</div>
+          <div className="uni-name">Vị trí: {room?.location} </div>
           <div className="rating">
             <span className="fa fa-star"></span>
             <span className="fa fa-star"></span>
@@ -31,11 +36,10 @@ export const LandlordRoomItem = (props: IRoomProps) => {
             <strong>4.9</strong>
             <i>(70 Review)</i>
           </div>
-          <div className="price">$12 <span>$100.99</span></div>
           <div className="clearfix">
             <div className="pull-right">
               <Link href="/rooms/[id]" as={`/rooms/${room.id}`}>
-                <a className="theme-btn btn-style-one mt-2"><span className="txt">Chi Tiết</span></a>
+                <a className="theme-btn btn-style-one mt-2 py-1 px-5"><span className="txt">Chi Tiết</span></a>
               </Link>
             </div>
           </div>

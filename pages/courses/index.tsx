@@ -66,10 +66,10 @@ export default function Courses({ menus, response, errorCode }: CoursesProps) {
     router.push(url(1, search), undefined);
   };
 
-  const onHandleCenterHover = (course) => {
-    setLocation({ lat: course.roomTutorBooking.centerRoom.center.lat, lng: course.roomTutorBooking.centerRoom.center.lng });
+  const onHandleCenterHover = (lat, lng) => {
+    setLocation({ lat, lng });
   };
-
+  console.log(courses);
   return (
     // @ts-ignore
     <Layout menus={menus}>
@@ -467,36 +467,32 @@ export default function Courses({ menus, response, errorCode }: CoursesProps) {
             </div>
           </div>
         </div>
-        <div className="auto-container">
-          <h2 className="text-dark text-uppercase font-weight-bold pb-4 title-list-course">
-            Khóa học Chinh phục sự thành công
-          </h2>
-          <div className="row clearfix">
-            <div className="col-md-12">
-              <div className="row clearfix">
-                {courses.length > 0 ? courses.map((course, index) => (
-                  <div className="w-100" key={index}>
-                    <CourseItem key={index} course={course} />
-                  </div>
-                )) : ''}
-                { !courses?.length ? <h3 className="text-course text-error my-5">No course found!</h3> : '' }
+        <div className="outer-container">
+          <h1 className="w-100 d-flex justify-content-center align-content-center my-5 lower-content">DANH SÁCH CÁC KHÓA HỌC NỔI BẬT</h1>
+          <div className="row clearfix d-flex justify-content-center">
+            <div className="col-md-6">
+              {courses.length > 0 ? courses.map((course, index) => (
+                <div key={index}>
+                  <CourseItem key={index} course={course} />
+                </div>
+              )) : ''}
+              { !courses?.length ? <h3 className="text-course text-error my-5">No course found!</h3> : '' }
+            </div>
+            <div className="col-md-6">
+              <div className="map-sticky">
+                <Map mapStyle={{ height: '95vh' }} location={location} />
               </div>
             </div>
-            {/*<div className="col-md-6">*/}
-            {/*  <div className="map-sticky">*/}
-            {/*    <Map mapStyle={{ height: '95vh' }} location={location} />*/}
-            {/*  </div>*/}
-            {/*</div>*/}
           </div>
+          <Pagination
+            visible={courses?.length > 0 && total}
+            activePage={+router.query.page || 1}
+            onSelect={handlePaginateChange}
+            maxButtons={7}
+            itemsPerPage={ITEMS_PER_PAGE}
+            totalItems={+total}
+          />
         </div>
-        <Pagination
-          visible={courses?.length > 0 && total}
-          activePage={+router.query.page || 1}
-          onSelect={handlePaginateChange}
-          maxButtons={7}
-          itemsPerPage={ITEMS_PER_PAGE}
-          totalItems={+total}
-        />
       </section>
     </Layout>
   );

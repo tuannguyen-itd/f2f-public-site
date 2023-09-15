@@ -40,9 +40,7 @@ function Landlord({ landlord, room, id, errorCode }: LandlordProps) {
   };
 
   const handlePaginateChange = value => +value && router.push(url(id, +value), undefined);
-
   return (
-    // @ts-ignore
     <Layout>
       <div>
         <section className="contact-banner-section">
@@ -61,28 +59,24 @@ function Landlord({ landlord, room, id, errorCode }: LandlordProps) {
               </Link>
               <li>{landlord?.name}</li>
             </ul>
-            <div className="d-flex flex-wrap mb-4">
-              <div className="flex-shrink-0 position-relative">
-                <img src={`data:${landlord?.logoContentType};base64,${landlord?.logo}`} />
-              </div>
-              <div className="flex-grow-1 ms-3">
-                <h4>{landlord?.name}</h4>
-                {landlord?.note}
-              </div>
+            <div className="w-100 d-flex justify-content-center" style={{ backgroundImage: `url(data:${landlord?.bannerContentType};base64,${landlord?.banner})`,
+              backgroundPosition: 'center', backgroundSize: 'cover' }}>
+                <img src={`data:${landlord?.logoContentType};base64,${landlord?.logo}`} style={{ width: '200px', borderRadius:'50%', marginTop: '70px', marginBottom: '30px' }}/>
             </div>
-            <h2 className="text-dark mt-5 mb-4">Danh Sách Phòng Của {landlord?.name}</h2>
+            <div className="w-100 d-flex justify-content-center align-items-center flex-column mb-5 px-5">
+              <h2 className="text-dark ">{landlord?.name}</h2>
+              <span className="text-dark">  {landlord?.note}</span>
+            </div>
             <div className="auto-container">
               <div className="row clearfix">
-                {room.length > 0 ? room.map((room, index) => (
-                  <LandlordRoomItem key={index} room={room} />
-                )) : ''
-                }
-                { !room?.length ? <h3 className="text-course text-error my-5">No room found!</h3> : '' }
+                {room.length > 0 ? room.map((roomItem, index) => (
+                  <LandlordRoomItem key={index} room={roomItem} />
+                )) : ''}
+                {!room?.length ? <h3 className="text-course text-error my-5">No room found!</h3> : ''}
               </div>
             </div>
           </div>
         </section>
-        {/* End Course Detail Section */}
       </div>
 
     </Layout>

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { courseService } from '@services';
+import {courseService, landlordService} from '@services';
 import { roomService } from '@services/room.service';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import Error from 'next/error';
@@ -89,6 +89,11 @@ function Room({ room, rating, errorCode }: RoomProps) {
                         {room.place.ward && room.place.ward.district ? `${room.place.ward.district.name}` : ''}
                       </p>
                     </li>
+                    <li>
+                      <p>Vị trí:
+                        {room.location ? `${room.location}, ` : ''}
+                      </p>
+                    </li>
                     <li className="text-nowrap">
                      {room.status === 'OPEN' ? <p> Tình trạng: Đang mở</p> : <p> Tình trạng: Đóng cửa</p>}
                     </li>
@@ -101,19 +106,20 @@ function Room({ room, rating, errorCode }: RoomProps) {
                 <div className="map">
                   <Map mapStyle={{ height: '500px' }} location={location} />
                 </div>
-                <div className="comments-area mt-5">
-                  <div className="group-title">
-                    <h2>Đánh giá lớp học</h2>
-                  </div>
+                {rating.length > 0 ? (
+                  <div className="comments-area mt-5">
+                    <div className="group-title">
+                      <h2>Đánh giá lớp học</h2>
+                    </div>
 
-                  <div className="comment-box">
-                    {rating.length > 0 ? (
-                      rating.map((item, index) => (
+                    <div className="comment-box">
+                      {rating.map((item, index) => (
                         <div className="comment" key={index}>
-                          <div className="author-thumb"><img src={ `data:${item.userInfo.avatarContentType};base64,${item.userInfo.avatar}`} alt="" /></div>
+                          <div className="author-thumb">
+                            <img src={`data:${item.userInfo.avatarContentType};base64,${item.userInfo.avatar}`} alt=""/>
+                          </div>
                           <div className="comment-info clearfix">
-                            {/* tslint:disable-next-line:prefer-template */}
-                            <strong>{item.userInfo.user.firstName + ' ' + item.userInfo.user.lastName}</strong>
+                            <strong>{`${item.userInfo.user.firstName} ${item.userInfo.user.lastName}`}</strong>
                             {item.rate >= 0 ? (
                               <div className="rating">
                                 <span className={`fa ${item.rate >= 0.5 ? 'fa-star' : 'fa-star-o'}`} />
@@ -124,30 +130,32 @@ function Room({ room, rating, errorCode }: RoomProps) {
                               </div>
                             ) : ''}
                           </div>
-                          <div className="text"> {item.comment}
-                          </div>
+                          <div className="text">{item.comment}</div>
                         </div>
-                      ))) : ('')}
+                      ))}
+                    </div>
                   </div>
-                </div>
+                ) : ''}
               </div>
             </div>
             <div className="info-column col-lg-4 col-md-12 col-sm-12" >
               <div className="inner-column mt-5">
                 <div className="image w-100 d-flex align-items-center justify-content-center">
-                  <Link href="/rooms/[id]" as={`/rooms/${room.id}`}>
+                  <Link href="/landlord/[id]" as={`/landlord/${room.place.landlord.id}`}>
                     <a>
                       {room.place.landlord.logoContentType ? (
-                        <img src={`data:${room.place.landlord.logoContentType};base64,${room.place.landlord.logo}`} alt="Thông tin liên hệ" />
+                        <img src={`data:${room.place.landlord.logoContentType};base64,${room.place.landlord.logo}`} alt="Thông tin liên hệ" style={{ width: '150px' }}/>
                       ) : null}
                     </a>
                   </Link>
                 </div>
                 <h2 className="text-nowrap mt-3 ">Thông tin liên hệ</h2>
-                <h3 className="text-dark">
+                <h5 className="text-dark">
                       {room.place.landlord.name}
-                 </h3>
-                {/*<h3 className="text-dark"></h3>*/}
+                 </h5>
+                <h3 className="text-dark">
+                  {room.place.landlord.places}
+                </h3>
                 <div className="btns-box text-center">
                   <Link href={`${process.env.NEXT_PUBLIC_ADMIN_URL}/room/${room.id}`} as={`${process.env.NEXT_PUBLIC_ADMIN_URL}/room/${room.id}`}>
                   <a className="theme-btn enrol-btn ">Liên hệ</a>

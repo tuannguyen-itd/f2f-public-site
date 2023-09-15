@@ -1,4 +1,5 @@
 import { IPlace } from '@model/place.model';
+import { IUserInfo } from '@model/user-info.model';
 
 export interface ILandlord {
   id?: number;
@@ -9,6 +10,7 @@ export interface ILandlord {
   banner?: any;
   note?: any;
   userId?: number;
+  userInfo?: IUserInfo;
   places?: IPlace[];
 }
 

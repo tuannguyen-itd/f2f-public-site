@@ -26,7 +26,7 @@ export const getServerSideProps: GetServerSideProps<any, NodeJS.Dict<string>> = 
 function Course({ course, errorCode, rating }: CourseProps) {
   if (errorCode) return <Error statusCode={errorCode} />;
   console.log(rating);
-
+  console.log(course);
   return (
     // @ts-ignore
     <Layout>
@@ -123,8 +123,8 @@ function Course({ course, errorCode, rating }: CourseProps) {
                     <div className="mt-5">
                       <h5>Hình ảnh lớp học</h5>
                       <div className="row">
-                        {course.roomTutorBooking.centerRoom.photoCenterRooms.map((photo) => (
-                          <div className="col-lg-2 col-sm-3">
+                        {course.roomTutorBooking.centerRoom.photoCenterRooms.map((photo, index) => (
+                          <div className="col-lg-2 col-sm-3" key={index}>
                             <img src={`data:${photo.imageContentType};base64,${photo.image}`} alt=""/>
                           </div>
                         ))}
@@ -181,15 +181,18 @@ function Course({ course, errorCode, rating }: CourseProps) {
                       </div>
                     </div>
                   ) : ''}
-                  <div className="comments-area mt-5">
-                    <div className="group-title d-flex">
-                      <h5>Đánh giá</h5>
-                    </div>
-                    <div className="comment-box">
-                      {rating.length > 0 ? (
-                        rating.map((item, index) => (
+                  {rating.length > 0 ? (
+                    <div className="comments-area mt-5">
+                      <div className="group-title">
+                        <h2>Đánh giá lớp học</h2>
+                      </div>
+
+                      <div className="comment-box">
+                        {rating.map((item, index) => (
                           <div className="comment" key={index}>
-                            <div className="author-thumb"><img src={ `data:${item.userInfo.avatarContentType};base64,${item.userInfo.avatar}`} alt="" /></div>
+                            <div className="author-thumb">
+                              <img src={`data:${item.userInfo.avatarContentType};base64,${item.userInfo.avatar}`} alt=""/>
+                            </div>
                             <div className="comment-info clearfix">
                               <strong>{`${item.userInfo.user.firstName} ${item.userInfo.user.lastName}`}</strong>
                               {item.rate >= 0 ? (
@@ -202,12 +205,12 @@ function Course({ course, errorCode, rating }: CourseProps) {
                                 </div>
                               ) : ''}
                             </div>
-                            <div className="text"> {item.comment}
-                            </div>
+                            <div className="text">{item.comment}</div>
                           </div>
-                        ))) : ('')}
+                        ))}
+                      </div>
                     </div>
-                  </div>
+                  ) : ''}
                 </div>
               </div>
               <div className="info-column col-lg-4 col-md-12 col-sm-12">

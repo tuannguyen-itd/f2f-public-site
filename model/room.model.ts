@@ -15,7 +15,7 @@ export interface IRoom {
   photos?: IPhoto[];
   placeId?: number;
   place?: IPlace[];
-  ward?: IWard;
+  ward?: IWard[];
 }
 
 export const defaultValue: Readonly<IRoom> = {};

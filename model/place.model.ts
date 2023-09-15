@@ -1,5 +1,6 @@
 import { IRoom } from '@model/room.model';
 import { IWard } from '@model/ward.model';
+import { ILandlord } from '@model/landlord.model';
 
 export interface IPlace {
   id?: number;
@@ -15,6 +16,7 @@ export interface IPlace {
   rooms?: IRoom[];
   wardId?: number;
   landlordId?: number;
+  landlord?: ILandlord;
   ward?: IWard;
 }
 

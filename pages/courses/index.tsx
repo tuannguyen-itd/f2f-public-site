@@ -19,7 +19,6 @@ export const getServerSideProps: GetServerSideProps<any, NodeJS.Dict<string>> = 
     +page - 1, ITEMS_PER_PAGE, 'id', 'desc',
     { 'name.contains': search as string },
   );
-
   if (response === null) {
     res.statusCode = 404;
     return {
@@ -32,7 +31,6 @@ export const getServerSideProps: GetServerSideProps<any, NodeJS.Dict<string>> = 
 
 export default function Courses({ menus, response, errorCode }: CoursesProps) {
   if (errorCode) return <Error statusCode={errorCode} />;
-
   const { data: courses, total } = response;
 
   const router = useRouter();
@@ -65,11 +63,9 @@ export default function Courses({ menus, response, errorCode }: CoursesProps) {
     event.preventDefault();
     router.push(url(1, search), undefined);
   };
-
-  const onHandleCenterHover = (lat, lng) => {
+  const handlelocation = (lat, lng) => {
     setLocation({ lat, lng });
   };
-  console.log(courses);
   return (
     // @ts-ignore
     <Layout menus={menus}>
@@ -472,8 +468,8 @@ export default function Courses({ menus, response, errorCode }: CoursesProps) {
           <div className="row clearfix d-flex justify-content-center">
             <div className="col-md-6">
               {courses.length > 0 ? courses.map((course, index) => (
-                <div key={index}>
-                  <CourseItem key={index} course={course} />
+                <div key={index}  onClick={() => handlelocation(course?.place?.lat, course?.place?.lng)}>
+                  <CourseItem course={course} />
                 </div>
               )) : ''}
               { !courses?.length ? <h3 className="text-course text-error my-5">No course found!</h3> : '' }

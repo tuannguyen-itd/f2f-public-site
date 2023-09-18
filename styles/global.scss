@@ -55,6 +55,10 @@ $border-color: #212529;
     font-size: 40px;
   }
 }
+.total-star{
+  font-size: 20px;
+  display: flex;
+}
 .inner-column{
   .detail-course{
     font-size: 35px;
@@ -79,5 +83,4 @@ $border-color: #212529;
   .box-descrip{
     font-size: 15px;
   }
-
 }

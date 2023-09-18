@@ -4,14 +4,16 @@ import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import Error from 'next/error';
 import Layout from '@components/layout';
 import Link from 'next/link';
-import RatingItem from '@components/rating-item';
 import { formatDate } from '../../../config/constants';
+import { bookingService } from '@services/booking.service';
 
 declare type CourseProps = InferGetServerSidePropsType<typeof getServerSideProps>;
 
 export const getServerSideProps: GetServerSideProps<any, NodeJS.Dict<string>> = async ({ params: { id }, res }) => {
   const course = await courseService.getEntity(id);
   const rating = await ratingService.getRatingByCourse(id);
+  const booking = await  bookingService.getEntity(course?.bookingId);
+  const ratingAVG = await ratingService.getRatingByCourseAVG(id);
   if (course === null) {
     res.statusCode = 404;
     return {
@@ -19,14 +21,12 @@ export const getServerSideProps: GetServerSideProps<any, NodeJS.Dict<string>> = 
     };
   }
   return {
-    props: { course, rating },
+    props: { course, rating, booking, ratingAVG },
   };
 };
 
-function Course({ course, errorCode, rating }: CourseProps) {
+function Course({ course, errorCode, rating, booking, ratingAVG }: CourseProps) {
   if (errorCode) return <Error statusCode={errorCode} />;
-  console.log(rating);
-  console.log(course);
   return (
     // @ts-ignore
     <Layout>
@@ -39,20 +39,20 @@ function Course({ course, errorCode, rating }: CourseProps) {
           <div className="auto-container">
             <ul className="page-breadcrumb">
               <Link href="/" as={'/'}>
-                <li><a >Home</a></li>
+                <li><a>Home</a></li>
               </Link>
               <Link href="/courses" as={'/courses'}>
               <li><a>Courses</a></li>
               </Link>
-              <li>{course.name}</li>
+              <li>{course?.name}</li>
             </ul>
             <div className="content-box">
-              <h1 className="text-dark box-cource-name"><strong>{course.name}</strong></h1>
+              <h1 className="text-dark box-cource-name"><strong>{course?.name}</strong></h1>
               <div className="box-descrip">
                 <ul className="course-info">
-                  <li><span className="icon fa fa-clock-o mr-2" />Last Update : {formatDate(course.date)}</li>
+                  <li><span className="icon fa fa-clock-o mr-2" />Last Update : {formatDate(course?.date)}</li>
                   <li><span className="icon fa fa-language mr-2" />English</li>
-                  <li><span className="icon fa fa-user mr-2" />{course.amount} học viên</li>
+                  <li><span className="icon fa fa-user mr-2" />{course?.learners?.length}/{course?.amount} học viên</li>
                 </ul>
                 {course && course.status && (
                   <div>
@@ -62,20 +62,6 @@ function Course({ course, errorCode, rating }: CourseProps) {
                     </span>
                   </div>
                 )}
-                <div className="development">Development courses</div>
-                {/*{course.totalRate > 0 ? (*/}
-                {/*  <div className="rating">*/}
-                {/*    <span className={`fa ${course.averageRate > 0 ? 'fa-star' : 'fa-star-o'}`} />*/}
-                {/*    <span className={`fa ${course.averageRate > 1.5 ? 'fa-star' : 'fa-star-o'}`} />*/}
-                {/*    <span className={`fa ${course.averageRate > 2.5 ? 'fa-star' : 'fa-star-o'}`} />*/}
-                {/*    <span className={`fa ${course.averageRate > 3.5 ? 'fa-star' : 'fa-star-o'}`} />*/}
-                {/*    <span className={`fa ${course.averageRate > 4.5 ? 'fa-star' : 'fa-star-o'}`} />*/}
-                {/*    <strong>{Number(course.averageRate).toFixed(1)}</strong>*/}
-                {/*    <i>({course.totalRate} Đánh giá)</i>*/}
-                {/*  </div>*/}
-                {/*) : ''}*/}
-                <div className="hovers">11.5 total hours . All Levels</div>
-                {/* Social Box */}
               </div>
               <ul className="social-box d-flex ">
                 <li className="twitter bg-primary"><a target="_blank" href="http://twitter.com/" className="fa fa-twitter text-white" /></li>
@@ -95,7 +81,6 @@ function Course({ course, errorCode, rating }: CourseProps) {
                   <div className="py-4">
                     {course.image ? (
                       <img className="w-100" src={`data:${course.image_content_type};base64,${course.image}`} />
-
                     ) : (
                       <a><img src="/theme/template/images/resource/news-25.jpg" /></a>
                       )}
@@ -183,11 +168,25 @@ function Course({ course, errorCode, rating }: CourseProps) {
                   ) : ''}
                   {rating.length > 0 ? (
                     <div className="comments-area mt-5">
-                      <div className="group-title">
-                        <h2>Đánh giá lớp học</h2>
+                      <div className="group-title d-flex align-items-center">
+                        <h4 className="text-dark">Đánh giá lớp học</h4>
+                        <div className="total-star ml-4">
+                          {ratingAVG.ratingCourseAvg >= 0 ? (
+                            <>
+                              <div className="rating text-warning">
+                                <span className={`fa ${ratingAVG.ratingCourseAvg >= 0.5 ? 'fa-star' : 'fa-star-o'}`} />
+                                <span className={`fa ${ratingAVG.ratingCourseAvg >= 1.5 ? 'fa-star' : 'fa-star-o'}`} />
+                                <span className={`fa ${ratingAVG.ratingCourseAvg >= 2.5 ? 'fa-star' : 'fa-star-o'}`} />
+                                <span className={`fa ${ratingAVG.ratingCourseAvg >= 3.5 ? 'fa-star' : 'fa-star-o'}`} />
+                                <span className={`fa ${ratingAVG.ratingCourseAvg >= 4.5 ? 'fa-star' : 'fa-star-o'}`} />
+                              </div>
+                              ({ratingAVG.ratingCourseCount})
+                            </>
+                          ) : ''}
+                        </div>
                       </div>
 
-                      <div className="comment-box">
+                      <div className="comment-box mt-3">
                         {rating.map((item, index) => (
                           <div className="comment" key={index}>
                             <div className="author-thumb">
@@ -215,20 +214,43 @@ function Course({ course, errorCode, rating }: CourseProps) {
               </div>
               <div className="info-column col-lg-4 col-md-12 col-sm-12">
                 <div className="inner-column">
-                  <h5>Khóa học này bao gồm:</h5>
-                  <div className="text">There are many variations of passages of Lorem Ipsum available, but the majority have suffered </div>
-                  <ul className="level-list">
-                    <li>Level :<span>Beginner</span></li>
-                    <li>Topic :<span>Java Script</span></li>
-                    <li>Class :<span>32 articles</span></li>
-                    <li>Access :<span>Mobile and TV</span></li>
-                  </ul>
-                  <h5>Bao gồm khác:</h5>
-                  <ul className="level-list-two">
-                    <li>Full lifetime access</li>
-                    <li>19 downloadable resources</li>
-                    <li>Certificate of completion</li>
-                  </ul>
+                  <h5 className="mt-0">Thông Tin Gia Sư</h5>
+                  { booking?.tutor ?
+                    <>
+                      <div className="image w-100 d-flex align-items-center justify-content-center mt-3">
+                        <Link href="/" as={'/'}>
+                          <a>
+                            {booking?.tutor?.userInfo?.avatar ? (
+                              <img src={`data:${booking?.tutor?.userInfo?.avatarContentType};base64,${booking?.tutor?.userInfo?.avatar}`} alt="Thông tin liên hệ" style={{ width: '150px' }}/>
+                            ) : <img src="/theme/template/images/img-logo-default.png"/>}
+                          </a>
+                        </Link>
+                      </div>
+                      <h5 className="text-center mt-4 mb-1">{booking?.tutor?.userInfo?.user?.firstName}&nbsp;{booking?.tutor?.userInfo?.user?.lastName}</h5>
+                        {ratingAVG.ratingTutorCourseAvg >= 0 ? (
+                          <div className="d-flex justify-content-center align-items-center mb-2">
+                            <span className="text-dark">Đánh Giá:</span>
+                            <div className="rating text-warning ml-2">
+                              <span className={`fa ${ratingAVG.ratingTutorCourseAvg >= 0.5 ? 'fa-star' : 'fa-star-o'}`} />
+                              <span className={`fa ${ratingAVG.ratingTutorCourseAvg >= 1.5 ? 'fa-star' : 'fa-star-o'}`} />
+                              <span className={`fa ${ratingAVG.ratingTutorCourseAvg >= 2.5 ? 'fa-star' : 'fa-star-o'}`} />
+                              <span className={`fa ${ratingAVG.ratingTutorCourseAvg >= 3.5 ? 'fa-star' : 'fa-star-o'}`} />
+                              <span className={`fa ${ratingAVG.ratingTutorCourseAvg >= 4.5 ? 'fa-star' : 'fa-star-o'}`} />
+                            </div>
+                            ({ratingAVG.ratingTutorCourseCount})
+                          </div>
+                          )
+                          : <h5 className="mb-2">Chưa có đánh giá nào</h5>
+                        }
+                      <ul className="level-list">
+                        <li>Bằng cấp: <span>{booking?.tutor?.degree}</span></li>
+                        <li>Phone :<span>{booking?.tutor?.userInfo?.phone}</span></li>
+                        <li>Email :<span>{booking?.tutor?.userInfo?.user?.email}</span></li>
+                        <li>Ngày Sinh :<span>{booking?.tutor?.userInfo?.dob}</span></li>
+                      </ul>
+                    </>
+                    : <h4 className="mt-5 mb-5">Hiện Chưa Có Gia Sư</h4>
+                  }
                   <div className="btns-box">
                     <a target="_blank" href={`${process.env.NEXT_PUBLIC_ADMIN_URL}/course/${course.id}`} className="theme-btn enrol-btn" >Tham gia lớp học</a>
                   </div>

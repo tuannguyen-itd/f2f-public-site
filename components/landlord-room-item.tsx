@@ -38,7 +38,7 @@ export const LandlordRoomItem = (props: IRoomProps) => {
           </div>
           <div className="clearfix">
             <div className="pull-right">
-              <Link href="/rooms/[id]" as={`/rooms/${room.id}`}>
+              <Link href="/rooms/[id]" as={`/rooms/${room?.id}`}>
                 <a className="theme-btn btn-style-one mt-2 py-1 px-5"><span className="txt">Chi Tiết</span></a>
               </Link>
             </div>

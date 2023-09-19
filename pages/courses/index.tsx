@@ -466,15 +466,15 @@ export default function Courses({ menus, response, errorCode }: CoursesProps) {
         <div className="outer-container">
           <h1 className="w-100 d-flex justify-content-center align-content-center my-5 lower-content">DANH SÁCH CÁC KHÓA HỌC NỔI BẬT</h1>
           <div className="row clearfix d-flex justify-content-center">
-            <div className="col-md-6">
+            <div className="col-lg-6 col-md-12">
               {courses.length > 0 ? courses.map((course, index) => (
-                <div key={index}  onClick={() => handlelocation(course?.place?.lat, course?.place?.lng)}>
+                <div className="row mb-3 pl-2 pr-2" key={index}  onClick={() => handlelocation(course?.place?.lat, course?.place?.lng)}>
                   <CourseItem course={course} />
                 </div>
               )) : ''}
               { !courses?.length ? <h3 className="text-course text-error my-5">No course found!</h3> : '' }
             </div>
-            <div className="col-md-6">
+            <div className="col-lg-6 col-md-12">
               <div className="map-sticky">
                 <Map mapStyle={{ height: '95vh' }} location={location} />
               </div>

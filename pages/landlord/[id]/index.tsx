@@ -69,10 +69,13 @@ function Landlord({ landlord, room, id, errorCode }: LandlordProps) {
             </div>
             <div className="auto-container">
               <div className="row clearfix">
-                {room.length > 0 ? room.map((roomItem, index) => (
-                  <LandlordRoomItem key={index} room={roomItem} />
-                )) : ''}
-                {!room?.length ? <h3 className="text-course text-error my-5">No room found!</h3> : ''}
+                {room.length > 0 && room[0] !== null ? (
+                  room.map((roomItem, index) => (
+                    <LandlordRoomItem key={index} room={roomItem} />
+                  ))
+                ) : (
+                  <h3 className="text-course text-error my-5">No room found!</h3>
+                )}
               </div>
             </div>
           </div>

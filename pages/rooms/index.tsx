@@ -13,6 +13,7 @@ import { latLngDefault } from '../../config/constants';
 import Map from '@components/map';
 import { roomService } from '@services/room.service';
 import { RoomItem } from '@components/room-item';
+import { AddressSelector } from '@components/address-selector/address-selector';
 
 declare type RoomsProps = InferGetServerSidePropsType<typeof getServerSideProps>;
 
@@ -90,20 +91,7 @@ export default function Rooms({ menus, response, errorCode }: RoomsProps) {
                           {/* Column */}
                           <div className="d-flex flex-column">
                             <h6>Lọc theo vị trí</h6>
-                            <div className="d-flex row" style={{ marginLeft : '-15px' }}>
-                              <select className="col-md-4 pr-3" name="cars" id="cars">
-                                <option >Tỉnh, Thành Phố</option>
-                                <option value="saab">Saab</option>
-                              </select>
-                              <select className="col-md-4 pr-3" name="cars" id="cars">
-                                <option >Quận, Huyện</option>
-                                <option value="saab">Saab</option>
-                              </select>
-                              <select className="col-md-4 pr-3" name="cars" id="cars">
-                                <option >Phường, Xã</option>
-                                <option value="saab">Saab</option>
-                              </select>
-                            </div>
+                            <AddressSelector  />
                           </div>
                         </div>
                       </div>

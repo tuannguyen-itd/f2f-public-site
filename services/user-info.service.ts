@@ -1,12 +1,12 @@
 import { baseService, IService, makeRequestUrl } from './base.service';
-import { IBooking } from '@model/booking.model';
+import { IUserInfo } from '@model/user-info.model';
 
-interface IBookingService<T> extends IService<IBooking> {
+interface IUserInfoService<T> extends IService<IUserInfo> {
 }
 
-export const bookingService: IBookingService<IBooking> = {
+export const userService: IUserInfoService<IUserInfo> = {
   ...baseService,
-  apiPath: 'bookings',
+  apiPath: 'user-infos',
   v2Api: ['*'],
 
   async getEntities(page, size, sort, order, filters) {

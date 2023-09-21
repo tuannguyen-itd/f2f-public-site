@@ -1,11 +1,10 @@
-import React, { useState } from 'react';
-import {courseService, landlordService} from '@services';
+import React from 'react';
 import { roomService } from '@services/room.service';
+import { userService } from '@services/user-info.service';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import Error from 'next/error';
 import Layout from '@components/layout';
 import Link from 'next/link';
-import RatingItem from '@components/rating-item';
 import Map from '@components/map';
 import { ratingService } from '@services/rating.service';
 
@@ -14,6 +13,7 @@ declare type RoomProps = InferGetServerSidePropsType<typeof getServerSideProps>;
 export const getServerSideProps: GetServerSideProps<any, NodeJS.Dict<string>> = async ({ params: { id }, res }) => {
   const room = await roomService.getEntity(id);
   const rating = await  ratingService.getEntity(id);
+  const userinfo = await userService.getEntity(room?.place?.landlord?.userId);
   if (room === null) {
     res.statusCode = 404;
     return {
@@ -22,11 +22,11 @@ export const getServerSideProps: GetServerSideProps<any, NodeJS.Dict<string>> = 
   }
 
   return {
-    props: { room, rating },
+    props: { room, rating, userinfo },
   };
 };
 
-function Room({ room, rating, errorCode }: RoomProps) {
+function Room({ room, rating, userinfo, errorCode }: RoomProps) {
   if (errorCode) return <Error statusCode={errorCode} />;
   const location = room && room.place ? { lat: room.place.lat, lng: room.place.lng } : null;
   return (
@@ -85,8 +85,8 @@ function Room({ room, rating, errorCode }: RoomProps) {
                   <ul className="learn-list">
                     <li>
                       <p>Địa chỉ:
-                        {room.place.ward ? `${room.place.ward.name}, ` : ''}
-                        {room.place.ward && room.place.ward.district ? `${room.place.ward.district.name}` : ''}
+                        {room?.place?.ward ? `${room?.place?.ward?.name}, ` : ''}
+                        {room?.place?.ward && room?.place?.ward?.district ? `${room?.place?.ward?.district?.name}` : ''}
                       </p>
                     </li>
                     <li>
@@ -150,12 +150,17 @@ function Room({ room, rating, errorCode }: RoomProps) {
                   </Link>
                 </div>
                 <h2 className="text-nowrap mt-3 ">Thông tin liên hệ</h2>
-                <h5 className="text-dark">
-                      {room.place.landlord.name}
-                 </h5>
-                <h3 className="text-dark">
-                  {room.place.landlord.places}
-                </h3>
+                <span>
+                      Name: {room?.place?.landlord?.name}
+                 </span>
+                <br/>
+                <span>
+                  Email: {userinfo?.user?.email}
+                </span>
+                <br/>
+                <span>
+                  Phone: {userinfo?.phone}
+                </span>
                 <div className="btns-box text-center">
                   <Link href={`${process.env.NEXT_PUBLIC_ADMIN_URL}/room/${room.id}`} as={`${process.env.NEXT_PUBLIC_ADMIN_URL}/room/${room.id}`}>
                   <a className="theme-btn enrol-btn ">Liên hệ</a>

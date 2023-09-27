@@ -1,29 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Col, Input, InputGroup, InputGroupAddon, Row } from 'reactstrap';
 import Layout from '@components/layout';
-import { courseService } from '@services';
 import { Pagination } from '@components/pagination/pagination';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import { useRouter } from 'next/router';
 import Error from 'next/error';
-import { CourseItem } from '@components/course-item';
-import { LandlordRoomItem } from '@components/landlord-room-item';
+
 import { ITEMS_PER_PAGE } from '../../shared/util/pagination.constants';
 import { latLngDefault } from '../../config/constants';
 import Map from '@components/map';
 import { roomService } from '@services/room.service';
 import { RoomItem } from '@components/room-item';
-import { AddressSelector } from '@components/address-selector/address-selector';
+import AddressSelector, { IAddressState } from '@components/address-selector/address-selector';
 
 declare type RoomsProps = InferGetServerSidePropsType<typeof getServerSideProps>;
 
-export const getServerSideProps: GetServerSideProps<any, NodeJS.Dict<string>> = async ({ query: { search, page = 1 }, res }) => {
+export const getServerSideProps: GetServerSideProps<any, NodeJS.Dict<string>> = async ({ query: { search, page = 1, provinceId, districtId,  wardId }, res }) => {
   const menus = [];
-  const response = await roomService.getEntities(
-    +page - 1, ITEMS_PER_PAGE, 'id', 'desc',
-    { 'name.contains': search as string },
-  );
-
+  const response = await roomService.getEntities123(0, ITEMS_PER_PAGE, 'id', 'desc', search, provinceId || null , districtId || null , wardId || null);
   if (response === null) {
     res.statusCode = 404;
     return {
@@ -31,42 +25,50 @@ export const getServerSideProps: GetServerSideProps<any, NodeJS.Dict<string>> = 
     };
   }
 
-  return { props: { response, menus } };
+  return { props: { menus, response } };
 };
 
-export default function Rooms({ menus, response, errorCode }: RoomsProps) {
+export default function Rooms({ menus, errorCode, response }: RoomsProps) {
   if (errorCode) return <Error statusCode={errorCode} />;
-
-  const { data: rooms, total } = response;
-
   const router = useRouter();
   const [search, setSearch] = useState('');
   const [location, setLocation] = useState({ lat: latLngDefault.lat, lng: latLngDefault.lng });
+  const [address, setAddress] = useState({} as IAddressState);
+  const [wardId, setWardId] = useState<number>();
+  const [districtId, setDistrictId] = useState<number>();
+  const [provinceId, setProvinceId] = useState<number>();
+
   useEffect(() => {
     setLocation(location);
   }, [location]);
 
   useEffect(() => {
-    setSearch(router.query.search as string || '');
-  }, [router.query]);
+    setWardId(address.wardId);
+    setDistrictId(address.districtId);
+    setProvinceId(address.provinceId);
 
-  const url = (page, searchStr) => {
+    router.push(url(1, null, address.provinceId, address.districtId, address.wardId), undefined);
+  }, [address, provinceId, districtId, wardId]);
+
+  const url = (page, searchStr, provinceId, districtId, wardId) => {
     const params = Object.entries({
+      provinceId,
+      districtId,
+      wardId,
       page: (page || 1) > 1 ? page : false,
       search: searchStr,
     })
       .map(([key, value]) => (value ? `${key}=${value}` : false))
       .filter(s => s)
       .join('&');
-
     return `/rooms${params ? `?${params}` : ''}`;
   };
 
-  const handlePaginateChange = value => +value && router.push(url(+value, search), undefined);
+  const handlePaginateChange = value => +value && router.push(url(+value, search, provinceId, districtId, wardId), undefined);
 
   const handleSearchCourses = (event) => {
     event.preventDefault();
-    router.push(url(1, search), undefined);
+    router.push(url(1, search, null, null, null), undefined);
   };
 
   const onHandleCenterHover = (lat, lng) => {
@@ -86,12 +88,12 @@ export default function Rooms({ menus, response, errorCode }: RoomsProps) {
                     <div className="filter-dropdown">
                       <span className="icon flaticon-filter-filled-tool-symbol" /> Filter <span className="arrow fa fa-angle-down" />
                       {/* Filter Categories */}
-                      <div className="filter-categories">
+                      <div className="filter-categories" style={{ zIndex: '999' }}>
                         <div className="clearfix">
                           {/* Column */}
-                          <div className="d-flex flex-column">
-                            <h6>Lọc theo vị trí</h6>
-                            <AddressSelector  />
+                          <h6 className="d-block">Lọc theo vị trí</h6>
+                          <div className="d-flex">
+                            <AddressSelector onSelect={setAddress} values={address} col="4" className="form-control" />
                           </div>
                         </div>
                       </div>
@@ -105,7 +107,7 @@ export default function Rooms({ menus, response, errorCode }: RoomsProps) {
                         <Input
                           autoFocus={true}
                           value={search}
-                          onChange={$event => setSearch($event.target.value)}
+                          onChange={$event => setSearch($event.target.value || '')}
                           placeholder="Tìm lớp học" />
                         <InputGroupAddon addonType="append">
                           <Button color="secondary">Tìm</Button>
@@ -115,7 +117,7 @@ export default function Rooms({ menus, response, errorCode }: RoomsProps) {
                   </Row>
                 </form>
                 <div className="pull-right">
-                  <div className="total-course">Tìm thấy <span>{total}</span> kết quả</div>
+                  <div className="total-course">Tìm thấy <span>{response.length}</span> kết quả</div>
                 </div>
               </div>
             </div>
@@ -125,12 +127,12 @@ export default function Rooms({ menus, response, errorCode }: RoomsProps) {
           <h1 className="w-100 d-flex justify-content-center align-content-center my-5 lower-content">DANH SÁCH CÁC PHÒNG HỌC NỔI BẬT</h1>
           <div className="row clearfix d-flex justify-content-center">
             <div className="col-md-6">
-              {rooms.length > 0 ? rooms.map((room, index) => (
+              {response && response?.length > 0 ? response?.map((room, index) => (
                 <div onClick={() => onHandleCenterHover(room.place.lat, room.place.lng)} key={index}>
                   <RoomItem room={room} />
                 </div>
               )) : ''}
-              {!rooms?.length ? <h3 className="text-room text-error my-5">No room found!</h3> : ''}
+              {!response?.length ? <h3 className="text-room text-error my-5">No room found!</h3> : ''}
             </div>
             <div className="col-md-6">
               <div className="map-sticky">
@@ -139,12 +141,12 @@ export default function Rooms({ menus, response, errorCode }: RoomsProps) {
             </div>
           </div>
           <Pagination
-          visible={rooms?.length > 0 && total}
+          visible={response?.length > 0 && response?.length}
           activePage={+router.query.page || 1}
           onSelect={handlePaginateChange}
           maxButtons={7}
           itemsPerPage={ITEMS_PER_PAGE}
-          totalItems={+total}
+          totalItems={+response?.length}
         />
         </div>
       </section>

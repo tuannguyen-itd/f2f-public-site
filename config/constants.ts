@@ -30,11 +30,13 @@ export const DATEPICKER_MONTH_FORMAT = "'Tháng' MM, yyyy";
 export const SYSTEM_DATETIME_FORMAT = 'YYYY-MM-DDTHH:mm';
 export const SYSTEM_DATETIME_FORMAT_Z = 'YYYY-MM-DDTHH:mm Z';
 
+export const APP_TIMESTAMP_FORMAT_HOUR = 'HH:mm:ss a';
+export const APP_TIMESTAMP_FORMAT_DATE = 'MMM Do YYYY';
+
 export const latLngDefault = {
   lat: 16.082138,
   lng: 108.146515,
 };
-
 
 export function formatDate(dateString) { // EX: November 23, 2020
   const options = { year: 'numeric', month: 'long', day: 'numeric' };

@@ -8,4 +8,7 @@ export * from './rating.service';
 export * from './room.service';
 export * from './place.service';
 export * from './tutor.service';
+export * from './province.service';
+export * from './district.service';
+export * from './ward.service';
 export * from './helper';

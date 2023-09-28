@@ -1,4 +1,5 @@
 import { IRating } from '@model/rating.model';
+import { ICourse } from '@model/course.model';
 
 export interface IBooking {
   id?: number;
@@ -10,6 +11,7 @@ export interface IBooking {
   learnerId?: number;
   tutorId?: number;
   roomId?: number;
+  course?: ICourse[];
 }
 
 export const defaultValue: Readonly<IBooking> = {

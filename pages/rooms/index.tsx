@@ -17,7 +17,7 @@ declare type RoomsProps = InferGetServerSidePropsType<typeof getServerSideProps>
 
 export const getServerSideProps: GetServerSideProps<any, NodeJS.Dict<string>> = async ({ query: { search, page = 1, provinceId, districtId,  wardId }, res }) => {
   const menus = [];
-  const response = await roomService.getEntities123(0, ITEMS_PER_PAGE, 'id', 'desc', search, provinceId || null , districtId || null , wardId || null);
+  const response = await roomService.getAllRooms(0, ITEMS_PER_PAGE, 'id', 'desc', search, provinceId || null , districtId || null , wardId || null);
   if (response === null) {
     res.statusCode = 404;
     return {

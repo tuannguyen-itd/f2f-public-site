@@ -2,6 +2,7 @@ import { baseService, IService, makeRequestUrl } from './base.service';
 import { IBooking } from '@model/booking.model';
 
 interface IBookingService<T> extends IService<IBooking> {
+  getCourserByBooking:  (page, size, sort, order, search, provinceId, districtId, wardId) => Promise<{ data: T[] } | null>;
 }
 
 export const bookingService: IBookingService<IBooking> = {
@@ -9,16 +10,14 @@ export const bookingService: IBookingService<IBooking> = {
   apiPath: 'bookings',
   v2Api: ['*'],
 
-  async getEntities(page, size, sort, order, filters) {
-    const baseUrl = this.getApiUrl('getEntities');
-    const url = makeRequestUrl(baseUrl, page, size, sort, order, filters);
+  async getCourserByBooking(page, size, sort, order, search, provinceId, districtId, wardId) {
+    const url = `${process.env.API_URL}/api/v2/bookings?page=${page || ''}
+    &size=${size || ''}&sort=${sort || ''}&order=${order || ''}&search=${search || ''}&provinceId=${provinceId || ''}&districtId=${districtId || ''}&wardId=${wardId || ''}`;
     const res = await fetch(url);
     if (res?.ok) {
       const data = await res.json();
-      const total = +res.headers.get('x-total-count');
-      return { data, total };
+      return data;
     }
     return null;
   },
-
 };

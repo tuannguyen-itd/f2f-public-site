@@ -10,22 +10,21 @@ import { bookingService } from '@services/booking.service';
 declare type CourseProps = InferGetServerSidePropsType<typeof getServerSideProps>;
 
 export const getServerSideProps: GetServerSideProps<any, NodeJS.Dict<string>> = async ({ params: { id }, res }) => {
-  const course = await courseService.getEntity(id);
+  const booking = await  bookingService.getEntity(id);
   const rating = await ratingService.getRatingByCourse(id);
-  const booking = await  bookingService.getEntity(course?.bookingId);
   const ratingAVG = await ratingService.getRatingByCourseAVG(id);
-  if (course === null) {
+  if (booking === null) {
     res.statusCode = 404;
     return {
       props: { errorCode: 404 },
     };
   }
   return {
-    props: { course, rating, booking, ratingAVG },
+    props: { rating, booking, ratingAVG },
   };
 };
 
-function Course({ course, errorCode, rating, booking, ratingAVG }: CourseProps) {
+function Course({ errorCode, rating, booking, ratingAVG }: CourseProps) {
   if (errorCode) return <Error statusCode={errorCode} />;
   return (
     // @ts-ignore
@@ -44,21 +43,21 @@ function Course({ course, errorCode, rating, booking, ratingAVG }: CourseProps) 
               <Link href="/courses" as={'/courses'}>
               <li><a>Courses</a></li>
               </Link>
-              <li>{course?.name}</li>
+              <li>{booking?.course?.name}</li>
             </ul>
             <div className="content-box">
-              <h1 className="text-dark box-cource-name"><strong>{course?.name}</strong></h1>
+              <h1 className="text-dark box-cource-name"><strong>{booking?.course?.name}</strong></h1>
               <div className="box-descrip">
                 <ul className="course-info">
-                  <li><span className="icon fa fa-clock-o mr-2" />Last Update : {formatDate(course?.date)}</li>
+                  <li><span className="icon fa fa-clock-o mr-2" />Last Update : {formatDate(booking?.course?.date)}</li>
                   <li><span className="icon fa fa-language mr-2" />English</li>
-                  <li><span className="icon fa fa-user mr-2" />{course?.learners?.length}/{course?.amount} học viên</li>
+                  <li><span className="icon fa fa-user mr-2" />{booking?.course?.learners?.length}/{booking?.course?.amount} học viên</li>
                 </ul>
-                {course && course.status && (
+                {booking?.course && booking?.course.status && (
                   <div>
                     Trạng thái:{' '}
-                    <span className={course.status === 'CLOSE' ? 'text-danger' : 'text-success'}>
-                      {course.status}
+                    <span className={booking?.course.status === 'CLOSE' ? 'text-danger' : 'text-success'}>
+                      {booking?.course.status}
                     </span>
                   </div>
                 )}
@@ -79,13 +78,13 @@ function Course({ course, errorCode, rating, booking, ratingAVG }: CourseProps) 
                 <div className="inner-column">
                   <h2 className="detail-course text-dark">Chi tiết lớp học</h2>
                   <div className="py-4">
-                    {course.image ? (
-                      <img className="w-100" src={`data:${course.image_content_type};base64,${course.image}`} />
+                    {booking?.course.image ? (
+                      <img className="w-100" src={`data:${booking?.course.image_content_type};base64,${booking?.course.image}`} />
                     ) : (
                       <a><img src="/theme/template/images/resource/news-25.jpg" /></a>
                       )}
                   </div>
-                  <p>{course.description}</p>
+                  <p>{booking?.course.description}</p>
                   <div className="learn-box">
                     <h2>Nội dung lớp học</h2>
                     <ul className="learn-list">
@@ -103,12 +102,12 @@ function Course({ course, errorCode, rating, booking, ratingAVG }: CourseProps) 
                     <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</li>
                     <li>JavaScript fundamentals: variables, if/else, operators, boolean logic, functions, arrays, objects, loops, strings, etc.</li>
                   </ul>
-                  {course && course.roomTutorBooking && course.roomTutorBooking.centerRoom.photoCenterRooms &&
-                  course.roomTutorBooking.centerRoom.photoCenterRooms.length > 0 ? (
+                  {booking?.course && booking?.course.roomTutorBooking && booking?.course.roomTutorBooking.centerRoom.photoCenterRooms &&
+                  booking?.course.roomTutorBooking.centerRoom.photoCenterRooms.length > 0 ? (
                     <div className="mt-5">
                       <h5>Hình ảnh lớp học</h5>
                       <div className="row">
-                        {course.roomTutorBooking.centerRoom.photoCenterRooms.map((photo, index) => (
+                        {booking?.course.roomTutorBooking.centerRoom.photoCenterRooms.map((photo, index) => (
                           <div className="col-lg-2 col-sm-3" key={index}>
                             <img src={`data:${photo.imageContentType};base64,${photo.image}`} alt=""/>
                           </div>
@@ -116,18 +115,18 @@ function Course({ course, errorCode, rating, booking, ratingAVG }: CourseProps) 
                       </div>
                     </div>
                   ) : null}
-                  {course.center ? (
+                  {booking?.course.center ? (
                     <div className="mt-5">
                       <h5>Trung tâm</h5>
                       <div className="author-box">
                         <div className="box-inner">
-                          {course.center && course.center.logo ? (
+                          {booking?.course.center && booking?.course.center.logo ? (
                             <div className="image">
-                              <img src={`data:${course.center.logoContentType};base64,${course.center.logo}`} />
+                              <img src={`data:${booking?.course.center.logoContentType};base64,${booking?.course.center.logo}`} />
                             </div>
                           ) : ''}
-                          <h6>{course.center.name}
-                            <Link href="/centers/[id]" as={`/centers/${course.centerId}`}>
+                          <h6>{booking?.course.center.name}
+                            <Link href="/centers/[id]" as={`/centers/${booking?.course.centerId}`}>
                               <a className="icon fa fa-plus" />
                             </Link>
                           </h6>
@@ -136,23 +135,23 @@ function Course({ course, errorCode, rating, booking, ratingAVG }: CourseProps) 
                             <li><span className="icon fa fa-star-o" />4.6 Instructor Rating</li>
                             <li><span className="icon fa fa-user" />6,073 Students</li>
                           </ul>
-                          <div className="text">{course.center.note}</div>
+                          <div className="text">{booking?.course.center.note}</div>
                         </div>
                       </div>
                     </div>
                   ) : ''}
-                  {course.tutor ? (
+                  {booking?.course.tutor ? (
                     <div className="mt-5">
                       <h5>Gia sư</h5>
                       <div className="author-box">
                         <div className="box-inner">
-                          {course.tutor.userInfo.avatar ? (
+                          {booking?.course.tutor.userInfo.avatar ? (
                             <div className="image">
-                              <img src={`data:${course.tutor.userInfo.avatarContentType};base64,${course.tutor.userInfo.avatar}`} />
+                              <img src={`data:${booking?.course.tutor.userInfo.avatarContentType};base64,${booking?.course.tutor.userInfo.avatar}`} />
                             </div>
                           ) : ''}
-                          <h6>{course.tutor.userInfo.user.firstName} {course.tutor.userInfo.user.lastName}
-                            <Link href="/tutors/[id]" as={`/tutors/${course.tutorId}`}>
+                          <h6>{booking?.course.tutor.userInfo.user.firstName} {booking?.course.tutor.userInfo.user.lastName}
+                            <Link href="/tutors/[id]" as={`/tutors/${booking?.course.tutorId}`}>
                               <a className="icon fa fa-plus" />
                             </Link>
                           </h6>
@@ -161,7 +160,7 @@ function Course({ course, errorCode, rating, booking, ratingAVG }: CourseProps) 
                             <li><span className="icon fa fa-star-o" />4.6 Instructor Rating</li>
                             <li><span className="icon fa fa-user" />6,073 Students</li>
                           </ul>
-                          <div className="text">{course.tutor.userInfo.note}</div>
+                          <div className="text">{booking?.course.tutor.userInfo.note}</div>
                         </div>
                       </div>
                     </div>
@@ -214,7 +213,7 @@ function Course({ course, errorCode, rating, booking, ratingAVG }: CourseProps) 
               </div>
               <div className="info-column col-lg-4 col-md-12 col-sm-12">
                 <div className="inner-column">
-                  <h5 className="mt-0">Thông Tin Gia Sư</h5>
+                  <h5 className="mt-0 d-flex justify-content-center">Thông Tin Gia Sư</h5>
                   { booking?.tutor ?
                     <>
                       <div className="image w-100 d-flex align-items-center justify-content-center mt-3">
@@ -252,7 +251,7 @@ function Course({ course, errorCode, rating, booking, ratingAVG }: CourseProps) 
                     : <h4 className="mt-5 mb-5">Hiện Chưa Có Gia Sư</h4>
                   }
                   <div className="btns-box">
-                    <a target="_blank" href={`${process.env.NEXT_PUBLIC_ADMIN_URL}/course/${course.id}`} className="theme-btn enrol-btn" >Tham gia lớp học</a>
+                    <a target="_blank" href={`${process.env.NEXT_PUBLIC_ADMIN_URL}/course/${booking?.course.id}`} className="theme-btn enrol-btn" >Tham gia lớp học</a>
                   </div>
                 </div>
               </div>

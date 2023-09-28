@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Col, Input, InputGroup, InputGroupAddon, Row } from 'reactstrap';
 import Layout from '@components/layout';
-import { courseService } from '@services';
 import { Pagination } from '@components/pagination/pagination';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import { useRouter } from 'next/router';
@@ -10,15 +9,15 @@ import { CourseItem } from '@components/course-item';
 import { ITEMS_PER_PAGE } from '../../shared/util/pagination.constants';
 import { latLngDefault } from '../../config/constants';
 import Map from '@components/map';
+import { bookingService } from '@services/booking.service';
+import AddressSelector, { IAddressState } from '@components/address-selector/address-selector';
 
 declare type CoursesProps = InferGetServerSidePropsType<typeof getServerSideProps>;
 
-export const getServerSideProps: GetServerSideProps<any, NodeJS.Dict<string>> = async ({ query: { search, page = 1 }, res }) => {
+export const getServerSideProps: GetServerSideProps<any, NodeJS.Dict<string>> = async ({ query: { search, page = 1, provinceId, districtId,  wardId }, res }) => {
   const menus = [];
-  const response = await courseService.getEntities(
-    +page - 1, ITEMS_PER_PAGE, 'id', 'desc',
-    { 'name.contains': search as string },
-  );
+  const response = await bookingService.getCourserByBooking(
+    +page - 1, ITEMS_PER_PAGE, 'id', 'desc', search, provinceId || null , districtId || null , wardId || null);
   if (response === null) {
     res.statusCode = 404;
     return {
@@ -31,37 +30,46 @@ export const getServerSideProps: GetServerSideProps<any, NodeJS.Dict<string>> = 
 
 export default function Courses({ menus, response, errorCode }: CoursesProps) {
   if (errorCode) return <Error statusCode={errorCode} />;
-  const { data: courses, total } = response;
 
   const router = useRouter();
   const [search, setSearch] = useState('');
   const [location, setLocation] = useState({ lat: latLngDefault.lat, lng: latLngDefault.lng });
-
-  useEffect(() => {
-    setLocation({ lat: courses[0]?.lat, lng: courses[0]?.lng });
-  }, [courses]);
+  const [address, setAddress] = useState({} as IAddressState);
+  const [wardId, setWardId] = useState<number>();
+  const [districtId, setDistrictId] = useState<number>();
+  const [provinceId, setProvinceId] = useState<number>();
 
   useEffect(() => {
     setSearch(router.query.search as string || '');
   }, [router.query]);
 
-  const url = (page, searchStr) => {
+  useEffect(() => {
+    setWardId(address.wardId);
+    setDistrictId(address.districtId);
+    setProvinceId(address.provinceId);
+
+    router.push(url(1, null, address.provinceId, address.districtId, address.wardId), undefined);
+  }, [address, provinceId, districtId, wardId]);
+
+  const url = (page, searchStr, provinceId, districtId, wardId) => {
     const params = Object.entries({
+      provinceId,
+      districtId,
+      wardId,
       page: (page || 1) > 1 ? page : false,
       search: searchStr,
     })
       .map(([key, value]) => (value ? `${key}=${value}` : false))
       .filter(s => s)
       .join('&');
-
     return `/courses${params ? `?${params}` : ''}`;
   };
 
-  const handlePaginateChange = value => +value && router.push(url(+value, search), undefined);
+  const handlePaginateChange = value => +value && router.push(url(+value, search, provinceId, districtId, wardId), undefined);
 
   const handleSearchCourses = (event) => {
     event.preventDefault();
-    router.push(url(1, search), undefined);
+    router.push(url(1, search, null, null, null), undefined);
   };
   const handlelocation = (lat, lng) => {
     setLocation({ lat, lng });
@@ -73,7 +81,6 @@ export default function Courses({ menus, response, errorCode }: CoursesProps) {
         <div className="auto-container">
           {/* Filter Box */}
           <div className="filter-box">
-
             <div className="box-inner">
               <div className="clearfix">
                 <div className="pull-left clearfix">
@@ -81,373 +88,26 @@ export default function Courses({ menus, response, errorCode }: CoursesProps) {
                     <div className="filter-dropdown">
                       <span className="icon flaticon-filter-filled-tool-symbol" /> Filter <span className="arrow fa fa-angle-down" />
                       {/* Filter Categories */}
-                      <div className="filter-categories">
+                      <div className="filter-categories" style={{ zIndex: '999' }}>
                         <div className="clearfix">
                           {/* Column */}
-                          <div className="column">
-                            <h6>Categories</h6>
-                            {/* Form Group */}
-                            <div className="form-group">
-                              <div className="select-box">
-                                <input type="checkbox" name="payment-group" id="radio-one" />
-                                <label htmlFor="radio-one">
-                                  <span className="default-check" />
-                                  <span className="check-icon fa fa-check" />
-                                  Digital Marketing
-                                </label>
-                              </div>
-                            </div>
-                            {/* Form Group */}
-                            <div className="form-group">
-                              <div className="select-box">
-                                <input type="checkbox" name="payment-group" id="radio-two" />
-                                <label htmlFor="radio-two">
-                                  <span className="default-check" />
-                                  <span className="check-icon fa fa-check" />
-                                  Business
-                                </label>
-                              </div>
-                            </div>
-                            {/* Form Group */}
-                            <div className="form-group">
-                              <div className="select-box">
-                                <input type="checkbox" name="payment-group" id="radio-three" />
-                                <label htmlFor="radio-three">
-                                  <span className="default-check" />
-                                  <span className="check-icon fa fa-check" />
-                                  Social Media Marketing
-                                </label>
-                              </div>
-                            </div>
-                            {/* Form Group */}
-                            <div className="form-group">
-                              <div className="select-box">
-                                <input type="checkbox" name="payment-group" id="radio-four" />
-                                <label htmlFor="radio-four">
-                                  <span className="default-check" />
-                                  <span className="check-icon fa fa-check" />
-                                  Design
-                                </label>
-                              </div>
-                            </div>
-                            {/* Form Group */}
-                            <div className="form-group">
-                              <div className="select-box">
-                                <input type="checkbox" name="payment-group" id="radio-five" />
-                                <label htmlFor="radio-five">
-                                  <span className="default-check" />
-                                  <span className="check-icon fa fa-check" />
-                                  User experience
-                                </label>
-                              </div>
-                            </div>
-                            {/* Form Group */}
-                            <div className="form-group">
-                              <div className="select-box">
-                                <input type="checkbox" name="payment-group" id="radio-six" />
-                                <label htmlFor="radio-six">
-                                  <span className="default-check" />
-                                  <span className="check-icon fa fa-check" />
-                                  User interface
-                                </label>
-                              </div>
-                            </div>
-                            {/* Form Group */}
-                            <div className="form-group">
-                              <div className="select-box">
-                                <input type="checkbox" name="payment-group" id="radio-seven" />
-                                <label htmlFor="radio-seven">
-                                  <span className="default-check" />
-                                  <span className="check-icon fa fa-check" />
-                                  IT &amp; Software Courses
-                                </label>
-                              </div>
-                            </div>
-                          </div>
-                          {/* Column */}
-                          <div className="column">
-                            <h6>Instructor</h6>
-                            {/* Form Group */}
-                            <div className="form-group">
-                              <div className="select-box">
-                                <input type="checkbox" name="payment-group" id="radio-eight" />
-                                <label htmlFor="radio-eight">
-                                  <span className="default-check" />
-                                  <span className="check-icon fa fa-check" />
-                                  Mahfuz Riad (15)
-                                </label>
-                              </div>
-                            </div>
-                            {/* Form Group */}
-                            <div className="form-group">
-                              <div className="select-box">
-                                <input type="checkbox" name="payment-group" id="radio-nine" />
-                                <label htmlFor="radio-nine">
-                                  <span className="default-check" />
-                                  <span className="check-icon fa fa-check" />
-                                  Siful islam
-                                </label>
-                              </div>
-                            </div>
-                            {/* Form Group */}
-                            <div className="form-group">
-                              <div className="select-box">
-                                <input type="checkbox" name="payment-group" id="radio-ten" />
-                                <label htmlFor="radio-ten">
-                                  <span className="default-check" />
-                                  <span className="check-icon fa fa-check" />
-                                  Foqrul Munna (12)
-                                </label>
-                              </div>
-                            </div>
-                            {/* Form Group */}
-                            <div className="form-group">
-                              <div className="select-box">
-                                <input type="checkbox" name="payment-group" id="radio-eleven" />
-                                <label htmlFor="radio-eleven">
-                                  <span className="default-check" />
-                                  <span className="check-icon fa fa-check" />
-                                  Mahadi Shopnil (16)
-                                </label>
-                              </div>
-                            </div>
-                            {/* Form Group */}
-                            <div className="form-group">
-                              <div className="select-box">
-                                <input type="checkbox" name="payment-group" id="radio-twelve" />
-                                <label htmlFor="radio-twelve">
-                                  <span className="default-check" />
-                                  <span className="check-icon fa fa-check" />
-                                  Instructor (8)
-                                </label>
-                              </div>
-                            </div>
-                            {/* Form Group */}
-                            <div className="form-group">
-                              <div className="select-box">
-                                <input type="checkbox" name="payment-group" id="radio-thirteen" />
-                                <label htmlFor="radio-thirteen">
-                                  <span className="default-check" />
-                                  <span className="check-icon fa fa-check" />
-                                  Alex Saim (04)
-                                </label>
-                              </div>
-                            </div>
-                          </div>
-                          {/* Column */}
-                          <div className="column">
-                            <h6>Sort by</h6>
-                            {/* Form Group */}
-                            <div className="form-group">
-                              <div className="select-box">
-                                <input type="checkbox" name="payment-group" id="radio-fourteen" />
-                                <label htmlFor="radio-fourteen">
-                                  <span className="default-check" />
-                                  <span className="check-icon fa fa-check" />
-                                  New Courses
-                                </label>
-                              </div>
-                            </div>
-                            {/* Form Group */}
-                            <div className="form-group">
-                              <div className="select-box">
-                                <input type="checkbox" name="payment-group" id="radio-fifteen" />
-                                <label htmlFor="radio-fifteen">
-                                  <span className="default-check" />
-                                  <span className="check-icon fa fa-check" />
-                                  Old Courses
-                                </label>
-                              </div>
-                            </div>
-                            {/* Form Group */}
-                            <div className="form-group">
-                              <div className="select-box">
-                                <input type="checkbox" name="payment-group" id="radio-sixteen" />
-                                <label htmlFor="radio-sixteen">
-                                  <span className="default-check" />
-                                  <span className="check-icon fa fa-check" />
-                                  Course 2019
-                                </label>
-                              </div>
-                            </div>
-                            {/* Form Group */}
-                            <div className="form-group">
-                              <div className="select-box">
-                                <input type="checkbox" name="payment-group" id="radio-seventeen" />
-                                <label htmlFor="radio-seventeen">
-                                  <span className="default-check" />
-                                  <span className="check-icon fa fa-check" />
-                                  Course 2018
-                                </label>
-                              </div>
-                            </div>
-                            {/* Form Group */}
-                            <div className="form-group">
-                              <div className="select-box">
-                                <input type="checkbox" name="payment-group" id="radio-eighteen" />
-                                <label htmlFor="radio-eighteen">
-                                  <span className="default-check" />
-                                  <span className="check-icon fa fa-check" />
-                                  Course 2017
-                                </label>
-                              </div>
-                            </div>
-                          </div>
-                          {/* Column */}
-                          <div className="column">
-                            <h6>Language</h6>
-                            {/* Form Group */}
-                            <div className="form-group">
-                              <div className="select-box">
-                                <input type="checkbox" name="payment-group" id="radio-nineteen" />
-                                <label htmlFor="radio-nineteen">
-                                  <span className="default-check" />
-                                  <span className="check-icon fa fa-check" />
-                                  English (10)
-                                </label>
-                              </div>
-                            </div>
-                            {/* Form Group */}
-                            <div className="form-group">
-                              <div className="select-box">
-                                <input type="checkbox" name="payment-group" id="radio-twenty" />
-                                <label htmlFor="radio-twenty">
-                                  <span className="default-check" />
-                                  <span className="check-icon fa fa-check" />
-                                  French (4)
-                                </label>
-                              </div>
-                            </div>
-                            {/* Form Group */}
-                            <div className="form-group">
-                              <div className="select-box">
-                                <input type="checkbox" name="payment-group" id="radio-twentyone" />
-                                <label htmlFor="radio-twentyone">
-                                  <span className="default-check" />
-                                  <span className="check-icon fa fa-check" />
-                                  German (5)
-                                </label>
-                              </div>
-                            </div>
-                            {/* Form Group */}
-                            <div className="form-group">
-                              <div className="select-box">
-                                <input type="checkbox" name="payment-group" id="radio-twentytwo" />
-                                <label htmlFor="radio-twentytwo">
-                                  <span className="default-check" />
-                                  <span className="check-icon fa fa-check" />
-                                  Japanese (4)
-                                </label>
-                              </div>
-                            </div>
-                            {/* Form Group */}
-                            <div className="form-group">
-                              <div className="select-box">
-                                <input type="checkbox" name="payment-group" id="radio-twentythree" />
-                                <label htmlFor="radio-twentythree">
-                                  <span className="default-check" />
-                                  <span className="check-icon fa fa-check" />
-                                  Russian (1)
-                                </label>
-                              </div>
-                            </div>
-                            {/* Form Group */}
-                            <div className="form-group">
-                              <div className="select-box">
-                                <input type="checkbox" name="payment-group" id="radio-twentyfour" />
-                                <label htmlFor="radio-twentyfour">
-                                  <span className="default-check" />
-                                  <span className="check-icon fa fa-check" />
-                                  Spanish (6)
-                                </label>
-                              </div>
-                            </div>
-                          </div>
-                          {/* Column */}
-                          <div className="column">
-                            <h6>Price</h6>
-                            {/* Form Group */}
-                            <div className="form-group">
-                              <div className="select-box">
-                                <input type="checkbox" name="payment-group" id="radio-twentyfive" />
-                                <label htmlFor="radio-twentyfive">
-                                  <span className="default-check" />
-                                  <span className="check-icon fa fa-check" />
-                                  All (90)
-                                </label>
-                              </div>
-                            </div>
-                            {/* Form Group */}
-                            <div className="form-group">
-                              <div className="select-box">
-                                <input type="checkbox" name="payment-group" id="radio-twentysix" />
-                                <label htmlFor="radio-twentysix">
-                                  <span className="default-check" />
-                                  <span className="check-icon fa fa-check" />
-                                  Paid (70)
-                                </label>
-                              </div>
-                            </div>
-                            {/* Form Group */}
-                            <div className="form-group">
-                              <div className="select-box">
-                                <input type="checkbox" name="payment-group" id="radio-twentyseven" />
-                                <label htmlFor="radio-twentyseven">
-                                  <span className="default-check" />
-                                  <span className="check-icon fa fa-check" />
-                                  Free (12)
-                                </label>
-                              </div>
-                            </div>
-                            <br />
-                            <h6>Level</h6>
-                            {/* Form Group */}
-                            <div className="form-group">
-                              <div className="select-box">
-                                <input type="checkbox" name="payment-group" id="radio-twentyeight" />
-                                <label htmlFor="radio-twentyeight">
-                                  <span className="default-check" />
-                                  <span className="check-icon fa fa-check" />
-                                  Beginner (21)
-                                </label>
-                              </div>
-                            </div>
-                            {/* Form Group */}
-                            <div className="form-group">
-                              <div className="select-box">
-                                <input type="checkbox" name="payment-group" id="radio-twentynine" />
-                                <label htmlFor="radio-twentynine">
-                                  <span className="default-check" />
-                                  <span className="check-icon fa fa-check" />
-                                  Intermediate (10)
-                                </label>
-                              </div>
-                            </div>
-                            {/* Form Group */}
-                            <div className="form-group">
-                              <div className="select-box">
-                                <input type="checkbox" name="payment-group" id="radio-thirty" />
-                                <label htmlFor="radio-thirty">
-                                  <span className="default-check" />
-                                  <span className="check-icon fa fa-check" />
-                                  Expert (4)
-                                </label>
-                              </div>
-                            </div>
+                          <h6 className="d-block">Lọc theo vị trí</h6>
+                          <div className="d-flex">
+                            <AddressSelector onSelect={setAddress} values={address} col="4" className="form-control" />
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-                <form className="d-inline-block mt-1 leanlord-search" onSubmit={handleSearchCourses}>
+                <form style={{ maxWidth: '600px', width: '100%' }} className="d-inline-block mt-1" onSubmit={handleSearchCourses}>
                   <Row>
                     <Col>
                       <InputGroup>
                         <Input
                           autoFocus={true}
                           value={search}
-                          onChange={$event => setSearch($event.target.value)}
+                          onChange={$event => setSearch($event.target.value || '')}
                           placeholder="Tìm lớp học" />
                         <InputGroupAddon addonType="append">
                           <Button color="secondary">Tìm</Button>
@@ -457,7 +117,7 @@ export default function Courses({ menus, response, errorCode }: CoursesProps) {
                   </Row>
                 </form>
                 <div className="pull-right">
-                  <div className="total-course">Tìm thấy <span>{total}</span> kết quả</div>
+                  <div className="total-course">Tìm thấy <span>{response?.length}</span> kết quả</div>
                 </div>
               </div>
             </div>
@@ -467,12 +127,12 @@ export default function Courses({ menus, response, errorCode }: CoursesProps) {
           <h1 className="w-100 d-flex justify-content-center align-content-center my-5 lower-content">DANH SÁCH CÁC KHÓA HỌC NỔI BẬT</h1>
           <div className="row clearfix d-flex justify-content-center">
             <div className="col-lg-6 col-md-12">
-              {courses.length > 0 ? courses.map((course, index) => (
-                <div className="row mb-3 pl-2 pr-2" key={index}  onClick={() => handlelocation(course?.place?.lat, course?.place?.lng)}>
-                  <CourseItem course={course} />
+              {response?.length > 0 ? response?.map((courses, index) => (
+                <div className="row mb-3 pl-2 pr-2" key={index}  onClick={() => handlelocation(courses?.room?.place?.lat, courses?.room?.place?.lng)}>
+                  <CourseItem course={courses.course} />
                 </div>
               )) : ''}
-              { !courses?.length ? <h3 className="text-course text-error my-5">No course found!</h3> : '' }
+              { !response?.length ? <h3 className="text-course text-error my-5">No course found!</h3> : '' }
             </div>
             <div className="col-lg-6 col-md-12">
               <div className="map-sticky">
@@ -481,12 +141,12 @@ export default function Courses({ menus, response, errorCode }: CoursesProps) {
             </div>
           </div>
           <Pagination
-            visible={courses?.length > 0 && total}
+            visible={response?.length > 0 }
             activePage={+router.query.page || 1}
             onSelect={handlePaginateChange}
             maxButtons={7}
             itemsPerPage={ITEMS_PER_PAGE}
-            totalItems={+total}
+            totalItems={+response?.length}
           />
         </div>
       </section>

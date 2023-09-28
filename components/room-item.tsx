@@ -12,7 +12,7 @@ export const RoomItem = (props: IRoomItemProps) => {
     <div className="row">
     <div className="course-block-three col-lg-12" >
       <div className="inner-box d-flex overflow-hidden pl-0 pt-0" style={{ minHeight: '10px' }}>
-        <div className="image d-flex align-items-center justify-content-center position-relative p-3"  style={{ width: '30%' }}>
+        <div className="image d-flex align-items-center justify-content-center position-relative p-3"  style={{ width: '100%' }}>
             <a>
               {room.photos && Array.isArray(room.photos) && room.photos.length > 0 ? (
                 <div>
@@ -27,7 +27,7 @@ export const RoomItem = (props: IRoomItemProps) => {
           <h1 className="d-flex justify-content-center text-dark" style={{  paddingTop: '-10px', fontSize: '30px' }} >{room.name}</h1>
           {room.place  ? (
             <div className="uni-name text-dark d-flex justify-content-center">
-              Địa chỉ: { room?.place?.ward?.name } { room?.place?.ward?.district?.name }
+              Địa chỉ: { room?.place?.ward?.name }, { room?.place?.ward?.district?.name }, { room?.place?.ward?.district?.province?.name }
             </div>
           ) : ''}
           {room.location  ? (

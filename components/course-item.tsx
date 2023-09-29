@@ -41,7 +41,7 @@ export const CourseItem = (props: ICourseItemProps) => {
             {course?.id ? (
               <div className="text">
                 <div className="pull-right">
-                  <Link href="/courses/[id]" as={`/courses/${course?.bookingId}`}>
+                  <Link href="/courses/[id]" as={`/courses/${course?.id}`}>
                     <a className="theme-btn btn-style-one mt-2 py-1 px-5">
                       <span className="txt">Chi Tiết</span>
                     </a>

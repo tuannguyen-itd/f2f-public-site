@@ -3,6 +3,8 @@ import { ICourse } from '@model/course.model';
 
 interface ICourseService<T> extends IService<ICourse> {
   getTopCourses: (query: any) => Promise<{ data: T[] } | null>;
+  getAllCourse:  (page, size, sort, order, search, provinceId, districtId, wardId) => Promise<{ data: T[] } | null>;
+
 }
 
 export const courseService: ICourseService<ICourse> = {
@@ -18,6 +20,17 @@ export const courseService: ICourseService<ICourse> = {
       const data = await res.json();
       const total = +res.headers.get('x-total-count');
       return { data, total };
+    }
+    return null;
+  },
+
+  async getAllCourse(page, size, sort, order, search, provinceId, districtId, wardId) {
+    const url = `${process.env.API_URL}/api/v2/courses?page=${page || ''}
+    &size=${size || ''}&sort=${sort || ''}&order=${order || ''}&search=${search || ''}&provinceId=${provinceId || ''}&districtId=${districtId || ''}&wardId=${wardId || ''}`;
+    const res = await fetch(url);
+    if (res?.ok) {
+      const data = await res.json();
+      return data;
     }
     return null;
   },

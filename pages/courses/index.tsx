@@ -9,15 +9,14 @@ import { CourseItem } from '@components/course-item';
 import { ITEMS_PER_PAGE } from '../../shared/util/pagination.constants';
 import { latLngDefault } from '../../config/constants';
 import Map from '@components/map';
-import { bookingService } from '@services/booking.service';
 import AddressSelector, { IAddressState } from '@components/address-selector/address-selector';
+import { courseService } from '@services';
 
 declare type CoursesProps = InferGetServerSidePropsType<typeof getServerSideProps>;
 
 export const getServerSideProps: GetServerSideProps<any, NodeJS.Dict<string>> = async ({ query: { search, page = 1, provinceId, districtId,  wardId }, res }) => {
   const menus = [];
-  const response = await bookingService.getCourserByBooking(
-    +page - 1, ITEMS_PER_PAGE, 'id', 'desc', search, provinceId || null , districtId || null , wardId || null);
+  const response = await courseService.getAllCourse(0, ITEMS_PER_PAGE, 'id', 'desc', search, provinceId || null , districtId || null , wardId || null);
   if (response === null) {
     res.statusCode = 404;
     return {
@@ -128,8 +127,8 @@ export default function Courses({ menus, response, errorCode }: CoursesProps) {
           <div className="row clearfix d-flex justify-content-center">
             <div className="col-lg-6 col-md-12">
               {response?.length > 0 ? response?.map((courses, index) => (
-                <div className="row mb-3 pl-2 pr-2" key={index}  onClick={() => handlelocation(courses?.room?.place?.lat, courses?.room?.place?.lng)}>
-                  <CourseItem course={courses.course} />
+                <div className="row mb-3 pl-2 pr-2" key={index}  onClick={() => handlelocation(courses?.booking?.room?.place?.lat, courses?.booking?.room?.place?.lng)}>
+                  <CourseItem course={courses} />
                 </div>
               )) : ''}
               { !response?.length ? <h3 className="text-course text-error my-5">No course found!</h3> : '' }

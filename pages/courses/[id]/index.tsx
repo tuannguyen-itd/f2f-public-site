@@ -5,26 +5,25 @@ import Error from 'next/error';
 import Layout from '@components/layout';
 import Link from 'next/link';
 import { formatDate } from '../../../config/constants';
-import { bookingService } from '@services/booking.service';
 
 declare type CourseProps = InferGetServerSidePropsType<typeof getServerSideProps>;
 
 export const getServerSideProps: GetServerSideProps<any, NodeJS.Dict<string>> = async ({ params: { id }, res }) => {
-  const booking = await  bookingService.getEntity(id);
+  const course = await courseService.getEntity(id);
   const rating = await ratingService.getRatingByCourse(id);
   const ratingAVG = await ratingService.getRatingByCourseAVG(id);
-  if (booking === null) {
+  if (course === null) {
     res.statusCode = 404;
     return {
       props: { errorCode: 404 },
     };
   }
   return {
-    props: { rating, booking, ratingAVG },
+    props: { course, rating, ratingAVG },
   };
 };
 
-function Course({ errorCode, rating, booking, ratingAVG }: CourseProps) {
+function Course({ course, errorCode, rating, ratingAVG }: CourseProps) {
   if (errorCode) return <Error statusCode={errorCode} />;
   return (
     // @ts-ignore
@@ -43,21 +42,21 @@ function Course({ errorCode, rating, booking, ratingAVG }: CourseProps) {
               <Link href="/courses" as={'/courses'}>
               <li><a>Courses</a></li>
               </Link>
-              <li>{booking?.course?.name}</li>
+              <li>{course?.name}</li>
             </ul>
             <div className="content-box">
-              <h1 className="text-dark box-cource-name"><strong>{booking?.course?.name}</strong></h1>
+              <h1 className="text-dark box-cource-name"><strong>{course?.name}</strong></h1>
               <div className="box-descrip">
                 <ul className="course-info">
-                  <li><span className="icon fa fa-clock-o mr-2" />Last Update : {formatDate(booking?.course?.date)}</li>
+                  <li><span className="icon fa fa-clock-o mr-2" />Last Update : {formatDate(course?.date)}</li>
                   <li><span className="icon fa fa-language mr-2" />English</li>
-                  <li><span className="icon fa fa-user mr-2" />{booking?.course?.learners?.length}/{booking?.course?.amount} học viên</li>
+                  <li><span className="icon fa fa-user mr-2" />{course?.learners?.length}/{course?.amount} học viên</li>
                 </ul>
-                {booking?.course && booking?.course.status && (
+                {course && course.status && (
                   <div>
                     Trạng thái:{' '}
-                    <span className={booking?.course.status === 'CLOSE' ? 'text-danger' : 'text-success'}>
-                      {booking?.course.status}
+                    <span className={course.status === 'CLOSE' ? 'text-danger' : 'text-success'}>
+                      {course.status}
                     </span>
                   </div>
                 )}
@@ -78,13 +77,13 @@ function Course({ errorCode, rating, booking, ratingAVG }: CourseProps) {
                 <div className="inner-column">
                   <h2 className="detail-course text-dark">Chi tiết lớp học</h2>
                   <div className="py-4">
-                    {booking?.course.image ? (
-                      <img className="w-100" src={`data:${booking?.course.image_content_type};base64,${booking?.course.image}`} />
+                    {course.image ? (
+                      <img className="w-100" src={`data:${course.image_content_type};base64,${course.image}`} />
                     ) : (
                       <a><img src="/theme/template/images/resource/news-25.jpg" /></a>
                       )}
                   </div>
-                  <p>{booking?.course.description}</p>
+                  <p>{course.description}</p>
                   <div className="learn-box">
                     <h2>Nội dung lớp học</h2>
                     <ul className="learn-list">
@@ -102,69 +101,6 @@ function Course({ errorCode, rating, booking, ratingAVG }: CourseProps) {
                     <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</li>
                     <li>JavaScript fundamentals: variables, if/else, operators, boolean logic, functions, arrays, objects, loops, strings, etc.</li>
                   </ul>
-                  {booking?.course && booking?.course.roomTutorBooking && booking?.course.roomTutorBooking.centerRoom.photoCenterRooms &&
-                  booking?.course.roomTutorBooking.centerRoom.photoCenterRooms.length > 0 ? (
-                    <div className="mt-5">
-                      <h5>Hình ảnh lớp học</h5>
-                      <div className="row">
-                        {booking?.course.roomTutorBooking.centerRoom.photoCenterRooms.map((photo, index) => (
-                          <div className="col-lg-2 col-sm-3" key={index}>
-                            <img src={`data:${photo.imageContentType};base64,${photo.image}`} alt=""/>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  ) : null}
-                  {booking?.course.center ? (
-                    <div className="mt-5">
-                      <h5>Trung tâm</h5>
-                      <div className="author-box">
-                        <div className="box-inner">
-                          {booking?.course.center && booking?.course.center.logo ? (
-                            <div className="image">
-                              <img src={`data:${booking?.course.center.logoContentType};base64,${booking?.course.center.logo}`} />
-                            </div>
-                          ) : ''}
-                          <h6>{booking?.course.center.name}
-                            <Link href="/centers/[id]" as={`/centers/${booking?.course.centerId}`}>
-                              <a className="icon fa fa-plus" />
-                            </Link>
-                          </h6>
-                          <ul className="list">
-                            <li><span className="icon fa fa-play-circle-o" />44 Course</li>
-                            <li><span className="icon fa fa-star-o" />4.6 Instructor Rating</li>
-                            <li><span className="icon fa fa-user" />6,073 Students</li>
-                          </ul>
-                          <div className="text">{booking?.course.center.note}</div>
-                        </div>
-                      </div>
-                    </div>
-                  ) : ''}
-                  {booking?.course.tutor ? (
-                    <div className="mt-5">
-                      <h5>Gia sư</h5>
-                      <div className="author-box">
-                        <div className="box-inner">
-                          {booking?.course.tutor.userInfo.avatar ? (
-                            <div className="image">
-                              <img src={`data:${booking?.course.tutor.userInfo.avatarContentType};base64,${booking?.course.tutor.userInfo.avatar}`} />
-                            </div>
-                          ) : ''}
-                          <h6>{booking?.course.tutor.userInfo.user.firstName} {booking?.course.tutor.userInfo.user.lastName}
-                            <Link href="/tutors/[id]" as={`/tutors/${booking?.course.tutorId}`}>
-                              <a className="icon fa fa-plus" />
-                            </Link>
-                          </h6>
-                          <ul className="list">
-                            <li><span className="icon fa fa-play-circle-o" />44 Course</li>
-                            <li><span className="icon fa fa-star-o" />4.6 Instructor Rating</li>
-                            <li><span className="icon fa fa-user" />6,073 Students</li>
-                          </ul>
-                          <div className="text">{booking?.course.tutor.userInfo.note}</div>
-                        </div>
-                      </div>
-                    </div>
-                  ) : ''}
                   {rating.length > 0 ? (
                     <div className="comments-area mt-5">
                       <div className="group-title d-flex align-items-center">
@@ -214,18 +150,19 @@ function Course({ errorCode, rating, booking, ratingAVG }: CourseProps) {
               <div className="info-column col-lg-4 col-md-12 col-sm-12">
                 <div className="inner-column">
                   <h5 className="mt-0 d-flex justify-content-center">Thông Tin Gia Sư</h5>
-                  { booking?.tutor ?
+                  {course?.booking?.tutor ?
                     <>
                       <div className="image w-100 d-flex align-items-center justify-content-center mt-3">
                         <Link href="/" as={'/'}>
                           <a>
-                            {booking?.tutor?.userInfo?.avatar ? (
-                              <img src={`data:${booking?.tutor?.userInfo?.avatarContentType};base64,${booking?.tutor?.userInfo?.avatar}`} alt="Thông tin liên hệ" style={{ width: '150px' }}/>
+                            {course?.booking?.tutor?.userInfo?.avatar ? (
+                              <img src={`data:${course?.booking?.tutor?.userInfo?.avatarContentType};base64,${course?.booking?.tutor?.userInfo?.avatar}`} alt="Thông tin liên hệ"
+                                   style={{ width: '150px' }}/>
                             ) : <img src="/theme/template/images/img-logo-default.png"/>}
                           </a>
                         </Link>
                       </div>
-                      <h5 className="text-center mt-4 mb-1">{booking?.tutor?.userInfo?.user?.firstName}&nbsp;{booking?.tutor?.userInfo?.user?.lastName}</h5>
+                      <h5 className="text-center mt-4 mb-1">{course?.booking?.tutor?.userInfo?.user?.firstName}&nbsp;{course?.booking?.tutor?.userInfo?.user?.lastName}</h5>
                         {ratingAVG.ratingTutorCourseAvg >= 0 ? (
                           <div className="d-flex justify-content-center align-items-center mb-2">
                             <span className="text-dark">Đánh Giá:</span>
@@ -242,16 +179,16 @@ function Course({ errorCode, rating, booking, ratingAVG }: CourseProps) {
                           : <h5 className="mb-2">Chưa có đánh giá nào</h5>
                         }
                       <ul className="level-list">
-                        <li>Bằng cấp: <span>{booking?.tutor?.degree}</span></li>
-                        <li>Phone :<span>{booking?.tutor?.userInfo?.phone}</span></li>
-                        <li>Email :<span>{booking?.tutor?.userInfo?.user?.email}</span></li>
-                        <li>Ngày Sinh :<span>{booking?.tutor?.userInfo?.dob}</span></li>
+                        <li>Bằng cấp: <span>{course?.booking?.tutor?.degree}</span></li>
+                        <li>Phone :<span>{course?.booking?.tutor?.userInfo?.phone}</span></li>
+                        <li>Email :<span>{course?.booking?.tutor?.userInfo?.user?.email}</span></li>
+                        <li>Ngày Sinh :<span>{course?.booking?.tutor?.userInfo?.dob}</span></li>
                       </ul>
                     </>
                     : <h4 className="mt-5 mb-5">Hiện Chưa Có Gia Sư</h4>
                   }
                   <div className="btns-box">
-                    <a target="_blank" href={`${process.env.NEXT_PUBLIC_ADMIN_URL}/course/${booking?.course.id}`} className="theme-btn enrol-btn" >Tham gia lớp học</a>
+                    <a target="_blank" href={`${process.env.NEXT_PUBLIC_ADMIN_URL}/course/${course?.id}`} className="theme-btn enrol-btn" >Tham gia lớp học</a>
                   </div>
                 </div>
               </div>

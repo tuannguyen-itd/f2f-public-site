@@ -25,8 +25,9 @@ export const courseService: ICourseService<ICourse> = {
   },
 
   async getAllCourse(page, size, sort, order, search, provinceId, districtId, wardId) {
-    const url = `${process.env.API_URL}/api/v2/courses?page=${page || ''}
-    &size=${size || ''}&sort=${sort || ''}&order=${order || ''}&search=${search || ''}&provinceId=${provinceId || ''}&districtId=${districtId || ''}&wardId=${wardId || ''}`;
+    const encodedSearch = encodeURIComponent(search || '');
+    const url = `${process.env.API_URL}/api/v2/courses?page=${page || ''}&size=${size || ''}
+    &sort=${sort || 'id'},&order=${order || 'DESC'}&search=${encodedSearch || ''}&provinceId=${provinceId || ''}&districtId=${districtId || ''}&wardId=${wardId || ''}`;
     const res = await fetch(url);
     if (res?.ok) {
       const data = await res.json();

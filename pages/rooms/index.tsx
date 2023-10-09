@@ -17,7 +17,7 @@ declare type RoomsProps = InferGetServerSidePropsType<typeof getServerSideProps>
 
 export const getServerSideProps: GetServerSideProps<any, NodeJS.Dict<string>> = async ({ query: { search, page = 1, provinceId, districtId,  wardId }, res }) => {
   const menus = [];
-  const response = await roomService.getAllRooms(0, ITEMS_PER_PAGE, 'id', 'desc', search, provinceId || null , districtId || null , wardId || null);
+  const response = await roomService.getAllRooms(+page - 1, ITEMS_PER_PAGE, 'id', 'desc', search, provinceId || null , districtId || null , wardId || null);
   if (response === null) {
     res.statusCode = 404;
     return {
@@ -117,7 +117,7 @@ export default function Rooms({ menus, errorCode, response }: RoomsProps) {
                   </Row>
                 </form>
                 <div className="pull-right">
-                  <div className="total-course">Tìm thấy <span>{response.length}</span> kết quả</div>
+                  <div className="total-course">Tìm thấy <span>{+response?.totalElements}</span> kết quả</div>
                 </div>
               </div>
             </div>
@@ -127,12 +127,12 @@ export default function Rooms({ menus, errorCode, response }: RoomsProps) {
           <h1 className="w-100 d-flex justify-content-center align-content-center my-5 lower-content">DANH SÁCH CÁC PHÒNG HỌC NỔI BẬT</h1>
           <div className="row clearfix d-flex justify-content-center">
             <div className="col-md-6">
-              {response && response?.length > 0 ? response?.map((room, index) => (
+              {response && response?.content?.length > 0 ? response?.content?.map((room, index) => (
                 <div onClick={() => onHandleCenterHover(room.place.lat, room.place.lng)} key={index}>
                   <RoomItem room={room} />
                 </div>
               )) : ''}
-              {!response?.length ? <h3 className="text-room text-error my-5">No room found!</h3> : ''}
+              {!response?.content?.length ? <h3 className="text-room text-error my-5">No room found!</h3> : ''}
             </div>
             <div className="col-md-6">
               <div className="map-sticky">
@@ -141,12 +141,12 @@ export default function Rooms({ menus, errorCode, response }: RoomsProps) {
             </div>
           </div>
           <Pagination
-          visible={response?.length > 0 && response?.length}
+          visible={response?.content?.length > 0 && response?.content?.length}
           activePage={+router.query.page || 1}
           onSelect={handlePaginateChange}
           maxButtons={7}
           itemsPerPage={ITEMS_PER_PAGE}
-          totalItems={+response?.length}
+          totalItems={+response?.totalElements}
         />
         </div>
       </section>

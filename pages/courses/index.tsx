@@ -14,9 +14,10 @@ import { courseService } from '@services';
 
 declare type CoursesProps = InferGetServerSidePropsType<typeof getServerSideProps>;
 
-export const getServerSideProps: GetServerSideProps<any, NodeJS.Dict<string>> = async ({ query: { search, page = 1, provinceId, districtId,  wardId }, res }) => {
+export const getServerSideProps: GetServerSideProps<any, NodeJS.Dict<string>> = async ({ query: { page = 1, search, provinceId, districtId,  wardId }, res }) => {
   const menus = [];
-  const response = await courseService.getAllCourse(0, ITEMS_PER_PAGE, 'id', 'desc', search, provinceId || null , districtId || null , wardId || null);
+  const response = await courseService.getAllCourse(
+    +page - 1, ITEMS_PER_PAGE, 'id', 'desc', search, provinceId || null , districtId || null , wardId || null);
   if (response === null) {
     res.statusCode = 404;
     return {
@@ -116,7 +117,7 @@ export default function Courses({ menus, response, errorCode }: CoursesProps) {
                   </Row>
                 </form>
                 <div className="pull-right">
-                  <div className="total-course">Tìm thấy <span>{response?.length}</span> kết quả</div>
+                  <div className="total-course">Tìm thấy <span>{response?.totalElements}</span> kết quả</div>
                 </div>
               </div>
             </div>
@@ -126,12 +127,12 @@ export default function Courses({ menus, response, errorCode }: CoursesProps) {
           <h1 className="w-100 d-flex justify-content-center align-content-center my-5 lower-content">DANH SÁCH CÁC KHÓA HỌC NỔI BẬT</h1>
           <div className="row clearfix d-flex justify-content-center">
             <div className="col-lg-6 col-md-12">
-              {response?.length > 0 ? response?.map((courses, index) => (
+              {response?.content?.length > 0 ? response?.content?.map((courses, index) => (
                 <div className="row mb-3 pl-2 pr-2" key={index}  onClick={() => handlelocation(courses?.booking?.room?.place?.lat, courses?.booking?.room?.place?.lng)}>
                   <CourseItem course={courses} />
                 </div>
               )) : ''}
-              { !response?.length ? <h3 className="text-course text-error my-5">No course found!</h3> : '' }
+              { !response?.content?.length ? <h3 className="text-course text-error my-5">No course found!</h3> : '' }
             </div>
             <div className="col-lg-6 col-md-12">
               <div className="map-sticky">
@@ -140,12 +141,12 @@ export default function Courses({ menus, response, errorCode }: CoursesProps) {
             </div>
           </div>
           <Pagination
-            visible={response?.length > 0 }
+            visible={response?.content?.length > 0 }
             activePage={+router.query.page || 1}
             onSelect={handlePaginateChange}
             maxButtons={7}
             itemsPerPage={ITEMS_PER_PAGE}
-            totalItems={+response?.length}
+            totalItems={+response?.totalElements}
           />
         </div>
       </section>

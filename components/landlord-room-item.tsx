@@ -1,14 +1,26 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import { IRoom } from '@model/room.model';
 import { Address } from '@components/address';
 import Link from 'next/link';
-
+import { ratingService } from '@services';
 interface IRoomProps {
   room?: IRoom;
 }
 
 export const LandlordRoomItem = (props: IRoomProps) => {
   const { room } = props;
+  const [rating, setRating] = useState<any | null>(null);
+  useEffect(() => {
+    async function fetchRating() {
+      try {
+        const rating = await ratingService.getRatingByRoomId(room.id);
+        setRating(rating);
+      } catch (error) {
+        console.error('Error fetching rating:', error);
+      }
+    }
+    fetchRating();
+  }, [room.id]);
   return (
     <div className="course-block col-md-4">
       <div className="inner-box wow fadeInLeft" data-wow-delay="0ms" data-wow-duration="1500ms">
@@ -28,13 +40,26 @@ export const LandlordRoomItem = (props: IRoomProps) => {
           <div className="uni-name">Địa chỉ: {room?.place?.ward?.name}, {room?.place?.ward?.district?.name}</div>
           <div className="uni-name">Vị trí: {room?.location} </div>
           <div className="rating">
-            <span className="fa fa-star"></span>
-            <span className="fa fa-star"></span>
-            <span className="fa fa-star"></span>
-            <span className="fa fa-star"></span>
-            <span className="fa fa-star-o"></span>
-            <strong>4.9</strong>
-            <i>(70 Review)</i>
+            {rating?.ratingRoomAvg >= 0 ? (
+              <>
+                <div className="d-flex align-items-center">
+                  <span className="uni-name">Đánh giá:</span>
+                  <h6 className="text-dark ml-2">
+                    <b>{rating.ratingRoomAvg ? rating.ratingRoomAvg?.toFixed(1) : 0}</b>
+                  </h6>
+                  <div className="pl-2 d-flex align-items-center">
+                    <div className="rating text-warning">
+                      <span className={`fa ${rating?.ratingRoomAvg >= 0.5 ? 'fa-star' : 'fa-star-o'}`} />
+                      <span className={`fa ${rating?.ratingRoomAvg >= 1.5 ? 'fa-star' : 'fa-star-o'}`} />
+                      <span className={`fa ${rating?.ratingRoomAvg >= 2.5 ? 'fa-star' : 'fa-star-o'}`} />
+                      <span className={`fa ${rating?.ratingRoomAvg >= 3.5 ? 'fa-star' : 'fa-star-o'}`} />
+                      <span className={`fa ${rating?.ratingRoomAvg >= 4.5 ? 'fa-star' : 'fa-star-o'}`} />
+                    </div>
+                      <span className="text-dark">({rating.ratingRoomCount ? rating.ratingRoomCount : 0} review)</span>
+                  </div>
+                </div>
+              </>
+            ) : ''}
           </div>
           <div className="clearfix">
             <div className="pull-right">

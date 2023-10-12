@@ -48,7 +48,7 @@ function Room({ room, rating, userinfo, errorCode }: RoomProps) {
             <li>{room.name}</li>
           </ul>
           <div className="content-box">
-            <h1>{room.name}</h1>
+            <h1 className="text-dark">{room.name}</h1>
           </div>
         </div>
       </section>
@@ -81,7 +81,7 @@ function Room({ room, rating, userinfo, errorCode }: RoomProps) {
                 </div>
                 {/* end slider */}
                 <div className="learn-box mt-5">
-                  <h2>Thông tin phòng học {room.name}</h2>
+                  <h2 className="text-dark mb-2">Thông tin phòng học {room.name}</h2>
                   <ul className="learn-list">
                     <li>
                       <p>Địa chỉ:
@@ -106,14 +106,13 @@ function Room({ room, rating, userinfo, errorCode }: RoomProps) {
                 <div className="map">
                   <Map mapStyle={{ height: '500px' }} location={location} />
                 </div>
-                {rating.length > 0 ? (
+                {rating?.ratingRooms?.length > 0 ? (
                   <div className="comments-area mt-5">
-                    <div className="group-title">
-                      <h2>Đánh giá lớp học</h2>
+                    <div className="group-title d-flex align-items-center mb-4">
+                      <h4 className="text-dark">Đánh giá lớp học</h4>
                     </div>
-
                     <div className="comment-box">
-                      {rating.map((item, index) => (
+                      {rating?.ratingRooms?.map((item, index) => (
                         <div className="comment" key={index}>
                           <div className="author-thumb">
                             <img src={`data:${item.userInfo.avatarContentType};base64,${item.userInfo.avatar}`} alt=""/>
@@ -140,7 +139,8 @@ function Room({ room, rating, userinfo, errorCode }: RoomProps) {
             </div>
             <div className="info-column col-lg-4 col-md-12 col-sm-12" >
               <div className="inner-column mt-5">
-                <div className="image w-100 d-flex align-items-center justify-content-center">
+                <h3 className="text-nowrap mb-3">Thông tin liên hệ</h3>
+                <div className="image w-100 d-flex align-items-center justify-content-center mb-4">
                   <Link href="/landlord/[id]" as={`/landlord/${room.place.landlord.id}`}>
                     <a>
                       {room.place.landlord.logoContentType ? (
@@ -149,18 +149,21 @@ function Room({ room, rating, userinfo, errorCode }: RoomProps) {
                     </a>
                   </Link>
                 </div>
-                <h2 className="text-nowrap mt-3 ">Thông tin liên hệ</h2>
-                <span>
-                      Name: {room?.place?.landlord?.name}
-                 </span>
-                <br/>
-                <span>
-                  Email: {userinfo?.user?.email}
-                </span>
-                <br/>
-                <span>
-                  Phone: {userinfo?.phone}
-                </span>
+                <div className="d-flex flex-column">
+                  <div className="d-flex mt-2">
+                    <span className="font-weight-bold">Name:</span>
+                    <span className="ml-2">{room?.place?.landlord?.name}</span>
+                  </div>
+                  <div className="d-flex mt-2">
+                  <span className="font-weight-bold">Email:</span>
+                  <span className="ml-2">{userinfo?.user?.email}</span>
+                  </div>
+                  <div className="d-flex mt-2">
+                  <span className="font-weight-bold">Phone:</span>
+                  <span className="ml-2">{userinfo?.phone}</span>
+                  </div>
+
+                </div>
                 <div className="btns-box text-center">
                   <Link href={`${process.env.NEXT_PUBLIC_ADMIN_URL}/room/${room.id}`} as={`${process.env.NEXT_PUBLIC_ADMIN_URL}/room/${room.id}`}>
                   <a className="theme-btn enrol-btn ">Liên hệ</a>

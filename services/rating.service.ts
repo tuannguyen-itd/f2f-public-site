@@ -21,7 +21,7 @@ export const ratingService: {
   v2Api: ['*'],
 
   async getEntity(id) {
-    const url = `${process.env.API_URL}/api/v2/rooms/rating/${id}`;
+    const url = `${process.env.API_URL}/api/v2/rating-room/${id}`;
     const res = await fetch(url);
     if (res?.ok) {
       const data = await res.json();

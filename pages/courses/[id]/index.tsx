@@ -173,7 +173,7 @@ function Course({ course, errorCode, rating, ratingAVG }: CourseProps) {
                               <span className={`fa ${ratingAVG.ratingTutorCourseAvg >= 3.5 ? 'fa-star' : 'fa-star-o'}`} />
                               <span className={`fa ${ratingAVG.ratingTutorCourseAvg >= 4.5 ? 'fa-star' : 'fa-star-o'}`} />
                             </div>
-                            ({ratingAVG.ratingTutorCourseCount})
+                            ({ratingAVG.ratingTutorCourseCount ? ratingAVG.ratingTutorCourseCount : 0})
                           </div>
                           )
                           : <h5 className="mb-2">Chưa có đánh giá nào</h5>

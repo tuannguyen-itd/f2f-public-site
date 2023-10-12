@@ -37,13 +37,13 @@ export const LandlordRoomItem = (props: IRoomProps) => {
         </div>
         <div className="lower-content">
           <h4 className="room-name "><a href="course-detail.html">{room?.name}</a></h4>
-          <div className="uni-name">Địa chỉ: {room?.place?.ward?.name}, {room?.place?.ward?.district?.name}</div>
-          <div className="uni-name">Vị trí: {room?.location} </div>
+          <div className="mt-2 mb-2">Địa chỉ: {room?.place?.ward?.name}, {room?.place?.ward?.district?.name}</div>
+          <div className="mt-2 mb-2">Vị trí: {room?.location} </div>
           <div className="rating">
             {rating?.ratingRoomAvg >= 0 ? (
               <>
                 <div className="d-flex align-items-center">
-                  <span className="uni-name">Đánh giá:</span>
+                  <span className="">Đánh giá:</span>
                   <h6 className="text-dark ml-2">
                     <b>{rating.ratingRoomAvg ? rating.ratingRoomAvg?.toFixed(1) : 0}</b>
                   </h6>

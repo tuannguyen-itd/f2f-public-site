@@ -37,6 +37,7 @@ export default function Rooms({ menus, errorCode, response }: RoomsProps) {
   const [wardId, setWardId] = useState<number>();
   const [districtId, setDistrictId] = useState<number>();
   const [provinceId, setProvinceId] = useState<number>();
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
 
   useEffect(() => {
     setLocation(location);
@@ -74,6 +75,10 @@ export default function Rooms({ menus, errorCode, response }: RoomsProps) {
   const onHandleCenterHover = (lat, lng) => {
     setLocation({ lat, lng });
   };
+
+  const toggleFilter = () => {
+    setIsFilterOpen(!isFilterOpen);
+  };
   return (
     // @ts-ignore
     <Layout menus={menus}>
@@ -81,25 +86,12 @@ export default function Rooms({ menus, errorCode, response }: RoomsProps) {
         <div className="auto-container">
           {/* Filter Box */}
           <div className="filter-box">
-            <div className="box-inner">
-              <div className="clearfix">
-                <div className="pull-left clearfix">
-                  <div className="dropdown-outer">
-                    <div className="filter-dropdown">
-                      <span className="icon flaticon-filter-filled-tool-symbol" /> Filter <span className="arrow fa fa-angle-down" />
-                      {/* Filter Categories */}
-                      <div className="filter-categories" style={{ zIndex: '999' }}>
-                        <div className="clearfix">
-                          {/* Column */}
-                          <h6 className="d-block">Lọc theo vị trí</h6>
-                          <div className="d-flex">
-                            <AddressSelector onSelect={setAddress} values={address} col="4" className="form-control" />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+            <div className="box-inner d-flex">
+              <div className="d-flex w-100 position-relative">
+                <div className="btn mr-2" style={{ border: '1px solid #43b97e', color: '#43b97e' }} onClick={toggleFilter} >
+                  <span className="icon flaticon-filter-filled-tool-symbol" />
+                    &nbsp; Filter &nbsp;
+                  <span className="arrow fa fa-angle-down" /></div>
                 <form style={{ maxWidth: '600px', width: '100%' }} className="d-inline-block mt-1" onSubmit={handleSearchCourses}>
                   <Row>
                     <Col>
@@ -116,25 +108,33 @@ export default function Rooms({ menus, errorCode, response }: RoomsProps) {
                     </Col>
                   </Row>
                 </form>
-                <div className="pull-right">
-                  <div className="total-course">Tìm thấy <span>{+response?.totalElements}</span> kết quả</div>
-                </div>
+              </div>
+              <div className="pull-right text-nowrap">
+                <div className="total-course">Tìm thấy <span>{+response?.totalElements}</span> kết quả</div>
               </div>
             </div>
+            {isFilterOpen && (
+              <div className="position-absolute bg-white shadow p-4 w-100" style={{ zIndex: 1 }} >
+                <h5 className="font-weight-bold text-dark">Lọc theo vị trí</h5>
+                <div className="d-flex">
+                  <AddressSelector onSelect={setAddress} values={address} col="4" className="form-control" />
+                </div>
+              </div>
+            )}
           </div>
         </div>
         <div className="outer-container">
           <h1 className="w-100 d-flex justify-content-center align-content-center my-5 lower-content">DANH SÁCH CÁC PHÒNG HỌC NỔI BẬT</h1>
           <div className="row clearfix d-flex justify-content-center">
-            <div className="col-md-6">
+            <div className="col-lg-6 col-md-12">
               {response && response?.content?.length > 0 ? response?.content?.map((room, index) => (
-                <div onClick={() => onHandleCenterHover(room.place.lat, room.place.lng)} key={index}>
+                <div className="row mb-3 pl-2 pr-2" onClick={() => onHandleCenterHover(room?.lat, room?.lng)} key={index}>
                   <RoomItem room={room} />
                 </div>
               )) : ''}
               {!response?.content?.length ? <h3 className="text-room text-error my-5">No room found!</h3> : ''}
             </div>
-            <div className="col-md-6">
+            <div className="col-lg-6 col-md-12">
               <div className="map-sticky">
                 <Map mapStyle={{ height: '95vh' }} location={location} />
               </div>

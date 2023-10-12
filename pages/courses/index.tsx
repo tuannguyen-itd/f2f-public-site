@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Button, Col, Input, InputGroup, InputGroupAddon, Row } from 'reactstrap';
 import Layout from '@components/layout';
 import { Pagination } from '@components/pagination/pagination';
@@ -38,17 +38,19 @@ export default function Courses({ menus, response, errorCode }: CoursesProps) {
   const [wardId, setWardId] = useState<number>();
   const [districtId, setDistrictId] = useState<number>();
   const [provinceId, setProvinceId] = useState<number>();
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
+
+  const isInitialLoad = useRef(true);
 
   useEffect(() => {
-    setSearch(router.query.search as string || '');
-  }, [router.query]);
-
-  useEffect(() => {
-    setWardId(address.wardId);
-    setDistrictId(address.districtId);
-    setProvinceId(address.provinceId);
-
-    router.push(url(1, null, address.provinceId, address.districtId, address.wardId), undefined);
+    if (!isInitialLoad.current) {
+      setWardId(address.wardId);
+      setDistrictId(address.districtId);
+      setProvinceId(address.provinceId);
+      router.push(url(1, null, address.provinceId, address.districtId, address.wardId), undefined);
+    } else {
+      isInitialLoad.current = false;
+    }
   }, [address, provinceId, districtId, wardId]);
 
   const url = (page, searchStr, provinceId, districtId, wardId) => {
@@ -74,6 +76,10 @@ export default function Courses({ menus, response, errorCode }: CoursesProps) {
   const handlelocation = (lat, lng) => {
     setLocation({ lat, lng });
   };
+
+  const toggleFilter = () => {
+    setIsFilterOpen(!isFilterOpen);
+  };
   return (
     // @ts-ignore
     <Layout menus={menus}>
@@ -81,25 +87,12 @@ export default function Courses({ menus, response, errorCode }: CoursesProps) {
         <div className="auto-container">
           {/* Filter Box */}
           <div className="filter-box">
-            <div className="box-inner">
-              <div className="clearfix">
-                <div className="pull-left clearfix">
-                  <div className="dropdown-outer">
-                    <div className="filter-dropdown">
-                      <span className="icon flaticon-filter-filled-tool-symbol" /> Filter <span className="arrow fa fa-angle-down" />
-                      {/* Filter Categories */}
-                      <div className="filter-categories" style={{ zIndex: '999' }}>
-                        <div className="clearfix">
-                          {/* Column */}
-                          <h6 className="d-block">Lọc theo vị trí</h6>
-                          <div className="d-flex">
-                            <AddressSelector onSelect={setAddress} values={address} col="4" className="form-control" />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+            <div className="box-inner d-flex">
+              <div className="d-flex w-100 position-relative">
+                <div className="btn mr-2" style={{ border: '1px solid #43b97e', color: '#43b97e' }} onClick={toggleFilter} >
+                  <span className="icon flaticon-filter-filled-tool-symbol" />
+                  &nbsp; Filter &nbsp;
+                  <span className="arrow fa fa-angle-down" /></div>
                 <form style={{ maxWidth: '600px', width: '100%' }} className="d-inline-block mt-1" onSubmit={handleSearchCourses}>
                   <Row>
                     <Col>
@@ -116,11 +109,19 @@ export default function Courses({ menus, response, errorCode }: CoursesProps) {
                     </Col>
                   </Row>
                 </form>
-                <div className="pull-right">
-                  <div className="total-course">Tìm thấy <span>{response?.totalElements}</span> kết quả</div>
-                </div>
+              </div>
+              <div className="pull-right text-nowrap">
+                <div className="total-course">Tìm thấy <span>{+response?.totalElements}</span> kết quả</div>
               </div>
             </div>
+            {isFilterOpen && (
+              <div className="position-absolute bg-white shadow p-4 w-100" style={{ zIndex: 1 }} >
+                <h5 className="font-weight-bold text-dark">Lọc theo vị trí</h5>
+                <div className="d-flex">
+                  <AddressSelector onSelect={setAddress} values={address} col="4" className="form-control" />
+                </div>
+              </div>
+            )}
           </div>
         </div>
         <div className="outer-container">

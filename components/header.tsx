@@ -47,15 +47,6 @@ export default function Header() {
             </nav>
             {/* Main Menu End*/}
             <div className="outer-box clearfix">
-              {/* Search */}
-              <div className="search-box">
-                <form method="post" action="contact.html">
-                  <div className="form-group">
-                    <input type="search" name="search-field" placeholder="What do we want learn" required />
-                    <button type="submit"><span className="icon fa fa-search" /></button>
-                  </div>
-                </form>
-              </div>
               {/* Social Box */}
               <ul className="social-box">
                 <li className="instagram"><a target="_blank" href="http://instagram.com/" className="fa fa-instagram" /></li>

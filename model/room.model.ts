@@ -19,6 +19,13 @@ export interface IRoom {
   ward?: IWard[];
   landlordId?: number;
   landlord?: ILandlord;
+  imageContentType?: string;
+  image?: any;
+  wardName?: string;
+  districtName?: string;
+  provinceName?: string;
+  avgRating?: any;
+  countRating?: any;
 }
 
 export const defaultValue: Readonly<IRoom> = {};

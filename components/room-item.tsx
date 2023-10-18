@@ -9,15 +9,16 @@ interface IRoomItemProps {
 
 export const RoomItem = (props: IRoomItemProps) => {
   const { room } = props;
-  console.log(room);
   return (
     <div className="col-md-12 w-100" >
       <div className="row shadow bg-white rounded">
         <div className="col-md-6 col-ms-12 w-100 p-0"  style={{ width: '100%' }}>
           <div>
-            {room.imageContentType ? (
-              <img className="w-100" src={`data:${room.imageContentType};base64,${room.image}`} alt={room.description} />
-            ) : null}
+            {room?.image ? (
+              <img className="w-100" src={`data:${room?.imageContentType};base64,${room?.image}`} alt={room?.description} />
+            ) :
+              <img className="w-100" src="/theme/template/images/resource/course-34.jpg" />
+            }
           </div>
         </div>
         <div className="col-md-6 col-ms-12 pt-3">
@@ -33,9 +34,10 @@ export const RoomItem = (props: IRoomItemProps) => {
           ) : ''}
           {room?.avgRating >= 0 && room?.countRating >= 0 ? (
             <div className="rating d-flex">
+              <span className="text-dark font-weight-bold">Đánh giá:&nbsp;</span>
               <div style={{ color: '#fbb039' }}>
                 {Array.from({ length: 5 }).map((_, index) => (
-                  <span key={index} className={`fa fa-star${index < room.avgRating ? '' : '-o'}`}></span>
+                  <span key={index} className={`fa fa-star${index < room?.avgRating ? '' : '-o'}`}></span>
                 ))}
               </div>
               {room.avgRating > 0 ?

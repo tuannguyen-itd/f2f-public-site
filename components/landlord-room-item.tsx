@@ -43,10 +43,7 @@ export const LandlordRoomItem = (props: IRoomProps) => {
             {rating?.ratingRoomAvg >= 0 ? (
               <>
                 <div className="d-flex align-items-center">
-                  <span className="">Đánh giá:</span>
-                  <h6 className="text-dark ml-2">
-                    <b>{rating.ratingRoomAvg ? rating.ratingRoomAvg?.toFixed(1) : 0}</b>
-                  </h6>
+                  <span className="text-dark">Đánh giá:</span>
                   <div className="pl-2 d-flex align-items-center">
                     <div className="rating text-warning">
                       <span className={`fa ${rating?.ratingRoomAvg >= 0.5 ? 'fa-star' : 'fa-star-o'}`} />
@@ -55,7 +52,10 @@ export const LandlordRoomItem = (props: IRoomProps) => {
                       <span className={`fa ${rating?.ratingRoomAvg >= 3.5 ? 'fa-star' : 'fa-star-o'}`} />
                       <span className={`fa ${rating?.ratingRoomAvg >= 4.5 ? 'fa-star' : 'fa-star-o'}`} />
                     </div>
-                      <span className="text-dark">({rating.ratingRoomCount ? rating.ratingRoomCount : 0} review)</span>
+                    <h6 className="text-dark ml-2">
+                      <b>{rating.ratingRoomAvg ? rating.ratingRoomAvg?.toFixed(1) : 0}</b>
+                    </h6>
+                    <span className="text-dark">({rating.ratingRoomCount ? rating.ratingRoomCount : 0} review)</span>
                   </div>
                 </div>
               </>

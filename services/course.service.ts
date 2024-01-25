@@ -3,7 +3,7 @@ import { ICourse } from '@model/course.model';
 
 interface ICourseService<T> extends IService<ICourse> {
   getTopCourses: (query: any) => Promise<{ data: T[] } | null>;
-  getAllCourse:  (page, size, sort, order, search, provinceId, districtId, wardId) => Promise<{ data: T[] } | null>;
+  getAllCourse:  (page, size, sort, order, search, provinceId, districtId, wardId, minPrice, maxPrice) => Promise<{ data: T[] } | null>;
 
 }
 
@@ -24,10 +24,11 @@ export const courseService: ICourseService<ICourse> = {
     return null;
   },
 
-  async getAllCourse(page, size, sort, order, search, provinceId, districtId, wardId) {
+  async getAllCourse(page, size, sort, order, search, provinceId, districtId, wardId, minPrice, maxPrice) {
     const encodedSearch = encodeURIComponent(search || '');
     const url = `${process.env.API_URL}/api/v2/courses?page=${page || ''}&size=${size || ''}
-    &sort=${sort || 'id'},&order=${order || 'DESC'}&search=${encodedSearch || ''}&provinceId=${provinceId || ''}&districtId=${districtId || ''}&wardId=${wardId || ''}`;
+    &sort=${sort || 'id'},&order=${order || 'DESC'}&search=${encodedSearch || ''}&provinceId=${provinceId || ''}
+    &districtId=${districtId || ''}&wardId=${wardId || ''}&minPrice=${minPrice || ''}&maxPrice=${maxPrice || ''}`;
     const res = await fetch(url);
     if (res?.ok) {
       const data = await res.json();

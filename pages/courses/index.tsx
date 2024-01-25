@@ -11,13 +11,14 @@ import { latLngDefault } from '../../config/constants';
 import Map from '@components/map';
 import AddressSelector, { IAddressState } from '@components/address-selector/address-selector';
 import { courseService } from '@services';
+import FilterRange from "@components/filters/filter-range";
 
 declare type CoursesProps = InferGetServerSidePropsType<typeof getServerSideProps>;
 
-export const getServerSideProps: GetServerSideProps<any, NodeJS.Dict<string>> = async ({ query: { page = 1, search, provinceId, districtId,  wardId }, res }) => {
+export const getServerSideProps: GetServerSideProps<any, NodeJS.Dict<string>> = async ({ query: { page = 1, search, provinceId, districtId,  wardId, minPrice, maxPrice }, res }) => {
   const menus = [];
   const response = await courseService.getAllCourse(
-    +page - 1, ITEMS_PER_PAGE, 'id', 'desc', search, provinceId || null , districtId || null , wardId || null);
+    +page - 1, ITEMS_PER_PAGE, 'id', 'desc', search, provinceId || null , districtId || null , wardId || null, minPrice || null , maxPrice || null);
   if (response === null) {
     res.statusCode = 404;
     return {
@@ -39,25 +40,30 @@ export default function Courses({ menus, response, errorCode }: CoursesProps) {
   const [districtId, setDistrictId] = useState<number>();
   const [provinceId, setProvinceId] = useState<number>();
   const [isFilterOpen, setIsFilterOpen] = useState(false);
-
   const isInitialLoad = useRef(true);
+  const [filterValues, setFilterValues] = useState({
+    minPrice: 0,
+    maxPrice: 0,
+  });
 
   useEffect(() => {
     if (!isInitialLoad.current) {
       setWardId(address.wardId);
       setDistrictId(address.districtId);
       setProvinceId(address.provinceId);
-      router.push(url(1, null, address.provinceId, address.districtId, address.wardId), undefined);
+      router.push(url(1, null, address.provinceId, address.districtId, address.wardId, filterValues.minPrice, filterValues.maxPrice), undefined);
     } else {
       isInitialLoad.current = false;
     }
-  }, [address, provinceId, districtId, wardId]);
+  }, [address, provinceId, districtId, wardId, filterValues]);
 
-  const url = (page, searchStr, provinceId, districtId, wardId) => {
+  const url = (page, searchStr, provinceId, districtId, wardId, minPrice, maxPrice) => {
     const params = Object.entries({
       provinceId,
       districtId,
       wardId,
+      minPrice,
+      maxPrice,
       page: (page || 1) > 1 ? page : false,
       search: searchStr,
     })
@@ -67,11 +73,11 @@ export default function Courses({ menus, response, errorCode }: CoursesProps) {
     return `/courses${params ? `?${params}` : ''}`;
   };
 
-  const handlePaginateChange = value => +value && router.push(url(+value, search, provinceId, districtId, wardId), undefined);
+  const handlePaginateChange = value => +value && router.push(url(+value, search, provinceId, districtId, wardId, filterValues.minPrice, filterValues.maxPrice), undefined);
 
   const handleSearchCourses = (event) => {
     event.preventDefault();
-    router.push(url(1, search, null, null, null), undefined);
+    router.push(url(1, search, null, null, null, null, null), undefined);
   };
   const handlelocation = (lat, lng) => {
     setLocation({ lat, lng });
@@ -115,11 +121,12 @@ export default function Courses({ menus, response, errorCode }: CoursesProps) {
               </div>
             </div>
             {isFilterOpen && (
-              <div className="position-absolute bg-white shadow p-4 w-100" style={{ zIndex: 1 }} >
+              <div className="position-absolute bg-white shadow p-4 w-100" style={{ zIndex: 100 }} >
                 <h5 className="font-weight-bold text-dark">Lọc theo vị trí</h5>
                 <div className="d-flex">
                   <AddressSelector onSelect={setAddress} values={address} col="4" className="form-control" />
                 </div>
+                <FilterRange onFilterChange={(minPrice, maxPrice) => setFilterValues({ minPrice, maxPrice })} />
               </div>
             )}
           </div>
@@ -129,7 +136,7 @@ export default function Courses({ menus, response, errorCode }: CoursesProps) {
           <div className="row clearfix d-flex justify-content-center">
             <div className="col-lg-6 col-md-12">
               {response?.content?.length > 0 ? response?.content?.map((courses, index) => (
-                <div className="row mb-3 pl-2 pr-2" key={index}  onClick={() => handlelocation(courses?.booking?.room?.place?.lat, courses?.booking?.room?.place?.lng)}>
+                <div className="row mb-3 pl-2 pr-2" key={index}  onClick={() => handlelocation(courses?.bookings[0]?.room?.place?.lat, courses?.bookings[0]?.room?.place?.lng)}>
                   <CourseItem course={courses} />
                 </div>
               )) : ''}

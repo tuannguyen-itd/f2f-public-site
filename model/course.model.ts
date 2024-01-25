@@ -3,6 +3,7 @@ import { CourseStatus } from '@model/enumerations/course-status.model';
 import { IRatingCourse } from '@model/enumerations/rating-course.model';
 import { IRoomTutorBooking } from '@model/room-tutor-booking.model';
 import { IBooking } from '@model/booking.model';
+import { IPriceCourse } from '@model/price-course.model';
 
 export interface ICourse {
   id?: number;
@@ -22,6 +23,8 @@ export interface ICourse {
   totalRate?: number;
   bookingId?: number;
   booking?: IBooking[];
+  priceCourseId?: number;
+  priceCourse?: IPriceCourse;
 }
 
 export const defaultValue: Readonly<ICourse> = {};

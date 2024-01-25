@@ -7,6 +7,7 @@ import Layout from '@components/layout';
 import Link from 'next/link';
 import Map from '@components/map';
 import { ratingService } from '@services/rating.service';
+import {formatCurrency} from "../../../shared/util/string-utils";
 
 declare type RoomProps = InferGetServerSidePropsType<typeof getServerSideProps>;
 
@@ -81,7 +82,7 @@ function Room({ room, rating, userinfo, errorCode }: RoomProps) {
                 </div>
                 {/* end slider */}
                 <div className="learn-box mt-5">
-                  <h2 className="text-dark mb-2">Thông tin phòng học {room.name}</h2>
+                  <h2 className="text-dark mb-2">Thông tin phòng {room.name}</h2>
                   <ul className="learn-list">
                     <li>
                       <p>Địa chỉ:
@@ -96,6 +97,17 @@ function Room({ room, rating, userinfo, errorCode }: RoomProps) {
                     </li>
                     <li className="text-nowrap">
                      {room.status === 'OPEN' ? <p> Tình trạng: Đang mở</p> : <p> Tình trạng: Đóng cửa</p>}
+                    </li>
+                    <li>
+                      {room?.priceRoom?.salePrice ? (
+                        <span>
+                          Giá: {formatCurrency(room?.priceRoom?.salePrice)} / Giờ
+                        </span>
+                      ) : (
+                        <span>
+                          Giá: {formatCurrency(room?.priceRoom?.basePrice)} / Giờ
+                        </span>
+                      )}
                     </li>
                     <li>
                       <p>{room.description}</p>

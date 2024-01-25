@@ -12,18 +12,19 @@ import Map from '@components/map';
 import { roomService } from '@services/room.service';
 import { RoomItem } from '@components/room-item';
 import AddressSelector, { IAddressState } from '@components/address-selector/address-selector';
+import FilterRange from '@components/filters/filter-range';
 
 declare type RoomsProps = InferGetServerSidePropsType<typeof getServerSideProps>;
 
-export const getServerSideProps: GetServerSideProps<any, NodeJS.Dict<string>> = async ({ query: { search, page = 1, provinceId, districtId,  wardId }, res }) => {
+export const getServerSideProps: GetServerSideProps<any, NodeJS.Dict<string>> = async ({ query: { search, page = 1, provinceId, districtId,  wardId, minPrice, maxPrice }, res }) => {
   const menus = [];
-  const response = await roomService.getAllRooms(+page - 1, ITEMS_PER_PAGE, 'id', 'desc', search, provinceId || null , districtId || null , wardId || null);
-  if (response === null) {
-    res.statusCode = 404;
-    return {
-      props: { errorCode: 404 },
-    };
-  }
+  const response = await roomService.getAllRooms(+page - 1, ITEMS_PER_PAGE, 'id', 'desc', search, provinceId || null , districtId || null , wardId || null, minPrice || null , maxPrice || null);
+  // if (response === null) {
+  //   res.statusCode = 404;
+  //   return {
+  //     props: { errorCode: 404 },
+  //   };
+  // }
 
   return { props: { menus, response } };
 };
@@ -38,6 +39,10 @@ export default function Rooms({ menus, errorCode, response }: RoomsProps) {
   const [districtId, setDistrictId] = useState<number>();
   const [provinceId, setProvinceId] = useState<number>();
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [filterValues, setFilterValues] = useState({
+    minPrice: 0,
+    maxPrice: 0,
+  });
 
   useEffect(() => {
     setLocation(location);
@@ -48,14 +53,16 @@ export default function Rooms({ menus, errorCode, response }: RoomsProps) {
     setDistrictId(address.districtId);
     setProvinceId(address.provinceId);
 
-    router.push(url(1, null, address.provinceId, address.districtId, address.wardId), undefined);
-  }, [address, provinceId, districtId, wardId]);
+    router.push(url(1, null, address.provinceId, address.districtId, address.wardId, filterValues.minPrice, filterValues.maxPrice), undefined);
+  }, [address, provinceId, districtId, wardId, filterValues]);
 
-  const url = (page, searchStr, provinceId, districtId, wardId) => {
+  const url = (page, searchStr, provinceId, districtId, wardId, minPrice, maxPrice) => {
     const params = Object.entries({
       provinceId,
       districtId,
       wardId,
+      minPrice,
+      maxPrice,
       page: (page || 1) > 1 ? page : false,
       search: searchStr,
     })
@@ -65,11 +72,11 @@ export default function Rooms({ menus, errorCode, response }: RoomsProps) {
     return `/rooms${params ? `?${params}` : ''}`;
   };
 
-  const handlePaginateChange = value => +value && router.push(url(+value, search, provinceId, districtId, wardId), undefined);
+  const handlePaginateChange = value => +value && router.push(url(+value, search, provinceId, districtId, wardId, filterValues.minPrice, filterValues.maxPrice), undefined);
 
   const handleSearchCourses = (event) => {
     event.preventDefault();
-    router.push(url(1, search, null, null, null), undefined);
+    router.push(url(1, search, null, null, null, null, null), undefined);
   };
 
   const onHandleCenterHover = (lat, lng) => {
@@ -114,17 +121,18 @@ export default function Rooms({ menus, errorCode, response }: RoomsProps) {
               </div>
             </div>
             {isFilterOpen && (
-              <div className="position-absolute bg-white shadow p-4 w-100" style={{ zIndex: 1 }} >
+              <div className="position-absolute bg-white shadow p-4 w-100" style={{ zIndex: 100 }} >
                 <h5 className="font-weight-bold text-dark">Lọc theo vị trí</h5>
                 <div className="d-flex">
                   <AddressSelector onSelect={setAddress} values={address} col="4" className="form-control" />
                 </div>
+                <FilterRange onFilterChange={(minPrice, maxPrice) => setFilterValues({ minPrice, maxPrice })} />
               </div>
             )}
           </div>
         </div>
         <div className="outer-container">
-          <h1 className="w-100 d-flex justify-content-center align-content-center my-5 lower-content">DANH SÁCH CÁC PHÒNG HỌC NỔI BẬT</h1>
+          <h1 className="w-100 d-flex justify-content-center align-content-center my-5 lower-content">DANH SÁCH CÁC PHÒNG NỔI BẬT</h1>
           <div className="row clearfix d-flex justify-content-center">
             <div className="col-lg-6 col-md-12">
               {response && response?.content?.length > 0 ? response?.content?.map((room, index) => (

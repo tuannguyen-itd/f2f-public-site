@@ -26,6 +26,8 @@ export interface IRoom {
   provinceName?: string;
   avgRating?: any;
   countRating?: any;
+  basePrice?: number;
+  salePrice?: number;
 }
 
 export const defaultValue: Readonly<IRoom> = {};

@@ -42,3 +42,5 @@ export function formatDate(dateString) { // EX: November 23, 2020
   const options = { year: 'numeric', month: 'long', day: 'numeric' };
   return new Date(dateString).toLocaleDateString('en-US', options);
 }
+
+

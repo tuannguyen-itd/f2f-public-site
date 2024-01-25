@@ -16,11 +16,13 @@
     "bootstrap": "^4.5.0",
     "facebook-sdk": "^0.3.3",
     "moment": "^2.29.1",
+    "moment-timezone": "^0.5.43",
     "next": "^9.4.4",
     "react": "^16.13.1",
     "react-bootstrap": "^2.8.0",
     "react-dom": "^16.13.1",
     "react-facebook": "^8.1.4",
+    "react-range": "^1.8.14",
     "react-share": "^4.2.1",
     "reactstrap": "^8.10.1"
   },

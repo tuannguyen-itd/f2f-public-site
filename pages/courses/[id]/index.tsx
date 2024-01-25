@@ -5,6 +5,7 @@ import Error from 'next/error';
 import Layout from '@components/layout';
 import Link from 'next/link';
 import { formatDate } from '../../../config/constants';
+import {formatCurrency} from "../../../shared/util/string-utils";
 
 declare type CourseProps = InferGetServerSidePropsType<typeof getServerSideProps>;
 
@@ -25,6 +26,7 @@ export const getServerSideProps: GetServerSideProps<any, NodeJS.Dict<string>> = 
 
 function Course({ course, errorCode, rating, ratingAVG }: CourseProps) {
   if (errorCode) return <Error statusCode={errorCode} />;
+  console.log(course);
   return (
     // @ts-ignore
     <Layout>
@@ -61,6 +63,15 @@ function Course({ course, errorCode, rating, ratingAVG }: CourseProps) {
                   </div>
                 )}
               </div>
+              {course?.priceCourse?.salePrice ? (
+                <span>
+                  Giá: {formatCurrency(course?.priceCourse?.salePrice)}
+                </span>
+              ) : (
+                <span>
+                  Giá: {formatCurrency(course?.priceCourse?.basePrice)}
+                </span>
+              )}
               <ul className="social-box d-flex ">
                 <li className="twitter bg-primary"><a target="_blank" href="http://twitter.com/" className="fa fa-twitter text-white" /></li>
                 <li className="pinterest bg-danger"><a target="_blank" href="http://pinterest.com/" className="fa fa-pinterest-p text-white" /></li>
@@ -150,19 +161,19 @@ function Course({ course, errorCode, rating, ratingAVG }: CourseProps) {
               <div className="info-column col-lg-4 col-md-12 col-sm-12">
                 <div className="inner-column">
                   <h5 className="mt-0 d-flex justify-content-center">Thông Tin Gia Sư</h5>
-                  {course?.booking?.tutor ?
+                  {course?.bookings[0]?.tutor ?
                     <>
                       <div className="image w-100 d-flex align-items-center justify-content-center mt-3">
                         <Link href="/" as={'/'}>
                           <a>
-                            {course?.booking?.tutor?.userInfo?.avatar ? (
-                              <img src={`data:${course?.booking?.tutor?.userInfo?.avatarContentType};base64,${course?.booking?.tutor?.userInfo?.avatar}`} alt="Thông tin liên hệ"
+                            {course?.bookings[0]?.tutor?.userInfo?.avatar ? (
+                              <img src={`data:${course?.bookings[0]?.tutor?.userInfo?.avatarContentType};base64,${course?.bookings[0]?.tutor?.userInfo?.avatar}`} alt="Thông tin liên hệ"
                                    style={{ width: '150px' }}/>
                             ) : <img src="/theme/template/images/img-logo-default.png"/>}
                           </a>
                         </Link>
                       </div>
-                      <h5 className="text-center mt-4 mb-1">{course?.booking?.tutor?.userInfo?.user?.firstName}&nbsp;{course?.booking?.tutor?.userInfo?.user?.lastName}</h5>
+                      <h5 className="text-center mt-4 mb-1">{course?.bookings[0]?.tutor?.userInfo?.user?.firstName}&nbsp;{course?.bookings[0]?.tutor?.userInfo?.user?.lastName}</h5>
                         {ratingAVG.ratingTutorCourseAvg >= 0 ? (
                           <div className="d-flex justify-content-center align-items-center mb-2">
                             <span className="text-dark">Đánh Giá:</span>
@@ -179,10 +190,10 @@ function Course({ course, errorCode, rating, ratingAVG }: CourseProps) {
                           : <h5 className="mb-2">Chưa có đánh giá nào</h5>
                         }
                       <ul className="level-list">
-                        <li>Bằng cấp: <span>{course?.booking?.tutor?.degree}</span></li>
-                        <li>Phone :<span>{course?.booking?.tutor?.userInfo?.phone}</span></li>
-                        <li>Email :<span>{course?.booking?.tutor?.userInfo?.user?.email}</span></li>
-                        <li>Ngày Sinh :<span>{course?.booking?.tutor?.userInfo?.dob}</span></li>
+                        <li>Bằng cấp: <span>{course?.bookings[0]?.tutor?.degree}</span></li>
+                        <li>Phone :<span>{course?.bookings[0]?.tutor?.userInfo?.phone}</span></li>
+                        <li>Email :<span>{course?.bookings[0]?.tutor?.userInfo?.user?.email}</span></li>
+                        <li>Ngày Sinh :<span>{course?.bookings[0]?.tutor?.userInfo?.dob}</span></li>
                       </ul>
                     </>
                     : <h4 className="mt-5 mb-5">Hiện Chưa Có Gia Sư</h4>

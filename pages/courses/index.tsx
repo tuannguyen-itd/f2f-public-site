@@ -97,7 +97,7 @@ export default function Courses({ menus, response, errorCode }: CoursesProps) {
               <div className="d-flex w-100 position-relative">
                 <div className="btn mr-2" style={{ border: '1px solid #43b97e', color: '#43b97e' }} onClick={toggleFilter} >
                   <span className="icon flaticon-filter-filled-tool-symbol" />
-                  &nbsp; Filter &nbsp;
+                  &nbsp; Lọc &nbsp;
                   <span className="arrow fa fa-angle-down" /></div>
                 <form style={{ maxWidth: '600px', width: '100%' }} className="d-inline-block mt-1" onSubmit={handleSearchCourses}>
                   <Row>
@@ -107,9 +107,9 @@ export default function Courses({ menus, response, errorCode }: CoursesProps) {
                           autoFocus={true}
                           value={search}
                           onChange={$event => setSearch($event.target.value || '')}
-                          placeholder="Search course" />
+                          placeholder="Tìm lớp học" />
                         <InputGroupAddon addonType="append">
-                          <Button color="secondary">Search</Button>
+                          <Button color="secondary">Tìm</Button>
                         </InputGroupAddon>
                       </InputGroup>
                     </Col>
@@ -117,12 +117,12 @@ export default function Courses({ menus, response, errorCode }: CoursesProps) {
                 </form>
               </div>
               <div className="pull-right text-nowrap">
-                <div className="total-course">Found <span>{+response?.totalElements}</span> results</div>
+                <div className="total-course">Tìm thấy <span>{+response?.totalElements}</span> kết quả</div>
               </div>
             </div>
             {isFilterOpen && (
               <div className="position-absolute bg-white shadow p-4 w-100" style={{ zIndex: 100 }} >
-                <h5 className="font-weight-bold text-dark">Filter by location</h5>
+                <h5 className="font-weight-bold text-dark">Lọc theo vị trí</h5>
                 <div className="d-flex">
                   <AddressSelector onSelect={setAddress} values={address} col="4" className="form-control" />
                 </div>
@@ -132,7 +132,7 @@ export default function Courses({ menus, response, errorCode }: CoursesProps) {
           </div>
         </div>
         <div className="outer-container">
-          <h1 className="w-100 d-flex justify-content-center align-content-center my-5 lower-content">LIST OF FEATURED COURSES</h1>
+          <h4 className="d-flex my-2 lower-content">DANH SÁCH CÁC KHÓA HỌC NỔI BẬT</h4>
           <div className="row clearfix d-flex justify-content-center">
             <div className="col-lg-6 col-md-12">
               {response?.content?.length > 0 ? response?.content?.map((courses, index) => (
@@ -140,7 +140,7 @@ export default function Courses({ menus, response, errorCode }: CoursesProps) {
                   <CourseItem course={courses} />
                 </div>
               )) : ''}
-              { !response?.content?.length ? <h3 className="text-course text-error my-5">No course found!</h3> : '' }
+              { !response?.content?.length ? <h3 className="text-course text-error my-5">Không tìm thấy khóa học!</h3> : '' }
             </div>
             <div className="col-lg-6 col-md-12">
               <div className="map-sticky">
@@ -148,14 +148,16 @@ export default function Courses({ menus, response, errorCode }: CoursesProps) {
               </div>
             </div>
           </div>
-          <Pagination
-            visible={response?.content?.length > 0 }
-            activePage={+router.query.page || 1}
-            onSelect={handlePaginateChange}
-            maxButtons={7}
-            itemsPerPage={ITEMS_PER_PAGE}
-            totalItems={+response?.totalElements}
-          />
+          {response.totalPages > 1 ?
+            <Pagination
+              visible={response?.content?.length > 0 }
+              activePage={+router.query.page || 1}
+              onSelect={handlePaginateChange}
+              maxButtons={7}
+              itemsPerPage={ITEMS_PER_PAGE}
+              totalItems={+response?.totalElements}
+            />
+          : ''}
         </div>
       </section>
     </Layout>

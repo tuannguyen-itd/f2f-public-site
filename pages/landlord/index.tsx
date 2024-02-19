@@ -70,7 +70,7 @@ export default function Landlord({ menus, response, errorCode }: CoursesProps) {
                 <div className="pull-left clearfix">
                   <div className="dropdown-outer">
                     <div className="filter-dropdown">
-                      <span className="icon flaticon-filter-filled-tool-symbol" /> Filter <span className="arrow fa fa-angle-down" />
+                      <span className="icon flaticon-filter-filled-tool-symbol" />Lọc<span className="arrow fa fa-angle-down" />
                       {/* Filter Categories */}
                       <div className="filter-categories w-50">
                         <div className="clearfix">

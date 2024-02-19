@@ -7,7 +7,7 @@ import Layout from '@components/layout';
 import Link from 'next/link';
 import Map from '@components/map';
 import { ratingService } from '@services/rating.service';
-import {formatCurrency} from "../../../shared/util/string-utils";
+import { formatCurrency } from '../../../shared/util/string-utils';
 
 declare type RoomProps = InferGetServerSidePropsType<typeof getServerSideProps>;
 

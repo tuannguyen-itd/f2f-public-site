@@ -1,5 +1,6 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import Layout from '@components/layout';
+import { useMediaQuery } from 'react-responsive';
 
 export async function getServerSideProps() {
   return {
@@ -8,12 +9,50 @@ export async function getServerSideProps() {
 }
 
 export default function Home(props) {
-  const { menus } = props;
+  const [showPopup, setShowPopup] = useState<boolean>();
+  const isMobile = useMediaQuery({ query: '(max-width: 768px)' });
+
+  useEffect(() => {
+    const hidePopupForever = localStorage.getItem('hidePopupForever');
+    if (isMobile && hidePopupForever !== 'true') {
+      setShowPopup(true);
+    } else {
+      setShowPopup(false);
+    }
+  }, [isMobile]);
+
+  const handleNavigateToApp = () => {
+    console.log('Redirecting to app...');
+  };
+  const handleClosePopup = () => {
+    setShowPopup(false);
+  };
+
+  const handleCheckboxChange = (e) => {
+    const isChecked = e.target.checked;
+    localStorage.setItem('hidePopupForever', isChecked);
+  };
 
   return (
     <Layout>
       <div className="page-wrapper">
         <div>
+          {showPopup && (
+            <>
+              <div className="popup-overlay"></div>
+              <div className="popup-notification">
+                <p className="">Accessing from a mobile device. Do you want to move to the app?</p>
+                <div>
+                  <input type="checkbox" onChange={handleCheckboxChange} />
+                  <label className="ml-2 mb-1">Don't show again</label>
+                </div>
+                <div className="d-flex justify-content-between mt-2">
+                  <button className="btn-popup" onClick={handleNavigateToApp}>Go to the app</button>
+                  <button className="btn-popup" onClick={handleClosePopup}>Close</button>
+                </div>
+              </div>
+            </>
+          )}
           {/* Banner Section */}
           <section className="banner-section">
             <div className="auto-container">

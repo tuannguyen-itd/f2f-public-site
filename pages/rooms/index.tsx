@@ -19,12 +19,12 @@ declare type RoomsProps = InferGetServerSidePropsType<typeof getServerSideProps>
 export const getServerSideProps: GetServerSideProps<any, NodeJS.Dict<string>> = async ({ query: { search, page = 1, provinceId, districtId,  wardId, minPrice, maxPrice }, res }) => {
   const menus = [];
   const response = await roomService.getAllRooms(+page - 1, ITEMS_PER_PAGE, 'id', 'desc', search, provinceId || null , districtId || null , wardId || null, minPrice || null , maxPrice || null);
-  // if (response === null) {
-  //   res.statusCode = 404;
-  //   return {
-  //     props: { errorCode: 404 },
-  //   };
-  // }
+  if (response === null) {
+    res.statusCode = 404;
+    return {
+      props: { errorCode: 404 },
+    };
+  }
 
   return { props: { menus, response } };
 };
@@ -93,12 +93,13 @@ export default function Rooms({ menus, errorCode, response }: RoomsProps) {
         <div className="auto-container">
           {/* Filter Box */}
           <div className="filter-box">
-            <div className="box-inner d-flex">
+            <div className="box-inner d-flex box-filter-search">
               <div className="d-flex w-100 position-relative">
                 <div className="btn mr-2" style={{ border: '1px solid #43b97e', color: '#43b97e' }} onClick={toggleFilter} >
                   <span className="icon flaticon-filter-filled-tool-symbol" />
                     &nbsp; Filter &nbsp;
-                  <span className="arrow fa fa-angle-down" /></div>
+                  <span className="arrow fa fa-angle-down" />
+                </div>
                 <form style={{ maxWidth: '600px', width: '100%' }} className="d-inline-block mt-1" onSubmit={handleSearchCourses}>
                   <Row>
                     <Col>
@@ -107,9 +108,10 @@ export default function Rooms({ menus, errorCode, response }: RoomsProps) {
                           autoFocus={true}
                           value={search}
                           onChange={$event => setSearch($event.target.value || '')}
-                          placeholder="Tìm lớp học" />
+                          placeholder="Search room"
+                        />
                         <InputGroupAddon addonType="append">
-                          <Button color="secondary">Tìm</Button>
+                          <Button color="secondary">Search</Button>
                         </InputGroupAddon>
                       </InputGroup>
                     </Col>
@@ -117,12 +119,12 @@ export default function Rooms({ menus, errorCode, response }: RoomsProps) {
                 </form>
               </div>
               <div className="pull-right text-nowrap">
-                <div className="total-course">Tìm thấy <span>{+response?.totalElements}</span> kết quả</div>
+                <div className="total-course">Found <span>{+response?.totalElements}</span> results</div>
               </div>
             </div>
             {isFilterOpen && (
               <div className="position-absolute bg-white shadow p-4 w-100" style={{ zIndex: 100 }} >
-                <h5 className="font-weight-bold text-dark">Lọc theo vị trí</h5>
+                <h5 className="font-weight-bold text-dark">Filter by location</h5>
                 <div className="d-flex">
                   <AddressSelector onSelect={setAddress} values={address} col="4" className="form-control" />
                 </div>
@@ -132,7 +134,7 @@ export default function Rooms({ menus, errorCode, response }: RoomsProps) {
           </div>
         </div>
         <div className="outer-container">
-          <h1 className="w-100 d-flex justify-content-center align-content-center my-5 lower-content">DANH SÁCH CÁC PHÒNG NỔI BẬT</h1>
+          <h1 className="w-100 d-flex justify-content-center align-content-center my-5 lower-content">LIST OF FEATURED ROOMS</h1>
           <div className="row clearfix d-flex justify-content-center">
             <div className="col-lg-6 col-md-12">
               {response && response?.content?.length > 0 ? response?.content?.map((room, index) => (

@@ -1,7 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 
 export default function Header() {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  const handleMobileMenuToggle = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
   return (
     <header className="main-header">
       {/*Header-Upper*/}
@@ -18,7 +23,9 @@ export default function Header() {
           </div>
           <div className="nav-outer clearfix">
             {/*Mobile Navigation Toggler*/}
-            <div className="mobile-nav-toggler"><span className="icon flaticon-menu" /></div>
+            <div className="mobile-nav-toggler" onClick={handleMobileMenuToggle}>
+              <span className="icon flaticon-menu" />
+            </div>
             {/* Main Menu */}
             <nav className="main-menu navbar-expand-md">
               <div className="navbar-header">
@@ -46,7 +53,7 @@ export default function Header() {
               </div>
             </nav>
             {/* Main Menu End*/}
-            <div className="outer-box clearfix">
+            <div className="outer-box clearfix  social-icon">
               {/* Social Box */}
               <ul className="social-box">
                 <li className="instagram"><a target="_blank" href="http://instagram.com/" className="fa fa-instagram" /></li>
@@ -58,17 +65,30 @@ export default function Header() {
           </div>
         </div>
       </div>
-      <div className="mobile-menu">
-        <div className="menu-backdrop" />
-        <div className="close-btn"><span className="icon flaticon-multiply" /></div>
-        <nav className="menu-box">
-          <div className="nav-logo">
-            <a href="index.html">
-              <img className="logo" src="/logo.png" alt="" />
-           </a>
+      <div className={`mobile-menu-popup shadow ${isMobileMenuOpen ? 'open' : ''}`}>
+        <div className="box-menu-nav">
+          <a href="/">
+            <img className="menu-nav-img" src="/logo.png" alt="" />
+          </a>
+          <div className="close-btn-popup" onClick={handleMobileMenuToggle}>
+            <span className="icon flaticon-multiply" />
           </div>
-          <div className="menu-outer">{/*Here Menu Will Come Automatically Via Javascript / Same Menu as in Header*/}</div>
+        </div>
+        <nav className="menu-box">
+          <div className="menu-link-page">
+            <Link href={'/courses'}><a className="link-item"><span>COURSES</span></a></Link>
+            <Link href={'/landlord'}><a className="link-item mt-2 mb-2"><span>LANDLORDS</span></a></Link>
+            <Link href={'/rooms'} as={'/rooms'}><a className="link-item"><span>ROOMS</span></a></Link>
+          </div>
         </nav>
+        <div className="info-social">
+          <ul className="social-item">
+            <li className="instagram"><a target="_blank" href="http://instagram.com/" className="fa fa-instagram" /></li>
+            <li className="facebook"><a target="_blank" href="http://facebook.com/" className="fa fa-facebook-f" /></li>
+            <li className="twitter"><a target="_blank" href="http://twitter.com/" className="fa fa-twitter" /></li>
+            <li className="pinterest"><a target="_blank" href="http://pinterest.com/" className="fa fa-pinterest-p" /></li>
+          </ul>
+        </div>
       </div>
     </header>
   );

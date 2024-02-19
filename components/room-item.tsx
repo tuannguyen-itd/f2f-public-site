@@ -35,7 +35,7 @@ export const RoomItem = (props: IRoomItemProps) => {
           ) : ''}
           {room?.avgRating >= 0 && room?.countRating >= 0 ? (
             <div className="rating d-flex">
-              <span className="text-dark">Đánh giá:&nbsp;</span>
+              <span className="text-dark">Rating:&nbsp;</span>
               <div style={{ color: '#fbb039' }}>
                 {Array.from({ length: 5 }).map((_, index) => (
                   <span key={index} className={`fa fa-star${index < room?.avgRating ? '' : '-o'}`}></span>
@@ -49,12 +49,12 @@ export const RoomItem = (props: IRoomItemProps) => {
           ) : null}
           {room?.location  ? (
             <div className="text-dark">
-              Vị trí: <span className=" font-weight-bold">{ room?.location }</span>
+              Location: <span className=" font-weight-bold">{ room?.location }</span>
             </div>
           ) : ''}
           {room?.wardName || room?.districtName || room?.provinceName ? (
             <div className="text-dark">
-              Địa chỉ: <span className=" font-weight-bold">{ room?.wardName }, { room?.districtName }, { room?.provinceName }</span>
+              Address: <span className=" font-weight-bold">{ room?.wardName }, { room?.districtName }, { room?.provinceName }</span>
             </div>
           ) : ''}
           <div className="date"><span>{formatDate(room?.date)}</span></div>
@@ -62,16 +62,16 @@ export const RoomItem = (props: IRoomItemProps) => {
             {room?.salePrice && room?.salePrice > 0 ? (
               <>
                 <div className="iq-doc-description text-danger line-through">
-                  <span>{formatCurrency(room?.basePrice)} / Giờ</span>
+                  <span>{formatCurrency(room?.basePrice)} / Hour</span>
                 </div>
                 <div className="iq-doc-description ml-4 green-color">
-                  <b>{formatCurrency(room?.salePrice)} / Giờ</b>
+                  <b>{formatCurrency(room?.salePrice)} / Hour</b>
                 </div>
               </>
             ) : (
               <div className="text-sm-right w-100 green-color">
-                Giá thuê:&nbsp;
-                <b>{formatCurrency(room?.basePrice)} / Giờ</b>
+                Rent cost:&nbsp;
+                <b>{formatCurrency(room?.basePrice)} / Hour</b>
               </div>
             )}
           </div>
@@ -81,7 +81,7 @@ export const RoomItem = (props: IRoomItemProps) => {
                 <div className="pull-right">
                   <Link href="/rooms/[id]" as={`/rooms/${room?.id}`}>
                     <a className="theme-btn btn-style-one mt-2 py-1 px-5">
-                      <span className="txt">Chi Tiết</span>
+                      <span className="txt">Detail</span>
                     </a>
                   </Link>
                 </div>

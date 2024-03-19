@@ -104,3 +104,33 @@ $border-color: #212529;
   border: 1px solid #ccc;
   border-radius: 5px
 }
+.sub-category-name {
+  width: 100%;
+  font-size: 14px;
+  text-decoration: none;
+  line-height: 2  ;
+  letter-spacing: 1px;
+  text-align: left;
+  padding-right: 15px;
+}
+.sub-category-arrow {
+  display: flex;
+  align-items: center;
+  color: #333;
+  font-size: 14px;
+}
+.category-item:hover {
+  cursor: pointer;
+  color: #43b97e;
+}
+//Category page
+.category-name {
+  padding: 10px;
+  margin: 0 5px 5px 0;
+  border: 1px solid;
+}
+.category-name:hover {
+  background-color: #43b97e;
+  color: #ffffff;
+  cursor: pointer;
+}

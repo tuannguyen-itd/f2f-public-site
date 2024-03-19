@@ -12,3 +12,4 @@ export * from './province.service';
 export * from './district.service';
 export * from './ward.service';
 export * from './helper';
+export * from './category.service';

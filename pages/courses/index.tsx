@@ -11,7 +11,9 @@ import { latLngDefault } from '../../config/constants';
 import Map from '@components/map';
 import AddressSelector, { IAddressState } from '@components/address-selector/address-selector';
 import { courseService } from '@services';
-import FilterRange from "@components/filters/filter-range";
+import FilterRange from '@components/filters/filter-range';
+import { CategoryService } from '@services/category.service';
+import CategoryItem from '@components/category/category-item';
 
 declare type CoursesProps = InferGetServerSidePropsType<typeof getServerSideProps>;
 
@@ -19,6 +21,7 @@ export const getServerSideProps: GetServerSideProps<any, NodeJS.Dict<string>> = 
   const menus = [];
   const response = await courseService.getAllCourse(
     +page - 1, ITEMS_PER_PAGE, 'id', 'desc', search, provinceId || null , districtId || null , wardId || null, minPrice || null , maxPrice || null);
+  const responseCategory = await CategoryService.getEntities(+page - 1, ITEMS_PER_PAGE, 'id', 'desc');
   if (response === null) {
     res.statusCode = 404;
     return {
@@ -26,10 +29,10 @@ export const getServerSideProps: GetServerSideProps<any, NodeJS.Dict<string>> = 
     };
   }
 
-  return { props: { response, menus } };
+  return { props: { response, menus, responseCategory } };
 };
 
-export default function Courses({ menus, response, errorCode }: CoursesProps) {
+export default function Courses({ menus, response, responseCategory, errorCode }: CoursesProps) {
   if (errorCode) return <Error statusCode={errorCode} />;
 
   const router = useRouter();
@@ -40,6 +43,7 @@ export default function Courses({ menus, response, errorCode }: CoursesProps) {
   const [districtId, setDistrictId] = useState<number>();
   const [provinceId, setProvinceId] = useState<number>();
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [isCategoryOpen, setIsCategoryOpen] = useState(false);
   const isInitialLoad = useRef(true);
   const [filterValues, setFilterValues] = useState({
     minPrice: 0,
@@ -86,6 +90,11 @@ export default function Courses({ menus, response, errorCode }: CoursesProps) {
   const toggleFilter = () => {
     setIsFilterOpen(!isFilterOpen);
   };
+
+  const toggleCategory = () => {
+    setIsCategoryOpen(!isCategoryOpen);
+  };
+
   return (
     // @ts-ignore
     <Layout menus={menus}>
@@ -95,10 +104,15 @@ export default function Courses({ menus, response, errorCode }: CoursesProps) {
           <div className="filter-box">
             <div className="box-inner d-flex box-filter-search">
               <div className="d-flex w-100 position-relative">
+                <div className="btn mr-2" style={{ border: '1px solid #43b97e', color: '#43b97e' }} onClick={toggleCategory} >
+                  &nbsp; Danh Mục &nbsp;
+                  <span className="arrow fa fa-angle-down" />
+                </div>
                 <div className="btn mr-2" style={{ border: '1px solid #43b97e', color: '#43b97e' }} onClick={toggleFilter} >
                   <span className="icon flaticon-filter-filled-tool-symbol" />
                   &nbsp; Lọc &nbsp;
-                  <span className="arrow fa fa-angle-down" /></div>
+                  <span className="arrow fa fa-angle-down" />
+                </div>
                 <form style={{ maxWidth: '600px', width: '100%' }} className="d-inline-block mt-1" onSubmit={handleSearchCourses}>
                   <Row>
                     <Col>
@@ -120,6 +134,14 @@ export default function Courses({ menus, response, errorCode }: CoursesProps) {
                 <div className="total-course">Tìm thấy <span>{+response?.totalElements}</span> kết quả</div>
               </div>
             </div>
+            {isCategoryOpen && (
+              <div className="position-absolute bg-white shadow p-3" style={{ zIndex: 100 }} >
+                <h5 className="font-weight-bold text-dark">Danh Mục</h5>
+                <div className="d-flex">
+                  <CategoryItem category={responseCategory.data} />
+                </div>
+              </div>
+            )}
             {isFilterOpen && (
               <div className="position-absolute bg-white shadow p-4 w-100" style={{ zIndex: 100 }} >
                 <h5 className="font-weight-bold text-dark">Lọc theo vị trí</h5>

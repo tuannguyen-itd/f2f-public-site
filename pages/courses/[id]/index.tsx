@@ -26,7 +26,6 @@ export const getServerSideProps: GetServerSideProps<any, NodeJS.Dict<string>> = 
 
 function Course({ course, errorCode, rating, ratingAVG }: CourseProps) {
   if (errorCode) return <Error statusCode={errorCode} />;
-  console.log(course);
   return (
     // @ts-ignore
     <Layout>

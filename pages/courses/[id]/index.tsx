@@ -1,30 +1,32 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { courseService, ratingService } from '@services';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import Error from 'next/error';
 import Layout from '@components/layout';
 import Link from 'next/link';
 import { formatDate } from '../../../config/constants';
-import {formatCurrency} from "../../../shared/util/string-utils";
+import { formatCurrency } from '../../../shared/util/string-utils';
+import { CourseSlider } from '@components/course-carousel';
 
 declare type CourseProps = InferGetServerSidePropsType<typeof getServerSideProps>;
 
 export const getServerSideProps: GetServerSideProps<any, NodeJS.Dict<string>> = async ({ params: { id }, res }) => {
   const course = await courseService.getEntity(id);
+  const topCourse = await courseService.getTopCourses();
   const rating = await ratingService.getRatingByCourse(id);
   const ratingAVG = await ratingService.getRatingByCourseAVG(id);
-  if (course === null) {
+  if (course === null && topCourse === null) {
     res.statusCode = 404;
     return {
       props: { errorCode: 404 },
     };
   }
   return {
-    props: { course, rating, ratingAVG },
+    props: { course, rating, ratingAVG, topCourse },
   };
 };
 
-function Course({ course, errorCode, rating, ratingAVG }: CourseProps) {
+function Course({ course, errorCode, rating, ratingAVG, topCourse }: CourseProps) {
   if (errorCode) return <Error statusCode={errorCode} />;
   return (
     // @ts-ignore
@@ -104,6 +106,10 @@ function Course({ course, errorCode, rating, ratingAVG }: CourseProps) {
                       <li>Modern ES6+ from the beginning: arrow functions, destructuring, spread operator, optional chaining (ES2020), etc.</li>
                       <li>Modern ES6+ from the beginning: arrow functions, destructuring, spread operator, optional chaining (ES2020), etc.</li>
                     </ul>
+                  </div>
+                  <div>
+                    <h2 className="detail-course text-dark">Các Lớp học nổi bật</h2>
+                    <CourseSlider topCourse={topCourse?.data} />
                   </div>
                   <h5>Yêu cầu</h5>
                   <ul className="learn-list-two">

@@ -4,6 +4,7 @@ import { IRatingCourse } from '@model/enumerations/rating-course.model';
 import { IRoomTutorBooking } from '@model/room-tutor-booking.model';
 import { IBooking } from '@model/booking.model';
 import { IPriceCourse } from '@model/price-course.model';
+import { ICategory } from '@model/category.model';
 
 export interface ICourse {
   id?: number;
@@ -25,6 +26,7 @@ export interface ICourse {
   booking?: IBooking[];
   priceCourseId?: number;
   priceCourse?: IPriceCourse;
+  categories?: ICategory[];
 }
 
 export const defaultValue: Readonly<ICourse> = {};

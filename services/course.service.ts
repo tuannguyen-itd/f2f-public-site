@@ -2,9 +2,8 @@ import { baseService, IService, makeRequestUrl } from './base.service';
 import { ICourse } from '@model/course.model';
 
 interface ICourseService<T> extends IService<ICourse> {
-  getTopCourses: (query: any) => Promise<{ data: T[] } | null>;
+  getTopCourses: () => Promise<{ data: T[] } | null>;
   getAllCourse:  (page, size, sort, order, search, provinceId, districtId, wardId, minPrice, maxPrice) => Promise<{ data: T[] } | null>;
-
 }
 
 export const courseService: ICourseService<ICourse> = {
@@ -37,8 +36,8 @@ export const courseService: ICourseService<ICourse> = {
     return null;
   },
 
-  async getTopCourses(query) {
-    const url = `${process.env.API_URL}/api/v2/courses/tops?query=${query || ''}`;
+  async getTopCourses() {
+    const url = `${process.env.API_URL}/api/v2/top-courses`;
     const res = await fetch(url);
     if (res?.ok) {
       const data = await res.json();

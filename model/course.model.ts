@@ -10,7 +10,7 @@ export interface ICourse {
   id?: number;
   name?: string;
   description?: any;
-  image_content_type?: string;
+  imageContentType?: string;
   image?: any;
   status?: CourseStatus;
   amount?: number;

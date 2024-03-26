@@ -2,7 +2,7 @@ import { baseService, IService, makeRequestUrl } from './base.service';
 import { ICourse } from '@model/course.model';
 
 interface ICourseService<T> extends IService<ICourse> {
-  getTopCourses: () => Promise<{ data: T[] } | null>;
+  getSuggestCourses: (id) => Promise<{ data: T[] } | null>;
   getAllCourse:  (page, size, sort, order, search, provinceId, districtId, wardId, minPrice, maxPrice) => Promise<{ data: T[] } | null>;
 }
 
@@ -36,8 +36,8 @@ export const courseService: ICourseService<ICourse> = {
     return null;
   },
 
-  async getTopCourses() {
-    const url = `${process.env.API_URL}/api/v2/top-courses`;
+  async getSuggestCourses(id: number) {
+    const url = `${process.env.API_URL}/api/v2/suggest-courses?courseId=${id}`;
     const res = await fetch(url);
     if (res?.ok) {
       const data = await res.json();

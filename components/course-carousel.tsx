@@ -2,14 +2,14 @@ import React from 'react';
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 import { ICourse } from '@model/course.model';
+import { formatCurrency } from '../shared/util/string-utils';
 
 interface ICourseSliderProps {
-  topCourse: ICourse[];
+  suggests: ICourse[];
 }
 
 export const CourseSlider = (props: ICourseSliderProps) => {
-  const { topCourse } = props;
-  console.log(topCourse);
+  const { suggests } = props;
   const responsive = {
     desktop: {
       breakpoint: { max: 3000, min: 1024 },
@@ -27,7 +27,7 @@ export const CourseSlider = (props: ICourseSliderProps) => {
 
   return (
     <Carousel responsive={responsive} autoPlay={false} autoPlaySpeed={3000} infinite={true}>
-      {topCourse?.map((course, index) => (
+      {suggests?.map((course, index) => (
         <div key={index} style={{ height: '100%', padding: '5px' }}>
           <div className="shadow h-100" >
             <div style={{ height: '200px' }}>
@@ -40,6 +40,20 @@ export const CourseSlider = (props: ICourseSliderProps) => {
               <div className="">
                 <span>{course?.priceCourse?.basePrice}</span>
                 <span>{course?.priceCourse?.salePrice}</span>
+              </div>
+              <div className="mt-2 mb-2 d-flex">
+                <div className="iq-doc-description" style={{ textDecoration: course?.priceCourse?.salePrice && course?.priceCourse?.salePrice > 0 ? 'line-through' : 'none' }}>
+              <span>
+                <b style={{ color: course?.priceCourse?.salePrice && course?.priceCourse?.salePrice > 0 ? '#a09e9e' : '#089bab' }}>
+                  {formatCurrency(course?.priceCourse?.basePrice)}
+                </b>
+              </span>
+                </div>
+                {course?.priceCourse?.salePrice && course?.priceCourse?.salePrice > 0 ? (
+                  <div className="iq-doc-description ml-4 color-f2f">
+                    <b>{formatCurrency(course?.priceCourse?.salePrice)}</b>
+                  </div>
+                ) : null}
               </div>
             </div>
           </div>

@@ -15,7 +15,7 @@ export const CourseItem = (props: ICourseItemProps) => {
       <div className="row shadow bg-white rounded">
         <div className="col-md-6 col-ms-12 w-100 p-0">
           {course?.image ? (
-              <a><img className="w-100" src={`data:${course?.image_content_type};base64,${course?.image}`} /></a>
+              <a><img className="w-100" src={`data:${course?.imageContentType};base64,${course?.image}`} /></a>
           ) : (
               <a><img className="w-100" src="/theme/template/images/resource/course-34.jpg" /></a>
           )}
@@ -38,11 +38,11 @@ export const CourseItem = (props: ICourseItemProps) => {
                 </b>
               </span>
             </div>
-            {course?.priceCourse?.salePrice && course?.priceCourse?.salePrice > 0 && (
+            {course?.priceCourse?.salePrice && course?.priceCourse?.salePrice > 0 ? (
               <div className="iq-doc-description ml-4 color-f2f">
                 <b>{formatCurrency(course?.priceCourse?.salePrice)}</b>
               </div>
-            )}
+            ) : null}
           </div>
           <div className="justify-content-end">
             {course?.id ? (

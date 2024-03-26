@@ -15,7 +15,7 @@ export const CourseOfCategoryItem = (props: ICourseItemProps) => {
       <div className="shadow p-3">
         <div className="img" style={{ overflow: 'hidden' }} >
           {course?.image ? (
-            <img className="w-100" style={{ objectFit: 'cover', height: '250px', minHeight: '250px', maxHeight: '250px' }} src={`data:${course?.image_content_type};base64,${course?.image}`} />
+            <img className="w-100" style={{ objectFit: 'cover', height: '250px', minHeight: '250px', maxHeight: '250px' }} src={`data:${course?.imageContentType};base64,${course?.image}`} />
           ) : (
             <img className="w-100" style={{ objectFit: 'cover' }} src="/theme/template/images/resource/course-34.jpg" />
           )}
@@ -41,11 +41,11 @@ export const CourseOfCategoryItem = (props: ICourseItemProps) => {
                   </b>
                 </span>
               </div>
-              {course?.priceCourse?.salePrice && course?.priceCourse?.salePrice > 0 && (
+              {course?.priceCourse?.salePrice && course?.priceCourse?.salePrice > 0 ? (
                 <div className="iq-doc-description ml-4 color-f2f">
                   <b>{formatCurrency(course?.priceCourse?.salePrice)}</b>
                 </div>
-              )}
+              ) : null}
             </div>
           </div>
           <div className="w-100 d-flex justify-content-end">

@@ -12,21 +12,21 @@ declare type CourseProps = InferGetServerSidePropsType<typeof getServerSideProps
 
 export const getServerSideProps: GetServerSideProps<any, NodeJS.Dict<string>> = async ({ params: { id }, res }) => {
   const course = await courseService.getEntity(id);
-  const topCourse = await courseService.getTopCourses();
+  const suggests = await courseService.getSuggestCourses(id);
   const rating = await ratingService.getRatingByCourse(id);
   const ratingAVG = await ratingService.getRatingByCourseAVG(id);
-  if (course === null && topCourse === null) {
+  if (course === null && suggests === null) {
     res.statusCode = 404;
     return {
       props: { errorCode: 404 },
     };
   }
   return {
-    props: { course, rating, ratingAVG, topCourse },
+    props: { course, rating, ratingAVG, suggests },
   };
 };
 
-function Course({ course, errorCode, rating, ratingAVG, topCourse }: CourseProps) {
+function Course({ course, errorCode, rating, ratingAVG, suggests }: CourseProps) {
   if (errorCode) return <Error statusCode={errorCode} />;
   return (
     // @ts-ignore
@@ -64,7 +64,7 @@ function Course({ course, errorCode, rating, ratingAVG, topCourse }: CourseProps
                   </div>
                 )}
               </div>
-              {course?.priceCourse?.salePrice ? (
+              {course?.priceCourse?.salePrice > 0 ? (
                 <span>
                   Giá: {formatCurrency(course?.priceCourse?.salePrice)}
                 </span>
@@ -108,8 +108,8 @@ function Course({ course, errorCode, rating, ratingAVG, topCourse }: CourseProps
                     </ul>
                   </div>
                   <div>
-                    <h2 className="detail-course text-dark">Các Lớp học nổi bật</h2>
-                    <CourseSlider topCourse={topCourse?.data} />
+                    <h2 className="detail-course text-dark">Các Lớp học liên quan</h2>
+                    <CourseSlider suggests={suggests?.data} />
                   </div>
                   <h5>Yêu cầu</h5>
                   <ul className="learn-list-two">

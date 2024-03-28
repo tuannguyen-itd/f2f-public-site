@@ -116,7 +116,7 @@ function Room({ room, rating, userinfo, errorCode, toproom }: RoomProps) {
                     </li>
                   </ul>
                 </div>
-                <RoomSlider room={toproom?.data} />
+                <RoomSlider room={toproom?.data} size={3} />
                 <h2>Vị trí</h2>
                 <div className="map">
                   <Map mapStyle={{ height: '500px' }} location={location} />

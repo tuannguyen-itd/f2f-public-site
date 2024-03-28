@@ -30,6 +30,7 @@ export interface IRoom {
   basePrice?: number;
   salePrice?: number;
   priceRoom?: IPriceRoom;
+  averageRating?: any;
 }
 
 export const defaultValue: Readonly<IRoom> = {};

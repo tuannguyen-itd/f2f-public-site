@@ -4,17 +4,19 @@ import 'react-multi-carousel/lib/styles.css';
 import { formatCurrency, limitText } from '../shared/util/string-utils';
 import StatusComponent from '@components/course-status';
 import { IRoom } from '@model/room.model';
+import Link from 'next/link';
 
 interface ICourseSliderProps {
   room: IRoom[];
+  size: number;
 }
 
 export const RoomSlider = (props: ICourseSliderProps) => {
-  const { room } = props;
+  const { room, size } = props;
   const responsive = {
     desktop: {
       breakpoint: { max: 3000, min: 1024 },
-      items: 3,
+      items: size,
     },
     tablet: {
       breakpoint: { max: 1024, min: 464 },
@@ -25,13 +27,14 @@ export const RoomSlider = (props: ICourseSliderProps) => {
       items: 1,
     },
   };
+  // @ts-ignore
   return (
-    <Carousel responsive={responsive} autoPlay={false} autoPlaySpeed={3000} infinite={true}>
+    <Carousel responsive={responsive} autoPlay={true} autoPlaySpeed={3000} infinite={true}>
       {room?.map((item, index) => (
         <div key={index} className="iq-card pl-2 pr-2">
           <div className="iq-card-body text-center box-shadow-course w-100">
             <div className="doc-profile">
-              <img className="img-fluid" style={{ width: '100%', maxHeight: '126px', minHeight: '126px', objectFit: 'cover' }}
+                <img className="img-fluid" style={{ width: '100%', height: '215px', maxHeight: '215px', minHeight: '126px', objectFit: 'cover' }}
                    src={
                      item?.photos[0]?.image
                        ? `data:${item?.photos[0]?.imageContentType};base64,${item?.photos[0]?.image}`
@@ -40,8 +43,10 @@ export const RoomSlider = (props: ICourseSliderProps) => {
               />
             </div>
             <div className="iq-doc-info text-left p-2">
-              <div className="iq-doc-info text-sm-left">
-                <h6 className="text-dark title-course-name">{item?.name}</h6>
+              <div className="iq-doc-info text-sm-left ">
+                <Link href={`/rooms/${item?.id}`} as={`/rooms/${item?.id}`}>
+                  <h6 className="text-dark title-course-name cursor-pointer"><strong>{item?.name}</strong></h6>
+                </Link>
               </div>
               <div className="d-flex justify-content-between">
                 <div className="m-0 p-0">
@@ -49,6 +54,20 @@ export const RoomSlider = (props: ICourseSliderProps) => {
                   <StatusComponent status={item?.status}/>
                 </div>
               </div>
+              {item?.averageRating >= 0 && item?.countRating >= 0 ? (
+                <div className="rating d-flex">
+                  <span className="text-dark">Đánh giá:&nbsp;</span>
+                  <div style={{ color: '#fbb039' }}>
+                    {Array.from({ length: 5 }).map((_, index) => (
+                      <span key={index} className={`fa fa-star${index < item?.averageRating ? '' : '-o'}`}></span>
+                    ))}
+                  </div>
+                  {item.averageRating > 0 ?
+                    <strong>&nbsp;{Math.round(item.averageRating)}</strong>
+                    : null}
+                  <i>({item.countRating} Review{item.countRating !== 1 ? 's' : ''})</i>
+                </div>
+              ) : null}
               <div className="iq-doc-description mt-2 text-left">
                 {limitText(item?.description, 60)}
               </div>

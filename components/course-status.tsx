@@ -3,7 +3,7 @@ import { Badge } from 'reactstrap';
 import { CourseStatus as StatusEnum  } from '@model/enumerations/course-status.model';
 
 export interface IStatusDetailProps {
-  status: StatusEnum;
+  status?: any;
 }
 
 const StatusComponent = ({ status }: IStatusDetailProps) => {

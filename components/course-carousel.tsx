@@ -2,7 +2,9 @@ import React from 'react';
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 import { ICourse } from '@model/course.model';
-import { formatCurrency } from '../shared/util/string-utils';
+import { formatCurrency, limitText } from '../shared/util/string-utils';
+import { Badge } from 'reactstrap';
+import StatusComponent from '@components/course-status';
 
 interface ICourseSliderProps {
   suggests: ICourse[];
@@ -26,28 +28,56 @@ export const CourseSlider = (props: ICourseSliderProps) => {
   };
 
   return (
-    <Carousel responsive={responsive} autoPlay={false} autoPlaySpeed={3000} infinite={true}>
+    <Carousel responsive={responsive} autoPlay={true} autoPlaySpeed={3000} infinite={true}>
       {suggests?.map((course, index) => (
-        <div key={index} style={{ height: '100%', padding: '5px' }}>
-          <div className="shadow h-100" >
-            <div style={{ height: '200px' }}>
-              <img className="h-100 w-100" style={{ objectFit: 'cover' }} src={`data:${course?.image_content_type};base64,${course?.image}`} alt={course?.name} />
+        <div key={index} className="iq-card pl-2 pr-2">
+          <div className="iq-card-body text-center box-shadow-course">
+            <div className="doc-profile">
+              <img className="img-fluid" style={{ maxHeight: '126px', minHeight: '126px', width: '100%', objectFit: 'cover' }}
+                   src={
+                     course?.image
+                       ? `data:${course?.imageContentType};base64,${course?.image}`
+                       : '/content/images/default-image-1.jpg'
+                   }
+              />
             </div>
-            <div className="d-flex flex-column">
-              <h4 style={{ fontSize: '16px', height: '18px', color: '#000000' }}><strong>{course?.name}</strong></h4>
-              <div><span  style={{ backgroundColor: '#d1d0d0', padding: '0 2px', borderRadius: '5px', fontSize: '11px' }}>#{course?.categories[0]?.name}</span></div>
-              <span><strong className="testbg" style={{ backgroundColor: 'green', borderRadius: '5px', color: '#ffffff', fontSize: '10px', lineHeight: '14px', padding: '0 5px' }}>{course?.status}</strong></span>
-              <div className="">
-                <span>{course?.priceCourse?.basePrice}</span>
-                <span>{course?.priceCourse?.salePrice}</span>
+            <div className="iq-doc-info text-left p-2">
+              <div className="iq-doc-info text-sm-left">
+                <h6 className="text-dark title-course-name">{course?.name}</h6>
               </div>
-              <div className="mt-2 mb-2 d-flex">
+              {course.categories.length > 0 && (
+                <div className="box-tag-category">
+                  #{course.categories[0]?.name}
+                </div>
+              )}
+              <div className="d-flex justify-content-between">
+                <div className="m-0 p-0">
+                  <span className="mr-2 title-status">Số lượng:</span>
+                  {course?.learners?.length < course?.amount ? (
+                    <Badge className="slide-status" color="success">
+                      {course?.learners.length}/{course?.amount}
+                    </Badge>
+                  ) : (
+                    <Badge color="danger">
+                      Full
+                    </Badge>
+                  )}
+                </div>
+                <div className="m-0 p-0">
+                  <span className="mr-2 title-status">Trạng thái:</span>
+                  <StatusComponent status={course?.status}/>
+                </div>
+              </div>
+              <div className="iq-doc-description mt-2 text-left">
+                {limitText(course?.description, 60)}
+              </div>
+              <div className="d-flex justify-content-end">
                 <div className="iq-doc-description" style={{ textDecoration: course?.priceCourse?.salePrice && course?.priceCourse?.salePrice > 0 ? 'line-through' : 'none' }}>
-              <span>
-                <b style={{ color: course?.priceCourse?.salePrice && course?.priceCourse?.salePrice > 0 ? '#a09e9e' : '#089bab' }}>
-                  {formatCurrency(course?.priceCourse?.basePrice)}
-                </b>
-              </span>
+                <span>
+                  <b style={{ color: course?.priceCourse?.salePrice && course?.priceCourse?.salePrice > 0 ? '#a09e9e' : '#43b97e' }}>
+                    {formatCurrency(course?.priceCourse?.basePrice)}
+                  </b>
+                </span>
                 </div>
                 {course?.priceCourse?.salePrice && course?.priceCourse?.salePrice > 0 ? (
                   <div className="iq-doc-description ml-4 color-f2f">

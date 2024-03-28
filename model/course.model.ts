@@ -5,6 +5,7 @@ import { IRoomTutorBooking } from '@model/room-tutor-booking.model';
 import { IBooking } from '@model/booking.model';
 import { IPriceCourse } from '@model/price-course.model';
 import { ICategory } from '@model/category.model';
+import { ILearner } from '@model/learner.model';
 
 export interface ICourse {
   id?: number;
@@ -27,6 +28,7 @@ export interface ICourse {
   priceCourseId?: number;
   priceCourse?: IPriceCourse;
   categories?: ICategory[];
+  learners?: ILearner[];
 }
 
 export const defaultValue: Readonly<ICourse> = {};

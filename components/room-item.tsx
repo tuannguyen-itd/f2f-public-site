@@ -14,11 +14,11 @@ export const RoomItem = (props: IRoomItemProps) => {
     <div className="col-md-12 w-100" >
       <div className="row shadow bg-white rounded">
         <div className="col-md-6 col-ms-12 w-100 p-0" style={{ width: '100%' }}>
-          <div>
+          <div className="h-100">
             {room?.image ? (
-              <img className="w-100" src={`data:${room?.imageContentType};base64,${room?.image}`} alt={room?.description} />
+              <img className="w-100 h-100" style={{ objectFit: 'cover' }} src={`data:${room?.imageContentType};base64,${room?.image}`} alt={room?.description} />
             ) :
-              <img className="w-100" src="/theme/template/images/resource/course-34.jpg" />
+              <img className="w-100 h-100" style={{ objectFit: 'cover' }} src="/theme/template/images/resource/course-34.jpg" />
             }
           </div>
         </div>

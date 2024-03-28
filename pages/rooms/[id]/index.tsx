@@ -8,11 +8,13 @@ import Link from 'next/link';
 import Map from '@components/map';
 import { ratingService } from '@services/rating.service';
 import { formatCurrency } from '../../../shared/util/string-utils';
+import { RoomSlider } from '@components/room-carousel';
 
 declare type RoomProps = InferGetServerSidePropsType<typeof getServerSideProps>;
 
 export const getServerSideProps: GetServerSideProps<any, NodeJS.Dict<string>> = async ({ params: { id }, res }) => {
   const room = await roomService.getEntity(id);
+  const toproom = await roomService.getTopRoom();
   const rating = await  ratingService.getEntity(id);
   const userinfo = await userService.getEntity(room?.place?.landlord?.userId);
   if (room === null) {
@@ -23,13 +25,13 @@ export const getServerSideProps: GetServerSideProps<any, NodeJS.Dict<string>> = 
   }
 
   return {
-    props: { room, rating, userinfo },
+    props: { room, rating, userinfo, toproom },
   };
 };
 
-function Room({ room, rating, userinfo, errorCode }: RoomProps) {
+function Room({ room, rating, userinfo, errorCode, toproom }: RoomProps) {
   if (errorCode) return <Error statusCode={errorCode} />;
-  const location = room && room.place ? { lat: room.place.lat, lng: room.place.lng } : null;
+  const location = room && room?.place ? { lat: room?.place?.lat, lng: room?.place?.lng } : null;
   return (
     <Layout>
       <section className="contact-banner-section event-detail-banner-section">
@@ -46,10 +48,10 @@ function Room({ room, rating, userinfo, errorCode }: RoomProps) {
             </Link>
             </li>
             <li>Room</li>
-            <li>{room.name}</li>
+            <li>{room?.name}</li>
           </ul>
           <div className="content-box">
-            <h1 className="text-dark">{room.name}</h1>
+            <h1 className="text-dark">{room?.name}</h1>
           </div>
         </div>
       </section>
@@ -61,11 +63,11 @@ function Room({ room, rating, userinfo, errorCode }: RoomProps) {
                 {/* slider */}
                 <div id="carouselExampleControls" className="carousel slide" data-ride="carousel">
                   <div className="carousel-inner">
-                    {room.photos && Array.isArray(room.photos) && room.photos.length > 0 ? (
-                      room.photos.map((photo, index) => (
-                        <div className={`carousel-item ${index === 0 ? 'active' : ''}`} key={photo.id} style={{ height:'100%', width: '100%' }}>
-                          {photo.imageContentType ? (
-                            <img src={`data:${photo.imageContentType};base64,${photo.image}`} alt=""  style={{ height:'500px', width: '100%' }}/>
+                    {room?.photos && Array?.isArray(room?.photos) && room?.photos?.length > 0 ? (
+                      room?.photos?.map((photo, index) => (
+                        <div className={`carousel-item ${index === 0 ? 'active' : ''}`} key={photo?.id} style={{ height:'100%', width: '100%' }}>
+                          {photo?.imageContentType ? (
+                            <img src={`data:${photo?.imageContentType};base64,${photo?.image}`} alt=""  style={{ height:'500px', width: '100%' }}/>
                           ) : null}
                         </div>
                       ))
@@ -82,7 +84,7 @@ function Room({ room, rating, userinfo, errorCode }: RoomProps) {
                 </div>
                 {/* end slider */}
                 <div className="learn-box mt-5">
-                  <h2 className="text-dark mb-2">Thông tin phòng {room.name}</h2>
+                  <h2 className="text-dark mb-2">Thông tin phòng {room?.name}</h2>
                   <ul className="learn-list">
                     <li>
                       <p>Địa chỉ:
@@ -92,11 +94,11 @@ function Room({ room, rating, userinfo, errorCode }: RoomProps) {
                     </li>
                     <li>
                       <p>Vị trí:
-                        {room.location ? `${room.location}, ` : ''}
+                        {room?.location ? `${room?.location}, ` : ''}
                       </p>
                     </li>
                     <li className="text-nowrap">
-                     {room.status === 'OPEN' ? <p> Tình trạng: Đang mở</p> : <p> Tình trạng: Đóng cửa</p>}
+                     {room?.status === 'OPEN' ? <p> Tình trạng: Đang mở</p> : <p> Tình trạng: Đóng cửa</p>}
                     </li>
                     <li>
                       {room?.priceRoom?.salePrice ? (
@@ -110,10 +112,11 @@ function Room({ room, rating, userinfo, errorCode }: RoomProps) {
                       )}
                     </li>
                     <li>
-                      <p>{room.description}</p>
+                      <p>{room?.description}</p>
                     </li>
                   </ul>
                 </div>
+                <RoomSlider room={toproom?.data} />
                 <h2>Vị trí</h2>
                 <div className="map">
                   <Map mapStyle={{ height: '500px' }} location={location} />
@@ -127,21 +130,21 @@ function Room({ room, rating, userinfo, errorCode }: RoomProps) {
                       {rating?.ratingRooms?.map((item, index) => (
                         <div className="comment" key={index}>
                           <div className="author-thumb">
-                            <img src={`data:${item.userInfo.avatarContentType};base64,${item.userInfo.avatar}`} alt=""/>
+                            <img src={`data:${item?.userInfo?.avatarContentType};base64,${item?.userInfo?.avatar}`} alt=""/>
                           </div>
                           <div className="comment-info clearfix">
-                            <strong>{`${item.userInfo.user.firstName} ${item.userInfo.user.lastName}`}</strong>
-                            {item.rate >= 0 ? (
+                            <strong>{`${item?.userInfo?.user?.firstName} ${item?.userInfo?.user?.lastName}`}</strong>
+                            {item?.rate >= 0 ? (
                               <div className="rating">
-                                <span className={`fa ${item.rate >= 0.5 ? 'fa-star' : 'fa-star-o'}`} />
-                                <span className={`fa ${item.rate >= 1.5 ? 'fa-star' : 'fa-star-o'}`} />
-                                <span className={`fa ${item.rate >= 2.5 ? 'fa-star' : 'fa-star-o'}`} />
-                                <span className={`fa ${item.rate >= 3.5 ? 'fa-star' : 'fa-star-o'}`} />
-                                <span className={`fa ${item.rate >= 4.5 ? 'fa-star' : 'fa-star-o'}`} />
+                                <span className={`fa ${item?.rate >= 0.5 ? 'fa-star' : 'fa-star-o'}`} />
+                                <span className={`fa ${item?.rate >= 1.5 ? 'fa-star' : 'fa-star-o'}`} />
+                                <span className={`fa ${item?.rate >= 2.5 ? 'fa-star' : 'fa-star-o'}`} />
+                                <span className={`fa ${item?.rate >= 3.5 ? 'fa-star' : 'fa-star-o'}`} />
+                                <span className={`fa ${item?.rate >= 4.5 ? 'fa-star' : 'fa-star-o'}`} />
                               </div>
                             ) : ''}
                           </div>
-                          <div className="text">{item.comment}</div>
+                          <div className="text">{item?.comment}</div>
                         </div>
                       ))}
                     </div>
@@ -153,10 +156,10 @@ function Room({ room, rating, userinfo, errorCode }: RoomProps) {
               <div className="inner-column mt-5">
                 <h3 className="text-nowrap mb-3">Thông tin liên hệ</h3>
                 <div className="image w-100 d-flex align-items-center justify-content-center mb-4">
-                  <Link href="/landlord/[id]" as={`/landlord/${room.place.landlord.id}`}>
+                  <Link href="/landlord/[id]" as={`/landlord/${room?.place?.landlord?.id}`}>
                     <a>
-                      {room.place.landlord.logoContentType ? (
-                        <img src={`data:${room.place.landlord.logoContentType};base64,${room.place.landlord.logo}`} alt="Thông tin liên hệ" style={{ width: '150px' }}/>
+                      {room?.place?.landlord?.logoContentType ? (
+                        <img src={`data:${room?.place?.landlord?.logoContentType};base64,${room?.place?.landlord?.logo}`} alt="Thông tin liên hệ" style={{ width: '150px' }}/>
                       ) : null}
                     </a>
                   </Link>
@@ -177,10 +180,10 @@ function Room({ room, rating, userinfo, errorCode }: RoomProps) {
 
                 </div>
                 <div className="btns-box text-center">
-                  <Link href={`${process.env.NEXT_PUBLIC_ADMIN_URL}/room/${room.id}`} as={`${process.env.NEXT_PUBLIC_ADMIN_URL}/room/${room.id}`}>
+                  <Link href={`${process.env.NEXT_PUBLIC_ADMIN_URL}/room/${room?.id}`} as={`${process.env.NEXT_PUBLIC_ADMIN_URL}/room/${room?.id}`}>
                   <a className="theme-btn enrol-btn ">Liên hệ</a>
                   </Link>
-                  <Link href={'/landlord/{id}'} as={`/landlord/${room.place.landlord.id}`}>
+                  <Link href={'/landlord/{id}'} as={`/landlord/${room?.place?.landlord?.id}`}>
                    <a href="#" className="theme-btn wishlist-btn">Các phòng khác</a>
                   </Link>
                 </div>

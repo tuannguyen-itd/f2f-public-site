@@ -15,9 +15,9 @@ export const CourseItem = (props: ICourseItemProps) => {
       <div className="row shadow bg-white rounded">
         <div className="col-md-6 col-ms-12 w-100 p-0">
           {course?.image ? (
-              <a><img className="w-100" src={`data:${course?.imageContentType};base64,${course?.image}`} /></a>
+              <a><img className="w-100 h-100" style={{ objectFit: 'cover' }} src={`data:${course?.imageContentType};base64,${course?.image}`} /></a>
           ) : (
-              <a><img className="w-100" src="/theme/template/images/resource/course-34.jpg" /></a>
+              <a><img className="w-100 h-100" style={{ objectFit: 'cover' }} src="/theme/template/images/resource/course-34.jpg" /></a>
           )}
         </div>
         <div className="col-md-6 col-ms-12 d-flex flex-column">

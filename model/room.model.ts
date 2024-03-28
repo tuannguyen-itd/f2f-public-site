@@ -4,6 +4,7 @@ import { IPhoto } from '@model/photo.model';
 import { IPlace } from '@model/place.model';
 import { IWard } from '@model/ward.model';
 import { ILandlord } from '@model/landlord.model';
+import { IPriceRoom } from '@model/price-room.model';
 
 export interface IRoom {
   id?: number;
@@ -28,6 +29,7 @@ export interface IRoom {
   countRating?: any;
   basePrice?: number;
   salePrice?: number;
+  priceRoom?: IPriceRoom;
 }
 
 export const defaultValue: Readonly<IRoom> = {};

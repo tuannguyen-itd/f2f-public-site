@@ -75,13 +75,13 @@ export const RoomSlider = (props: ICourseSliderProps) => {
                 <div className="iq-doc-description" style={{ textDecoration: item?.priceRoom?.salePrice && item?.priceRoom?.salePrice > 0 ? 'line-through' : 'none' }}>
                 <span>
                   <b style={{ color: item?.priceRoom?.salePrice && item?.priceRoom?.salePrice > 0 ? '#a09e9e' : '#43b97e' }}>
-                    {formatCurrency(item?.priceRoom?.basePrice)}
+                    {formatCurrency(item?.priceRoom?.basePrice ? item?.priceRoom?.basePrice : 0)}
                   </b>
                 </span>
                 </div>
                 {item?.priceRoom?.salePrice && item?.priceRoom?.salePrice > 0 ? (
                   <div className="iq-doc-description ml-4 color-f2f">
-                    <b>{formatCurrency(item?.priceRoom?.salePrice)}</b>
+                    <b>{formatCurrency(item?.priceRoom?.salePrice ? item?.priceRoom?.salePrice : 0)}</b>
                   </div>
                 ) : null}
               </div>

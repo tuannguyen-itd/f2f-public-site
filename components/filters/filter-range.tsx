@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Range } from 'react-range';
+import { formatCurrency } from '../../shared/util/string-utils';
 
 interface IRangeProps {
   onFilterChange: (minPrice: number, maxPrice: number) => void;
@@ -14,18 +15,6 @@ const FilterRange = (props: IRangeProps) => {
     const newMaxPrice = Math.max(newValues[1], minPrice);
 
     setMinPrice(newMinPrice);
-    setMaxPrice(newMaxPrice);
-  };
-
-  const handleMinPriceChange = (e) => {
-    const inputValue = e.target.value.trim();
-    const newMinPrice = inputValue === '' || inputValue === null ? 0 : Math.min(parseInt(inputValue, 10), maxPrice);
-    setMinPrice(newMinPrice);
-  };
-
-  const handleMaxPriceChange = (e) => {
-    const inputValue = e.target.value.trim();
-    const newMaxPrice = inputValue === '' || inputValue === null ? 0 : Math.min(parseInt(inputValue, 10), 5000000);
     setMaxPrice(newMaxPrice);
   };
 
@@ -84,14 +73,14 @@ const FilterRange = (props: IRangeProps) => {
           <input
             className="filter-range"
             type="text"
-            value={minPrice}
-            onChange={handleMinPriceChange}
+            value={formatCurrency(minPrice)}
+            onChange={(e) => setMinPrice(parseFloat(e.target.value.replace(/[^0-9]/g, '')) || 0)}
           />
           <input
-            className="filter-range ml-2"
+            className="filter-range"
             type="text"
-            value={maxPrice}
-            onChange={handleMaxPriceChange}
+            value={formatCurrency(maxPrice)}
+            onChange={(e) => setMaxPrice(parseFloat(e.target.value.replace(/[^0-9]/g, '')) || 0)}
           />
         </div>
         <button className="btn" style={{ backgroundColor: '#43b97e', color: '#fff' }} onClick={handleFilterClick}>Lọc</button>

@@ -8,18 +8,19 @@ import Error from 'next/error';
 
 import { ITEMS_PER_PAGE } from '../../shared/util/pagination.constants';
 import { latLngDefault } from '../../config/constants';
-import Map from '@components/map';
 import { roomService } from '@services/room.service';
 import { RoomItem } from '@components/room-item';
 import AddressSelector, { IAddressState } from '@components/address-selector/address-selector';
 import FilterRange from '@components/filters/filter-range';
-import {RoomSlider} from '@components/room-carousel';
+import { RoomSlider } from '@components/room-carousel';
+import dynamic from 'next/dynamic';
 
 declare type RoomsProps = InferGetServerSidePropsType<typeof getServerSideProps>;
 
-export const getServerSideProps: GetServerSideProps<any, NodeJS.Dict<string>> = async ({ query: { search, page = 1, provinceId, districtId,  wardId, minPrice, maxPrice }, res }) => {
+export const getServerSideProps: GetServerSideProps<any, NodeJS.Dict<string>> = async ({ query: { search, page = 1, provinceId, districtId,  wardId, minPrice, maxPrice, lat, lng }, res }) => {
   const menus = [];
-  const response = await roomService.getAllRooms(+page - 1, ITEMS_PER_PAGE, 'id', 'desc', search, provinceId || null , districtId || null , wardId || null, minPrice || null , maxPrice || null);
+  const response = await roomService.getAllRooms(+page - 1, ITEMS_PER_PAGE, 'id', 'desc', search, provinceId || null,
+    districtId || null, wardId || null, minPrice || null, maxPrice || null, lat || null, lng || null);
   const topRoomseller = await roomService.getTopRoomseller();
   if (response === null) {
     res.statusCode = 404;
@@ -47,24 +48,22 @@ export default function Rooms({ menus, errorCode, response, topRoomseller }: Roo
   });
 
   useEffect(() => {
-    setLocation(location);
-  }, [location]);
-
-  useEffect(() => {
     setWardId(address.wardId);
     setDistrictId(address.districtId);
     setProvinceId(address.provinceId);
 
-    router.push(url(1, null, address.provinceId, address.districtId, address.wardId, filterValues.minPrice, filterValues.maxPrice), undefined);
+    router.push(url(1, null, address.provinceId, address.districtId, address.wardId, filterValues.minPrice, filterValues.maxPrice, null, null), undefined);
   }, [address, provinceId, districtId, wardId, filterValues]);
 
-  const url = (page, searchStr, provinceId, districtId, wardId, minPrice, maxPrice) => {
+  const url = (page, searchStr, provinceId, districtId, wardId, minPrice, maxPrice, lat, lng) => {
     const params = Object.entries({
       provinceId,
       districtId,
       wardId,
       minPrice,
       maxPrice,
+      lat,
+      lng,
       page: (page || 1) > 1 ? page : false,
       search: searchStr,
     })
@@ -74,11 +73,11 @@ export default function Rooms({ menus, errorCode, response, topRoomseller }: Roo
     return `/rooms${params ? `?${params}` : ''}`;
   };
 
-  const handlePaginateChange = value => +value && router.push(url(+value, search, provinceId, districtId, wardId, filterValues.minPrice, filterValues.maxPrice), undefined);
+  const handlePaginateChange = value => +value && router.push(url(+value, search, provinceId, districtId, wardId, filterValues.minPrice, filterValues.maxPrice, location.lat, location.lng), undefined);
 
   const handleSearchCourses = (event) => {
     event.preventDefault();
-    router.push(url(1, search, null, null, null, null, null), undefined);
+    router.push(url(1, search, null, null, null, null, null, null, null), undefined);
   };
 
   const onHandleCenterHover = (lat, lng) => {
@@ -88,6 +87,14 @@ export default function Rooms({ menus, errorCode, response, topRoomseller }: Roo
   const toggleFilter = () => {
     setIsFilterOpen(!isFilterOpen);
   };
+
+  const handleMapClick = (newLocation) => {
+    setLocation(newLocation);
+    router.push(url(1, null, address.provinceId, address.districtId, address.wardId, filterValues.minPrice, filterValues.maxPrice, newLocation.lat, newLocation.lng), undefined);
+  };
+
+  const MapLeaflet = dynamic(() => import('@components/map-leaflet'), { ssr: false });
+
   return (
     // @ts-ignore
     <Layout menus={menus}>
@@ -152,7 +159,8 @@ export default function Rooms({ menus, errorCode, response, topRoomseller }: Roo
             </div>
             <div className="col-lg-6 col-md-12">
               <div className="map-sticky">
-                <Map mapStyle={{ height: '95vh' }} location={location} />
+                {/*<Map mapStyle={{ height: '95vh' }} location={location} />*/}
+                <MapLeaflet location={location} onMapClick={handleMapClick}/>
               </div>
             </div>
           </div>

@@ -15,6 +15,7 @@
     "availity-reactstrap-validation": "^2.7.1",
     "bootstrap": "^4.5.0",
     "facebook-sdk": "^0.3.3",
+    "leaflet": "^1.9.4",
     "moment": "^2.29.1",
     "moment-timezone": "^0.5.43",
     "next": "^9.4.4",

@@ -38,7 +38,7 @@ export const RoomSlider = (props: ICourseSliderProps) => {
                    src={
                      item?.photos[0]?.image
                        ? `data:${item?.photos[0]?.imageContentType};base64,${item?.photos[0]?.image}`
-                       : '/content/images/default-image-1.jpg'
+                       : '/theme/template/images/resource/course-34.jpg'
                    }
               />
             </div>

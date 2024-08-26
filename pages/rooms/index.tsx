@@ -17,10 +17,11 @@ import dynamic from 'next/dynamic';
 
 declare type RoomsProps = InferGetServerSidePropsType<typeof getServerSideProps>;
 
-export const getServerSideProps: GetServerSideProps<any, NodeJS.Dict<string>> = async ({ query: { search, page = 1, provinceId, districtId,  wardId, minPrice, maxPrice, lat, lng }, res }) => {
+export const getServerSideProps: GetServerSideProps<any, NodeJS.Dict<string>> = async ({ query: { search, page = 1, provinceId, districtId,  wardId,
+  minPrice, maxPrice, lat, lng, areaRange }, res }) => {
   const menus = [];
   const response = await roomService.getAllRooms(+page - 1, ITEMS_PER_PAGE, 'id', 'desc', search, provinceId || null,
-    districtId || null, wardId || null, minPrice || null, maxPrice || null, lat || null, lng || null);
+    districtId || null, wardId || null, minPrice || null, maxPrice || null, lat || null, lng || null, areaRange || null);
   const topRoomseller = await roomService.getTopRoomseller();
   if (response === null) {
     res.statusCode = 404;
@@ -46,16 +47,17 @@ export default function Rooms({ menus, errorCode, response, topRoomseller }: Roo
     minPrice: 0,
     maxPrice: 0,
   });
+  const [areaRange, setAreaRange] = useState<string>();
 
   useEffect(() => {
     setWardId(address.wardId);
     setDistrictId(address.districtId);
     setProvinceId(address.provinceId);
 
-    router.push(url(1, null, address.provinceId, address.districtId, address.wardId, filterValues.minPrice, filterValues.maxPrice, null, null), undefined);
-  }, [address, provinceId, districtId, wardId, filterValues]);
+    router.push(url(1, null, address.provinceId, address.districtId, address.wardId, filterValues.minPrice, filterValues.maxPrice, null, null, areaRange), undefined);
+  }, [address, provinceId, districtId, wardId, filterValues, areaRange]);
 
-  const url = (page, searchStr, provinceId, districtId, wardId, minPrice, maxPrice, lat, lng) => {
+  const url = (page, searchStr, provinceId, districtId, wardId, minPrice, maxPrice, lat, lng, areaRange) => {
     const params = Object.entries({
       provinceId,
       districtId,
@@ -64,6 +66,7 @@ export default function Rooms({ menus, errorCode, response, topRoomseller }: Roo
       maxPrice,
       lat,
       lng,
+      areaRange,
       page: (page || 1) > 1 ? page : false,
       search: searchStr,
     })
@@ -73,11 +76,12 @@ export default function Rooms({ menus, errorCode, response, topRoomseller }: Roo
     return `/rooms${params ? `?${params}` : ''}`;
   };
 
-  const handlePaginateChange = value => +value && router.push(url(+value, search, provinceId, districtId, wardId, filterValues.minPrice, filterValues.maxPrice, location.lat, location.lng), undefined);
+  const handlePaginateChange = value =>
+    +value && router.push(url(+value, search, provinceId, districtId, wardId, filterValues.minPrice, filterValues.maxPrice, location.lat, location.lng, areaRange), undefined);
 
   const handleSearchCourses = (event) => {
     event.preventDefault();
-    router.push(url(1, search, null, null, null, null, null, null, null), undefined);
+    router.push(url(1, search, null, null, null, null, null, null, null, null), undefined);
   };
 
   const onHandleCenterHover = (lat, lng) => {
@@ -90,10 +94,14 @@ export default function Rooms({ menus, errorCode, response, topRoomseller }: Roo
 
   const handleMapClick = (newLocation) => {
     setLocation(newLocation);
-    router.push(url(1, null, address.provinceId, address.districtId, address.wardId, filterValues.minPrice, filterValues.maxPrice, newLocation.lat, newLocation.lng), undefined);
+    router.push(url(1, null, address.provinceId, address.districtId, address.wardId, filterValues.minPrice, filterValues.maxPrice, newLocation.lat, newLocation.lng, areaRange), undefined);
   };
 
   const MapLeaflet = dynamic(() => import('@components/map-leaflet'), { ssr: false });
+
+  const handleAreaRangeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setAreaRange(e.target.value);
+  };
 
   return (
     // @ts-ignore
@@ -132,12 +140,88 @@ export default function Rooms({ menus, errorCode, response, topRoomseller }: Roo
               </div>
             </div>
             {isFilterOpen && (
-              <div className="position-absolute bg-white shadow p-4 w-100" style={{ zIndex: 100 }} >
+              <div className="position-absolute bg-white shadow p-4 w-100" style={{ zIndex: 1001 }} >
                 <h5 className="font-weight-bold text-dark">Lọc theo vị trí</h5>
-                <div className="d-flex">
+                <div className="row">
                   <AddressSelector onSelect={setAddress} values={address} col="4" className="form-control" />
                 </div>
                 <FilterRange onFilterChange={(minPrice, maxPrice) => setFilterValues({ minPrice, maxPrice })} />
+                <h5 className="font-weight-bold text-dark mt-3 mb-3">Lọc theo diện tích</h5>
+                <div className="form-group">
+                  <div className="row">
+                    <div className="col-md-6">
+                      <div className="form-check">
+                        <Input
+                          type="radio"
+                          id="areaUnder20"
+                          name="areaRange"
+                          value="0-20"
+                          checked={areaRange === '0-20'}
+                          onChange={handleAreaRangeChange}
+                        />
+                        <label htmlFor="areaUnder20" className="form-check-label">Dưới 20 m²</label>
+                      </div>
+                      <div className="form-check">
+                        <Input
+                          type="radio"
+                          id="area20to30"
+                          name="areaRange"
+                          value="20-30"
+                          checked={areaRange === '20-30'}
+                          onChange={handleAreaRangeChange}
+                        />
+                        <label htmlFor="area20to30" className="form-check-label">Từ 20 - 30 m²</label>
+                      </div>
+                      <div className="form-check">
+                        <Input
+                          type="radio"
+                          id="area30to50"
+                          name="areaRange"
+                          value="30-50"
+                          checked={areaRange === '30-50'}
+                          onChange={handleAreaRangeChange}
+                        />
+                        <label htmlFor="area30to50" className="form-check-label">Từ 30 - 50 m²</label>
+                      </div>
+                    </div>
+
+                    <div className="col-md-6">
+                      <div className="form-check">
+                        <Input
+                          type="radio"
+                          id="area50to70"
+                          name="areaRange"
+                          value="50-70"
+                          checked={areaRange === '50-70'}
+                          onChange={handleAreaRangeChange}
+                        />
+                        <label htmlFor="area50to70" className="form-check-label">Từ 50 - 70 m²</label>
+                      </div>
+                      <div className="form-check">
+                        <Input
+                          type="radio"
+                          id="area70to90"
+                          name="areaRange"
+                          value="70-90"
+                          checked={areaRange === '70-90'}
+                          onChange={handleAreaRangeChange}
+                        />
+                        <label htmlFor="area70to90" className="form-check-label">Từ 70 - 90 m²</label>
+                      </div>
+                      <div className="form-check">
+                        <Input
+                          type="radio"
+                          id="areaOver90"
+                          name="areaRange"
+                          value="90"
+                          checked={areaRange === '90'}
+                          onChange={handleAreaRangeChange}
+                        />
+                        <label htmlFor="areaOver90" className="form-check-label">Trên 90 m²</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             )}
           </div>

@@ -71,7 +71,15 @@ function Room({ room, rating, userinfo, errorCode, toproom }: RoomProps) {
                           ) : null}
                         </div>
                       ))
-                    ) : null}
+                    ) : (
+                      <div className="carousel-item active" style={{ height: '100%', width: '100%' }}>
+                        <img
+                          src="/theme/template/images/resource/course-34.jpg"
+                          alt="Default"
+                          style={{ height: '500px', width: '100%' }}
+                        />
+                      </div>
+                    )}
                   </div>
                   <a className="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
                     <span className="carousel-control-prev-icon" aria-hidden="true"></span>

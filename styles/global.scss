@@ -61,11 +61,6 @@ $border-color: #212529;
 .line-through{
   text-decoration: line-through;
 }
-.fillter-price{
-  display: flex;
-  justify-content: space-evenly;
-  align-items: center;
-}
 //courses
 .content-box{
   .box-cource-name{
@@ -100,12 +95,6 @@ $border-color: #212529;
   .box-descrip{
     font-size: 15px;
   }
-}
-.filter-range {
-  width: 150px;
-  padding: 5px;
-  border: 1px solid #ccc;
-  border-radius: 5px
 }
 .sub-category-name {
   width: 100%;
@@ -181,3 +170,93 @@ $border-color: #212529;
   color: #ffffff;
   cursor: pointer;
 }
+.filter-price {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  > div {
+    margin-right: 10px;
+  }
+
+  .range {
+    display: flex;
+    justify-content: space-between;
+
+    .filter-range {
+      width: 150px;
+      padding: 5px;
+      border: 1px solid #ccc;
+      border-radius: 5px
+    }
+  }
+  button {
+    background-color: #43b97e;
+    color: #fff;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+}
+
+@media (max-width: 992px) {
+  .range {
+    flex-wrap: wrap;
+
+    input:first-child {
+      margin-bottom: 10px;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .filter-price {
+    display: flex;
+    flex-direction: column;
+
+    > div {
+      width: 100% !important;
+      margin-right: 0px;
+    }
+  }
+
+  .range {
+    flex-direction: column;
+    align-items: flex-start;
+    margin-top: 10px;
+  }
+
+  .filter-range {
+    width: 100% !important;
+    margin-bottom: 0.5rem;
+  }
+
+  button {
+    width: 100%;
+  }
+
+  .range .filter-range {
+    margin-bottom: 0.5rem;
+  }
+
+  .range div {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .range {
+    width: 100%;
+  }
+
+  button {
+    width: 100%;
+  }
+
+  .filter-price {
+    margin-top: 1.5rem;
+  }
+}
+

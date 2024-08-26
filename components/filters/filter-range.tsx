@@ -25,7 +25,7 @@ const FilterRange = (props: IRangeProps) => {
   return (
     <>
       <h5 className="font-weight-bold text-dark mt-4">Lọc theo giá</h5>
-      <div className="fillter-price mt-2">
+      <div className="filter-price mt-2">
         <Range
           step={50000}
           min={0}
@@ -69,7 +69,7 @@ const FilterRange = (props: IRangeProps) => {
             />
           )}
         />
-        <div>
+        <div className="range">
           <input
             className="filter-range"
             type="text"

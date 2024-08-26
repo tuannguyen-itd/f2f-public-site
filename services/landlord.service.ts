@@ -2,6 +2,7 @@ import { baseService, IService, makeRequestUrl } from './base.service';
 import { ILandlord } from '@model/landlord.model';
 
 interface ILandlordService<T> extends IService<ILandlord> {
+  getLandlords : (page, size, sort, order, search) => Promise<{ data: T[] } | null>;
   getTopLandlord: (query: any) => Promise<{ data: T[] } | null>;
   getRoomByLandlord: (id?: number | string, page?: number) => Promise<{ data: T[] } | null>;
 }
@@ -11,9 +12,10 @@ export const landlordService: ILandlordService<ILandlord> = {
   apiPath: 'landlords',
   v2Api: ['*'],
 
-  async getEntities(page, size, sort, order, filters) {
-    const baseUrl = this.getApiUrl('getEntities'); /*api/v2/landlords*/
-    const url = makeRequestUrl(baseUrl, page, size, sort, order, filters);
+  async getLandlords(page, size, sort, order, search) {
+    const encodedSearch = encodeURIComponent(search || '');
+    const url = `${process.env.API_URL}/api/v2/landlords?page=${page || ''}&size=${size || ''}
+    &sort=${sort || ''},&order=${order || ''}&search=${encodedSearch || ''}`;
     const res = await fetch(url);
     if (res?.ok) {
       const data = await res.json();

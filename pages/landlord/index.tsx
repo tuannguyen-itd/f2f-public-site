@@ -13,9 +13,8 @@ declare type CoursesProps = InferGetServerSidePropsType<typeof getServerSideProp
 
 export const getServerSideProps: GetServerSideProps<any, NodeJS.Dict<string>> = async ({ query: { search, page = 1 }, res }) => {
   const menus = [];
-  const response = await landlordService.getEntities(
-    +page - 1, ITEMS_PER_PAGE, 'id', 'desc',
-    { 'name.contains': search as string },
+  const response = await landlordService.getLandlords(
+    +page - 1, ITEMS_PER_PAGE, 'id', 'desc', search,
   );
 
   if (response === null) {

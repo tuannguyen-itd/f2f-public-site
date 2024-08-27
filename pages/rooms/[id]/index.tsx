@@ -120,7 +120,7 @@ function Room({ room, rating, userinfo, errorCode, toproom }: RoomProps) {
                       )}
                     </li>
                     <li>
-                      <p>{room?.description}</p>
+                      <span dangerouslySetInnerHTML={{ __html: room?.description }}/>
                     </li>
                   </ul>
                 </div>

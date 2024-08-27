@@ -69,7 +69,7 @@ export const RoomSlider = (props: ICourseSliderProps) => {
                 </div>
               ) : null}
               <div className="iq-doc-description mt-2 text-left">
-                {limitText(item?.description, 60)}
+                <span dangerouslySetInnerHTML={{ __html: limitText(item.description, 160) }}/>
               </div>
               <div className="d-flex justify-content-end">
                 <div className="iq-doc-description" style={{ textDecoration: item?.priceRoom?.salePrice && item?.priceRoom?.salePrice > 0 ? 'line-through' : 'none' }}>

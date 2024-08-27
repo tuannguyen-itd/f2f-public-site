@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { courseService, ratingService } from '@services';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import Error from 'next/error';
@@ -95,7 +95,7 @@ function Course({ course, errorCode, rating, ratingAVG, suggests }: CourseProps)
                       <a><img src="/theme/template/images/resource/news-25.jpg" /></a>
                       )}
                   </div>
-                  <p>{course.description}</p>
+                  <span dangerouslySetInnerHTML={{ __html: course.description }}/>
                   <div className="learn-box">
                     <h2>Nội dung lớp học</h2>
                     <ul className="learn-list">

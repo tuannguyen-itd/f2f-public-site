@@ -27,9 +27,7 @@ export const CourseItem = (props: ICourseItemProps) => {
               <Address ward={course?.tutor?.userInfo?.ward}/>
             </div>
           ) : ''}
-          {course?.description?.length > 0 ? (
-            <p className="mt-2">{limitText(course?.description, 160)}</p>
-          ) : null}
+          <span dangerouslySetInnerHTML={{ __html: limitText(course.description, 160) }}/>
           <div className="float-right d-flex justify-content-end">
             <div className="iq-doc-description text-danger" style={{ textDecoration: course?.priceCourse?.salePrice && course?.priceCourse?.salePrice > 0 ? 'line-through' : 'none' }}>
               <span>

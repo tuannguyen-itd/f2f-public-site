@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { IRoom } from '@model/room.model';
 import { formatDate } from '../config/constants';
-import { formatCurrency } from '../shared/util/string-utils';
+import { formatCurrency, limitText } from '../shared/util/string-utils';
 
 interface IRoomItemProps {
   room?: IRoom;
@@ -10,6 +10,12 @@ interface IRoomItemProps {
 
 export const RoomItem = (props: IRoomItemProps) => {
   const { room } = props;
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
   return (
     <div className="col-md-12 w-100" >
       <div className="row shadow bg-white rounded">
@@ -24,15 +30,9 @@ export const RoomItem = (props: IRoomItemProps) => {
         </div>
         <div className="col-md-6 col-ms-12 mt-2">
           <a className="text-dark" style={{ fontSize: '20px' }} ><strong>{room?.name}</strong></a>
-          {room?.description ? (
-            <div className="text">
-              {room?.description?.length > 150 ? (
-                <p>{room?.description?.slice(0, 150)}...</p>
-              ) : (
-                <p>{room?.description}</p>
-              )}
-            </div>
-          ) : ''}
+          {isClient && (
+            <span dangerouslySetInnerHTML={{ __html: limitText(room.description, 160) }}/>
+          )}
           {room?.avgRating >= 0 && room?.countRating >= 0 ? (
             <div className="rating d-flex">
               <span className="text-dark">Đánh giá:&nbsp;</span>

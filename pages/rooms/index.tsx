@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Button, Col, Input, InputGroup, InputGroupAddon, Row } from 'reactstrap';
 import Layout from '@components/layout';
 import { Pagination } from '@components/pagination/pagination';
@@ -48,6 +48,18 @@ export default function Rooms({ menus, errorCode, response, topRoomseller }: Roo
     maxPrice: 0,
   });
   const [areaRange, setAreaRange] = useState<string>();
+  const filterRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (isFilterOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    } else {
+      document.removeEventListener('mousedown', handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isFilterOpen]);
 
   useEffect(() => {
     setWardId(address.wardId);
@@ -103,6 +115,13 @@ export default function Rooms({ menus, errorCode, response, topRoomseller }: Roo
     setAreaRange(e.target.value);
   };
 
+  const handleClickOutside = (event: MouseEvent) => {
+    if (filterRef.current && !filterRef.current.contains(event.target as Node)) {
+      setIsFilterOpen(false);
+      setAddress({} as IAddressState);
+    }
+  };
+
   return (
     // @ts-ignore
     <Layout menus={menus}>
@@ -140,7 +159,7 @@ export default function Rooms({ menus, errorCode, response, topRoomseller }: Roo
               </div>
             </div>
             {isFilterOpen && (
-              <div className="position-absolute bg-white shadow p-4 w-100" style={{ zIndex: 1001 }} >
+              <div ref={filterRef} className="position-absolute bg-white shadow p-4 w-100" style={{ zIndex: 1001 }} >
                 <h5 className="font-weight-bold text-dark">Lọc theo vị trí</h5>
                 <div className="row">
                   <AddressSelector onSelect={setAddress} values={address} col="4" className="form-control" />
@@ -243,7 +262,6 @@ export default function Rooms({ menus, errorCode, response, topRoomseller }: Roo
             </div>
             <div className="col-lg-6 col-md-12">
               <div className="map-sticky">
-                {/*<Map mapStyle={{ height: '95vh' }} location={location} />*/}
                 <MapLeaflet location={location} onMapClick={handleMapClick}/>
               </div>
             </div>

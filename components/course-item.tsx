@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { ICourse } from '@model/course.model';
 import { Address } from '@components/address';
 import Link from 'next/link';
@@ -10,6 +10,12 @@ interface ICourseItemProps {
 
 export const CourseItem = (props: ICourseItemProps) => {
   const { course } = props;
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
   return (
     <div className="col-md-12 w-100">
       <div className="row shadow bg-white rounded">
@@ -27,7 +33,9 @@ export const CourseItem = (props: ICourseItemProps) => {
               <Address ward={course?.tutor?.userInfo?.ward}/>
             </div>
           ) : ''}
-          <span dangerouslySetInnerHTML={{ __html: limitText(course.description, 160) }}/>
+          {isClient && (
+            <span dangerouslySetInnerHTML={{ __html: limitText(course?.description, 160) }}/>
+          )}
           <div className="float-right d-flex justify-content-end">
             <div className="iq-doc-description text-danger" style={{ textDecoration: course?.priceCourse?.salePrice && course?.priceCourse?.salePrice > 0 ? 'line-through' : 'none' }}>
               <span>

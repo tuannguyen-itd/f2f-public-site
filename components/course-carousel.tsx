@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 import { ICourse } from '@model/course.model';
@@ -26,6 +26,11 @@ export const CourseSlider = (props: ICourseSliderProps) => {
       items: 1,
     },
   };
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   return (
     <Carousel responsive={responsive} autoPlay={true} autoPlaySpeed={3000} infinite={true}>
@@ -69,7 +74,9 @@ export const CourseSlider = (props: ICourseSliderProps) => {
                 </div>
               </div>
               <div className="iq-doc-description mt-2 text-left">
-                {limitText(course?.description, 60)}
+                {isClient && (
+                  <span dangerouslySetInnerHTML={{ __html: limitText(course?.description, 160) }}/>
+                )}
               </div>
               <div className="d-flex justify-content-end">
                 <div className="iq-doc-description" style={{ textDecoration: course?.priceCourse?.salePrice && course?.priceCourse?.salePrice > 0 ? 'line-through' : 'none' }}>

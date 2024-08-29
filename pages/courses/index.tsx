@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Button, Col, Input, InputGroup, InputGroupAddon, Row } from 'reactstrap';
 import Layout from '@components/layout';
 import { Pagination } from '@components/pagination/pagination';
@@ -8,7 +8,7 @@ import Error from 'next/error';
 import { CourseItem } from '@components/course-item';
 import { ITEMS_PER_PAGE } from '../../shared/util/pagination.constants';
 import { latLngDefault } from '../../config/constants';
-import Map from '@components/map';
+import dynamic from 'next/dynamic';
 import AddressSelector, { IAddressState } from '@components/address-selector/address-selector';
 import { courseService } from '@services';
 import FilterRange from '@components/filters/filter-range';
@@ -17,10 +17,10 @@ import CategoryItem from '@components/category/category-item';
 
 declare type CoursesProps = InferGetServerSidePropsType<typeof getServerSideProps>;
 
-export const getServerSideProps: GetServerSideProps<any, NodeJS.Dict<string>> = async ({ query: { page = 1, search, provinceId, districtId,  wardId, minPrice, maxPrice }, res }) => {
+export const getServerSideProps: GetServerSideProps<any, NodeJS.Dict<string>> = async ({ query: { page = 1, search, provinceId, districtId, wardId, minPrice, maxPrice }, res }) => {
   const menus = [];
   const response = await courseService.getAllCourse(
-    +page - 1, ITEMS_PER_PAGE, 'id', 'desc', search, provinceId || null , districtId || null , wardId || null, minPrice || null , maxPrice || null);
+    +page - 1, ITEMS_PER_PAGE, 'id', 'desc', search, provinceId || null, districtId || null, wardId || null, minPrice || null, maxPrice || null);
   const responseCategory = await CategoryService.getEntities(+page - 1, ITEMS_PER_PAGE, 'id', 'desc');
   if (response === null) {
     res.statusCode = 404;
@@ -49,6 +49,8 @@ export default function Courses({ menus, response, responseCategory, errorCode }
     minPrice: 0,
     maxPrice: 0,
   });
+  const filterRef = useRef<HTMLDivElement>(null);
+  const filterCategoryRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!isInitialLoad.current) {
@@ -60,6 +62,26 @@ export default function Courses({ menus, response, responseCategory, errorCode }
       isInitialLoad.current = false;
     }
   }, [address, provinceId, districtId, wardId, filterValues]);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (filterRef.current && !filterRef.current.contains(event.target as Node)) {
+        setIsFilterOpen(false);
+        setAddress({} as IAddressState);
+      }
+      if (filterCategoryRef.current && !filterCategoryRef.current.contains(event.target as Node)) {
+        setIsCategoryOpen(false);
+      }
+    };
+
+    if (isFilterOpen || isCategoryOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isFilterOpen, isCategoryOpen]);
 
   const url = (page, searchStr, provinceId, districtId, wardId, minPrice, maxPrice) => {
     const params = Object.entries({
@@ -83,7 +105,7 @@ export default function Courses({ menus, response, responseCategory, errorCode }
     event.preventDefault();
     router.push(url(1, search, null, null, null, null, null), undefined);
   };
-  const handlelocation = (lat, lng) => {
+  const handleLocationChange = (lat, lng) => {
     setLocation({ lat, lng });
   };
 
@@ -94,6 +116,12 @@ export default function Courses({ menus, response, responseCategory, errorCode }
   const toggleCategory = () => {
     setIsCategoryOpen(!isCategoryOpen);
   };
+
+  const handleMapClick = (newLocation) => {
+    setLocation(newLocation);
+  };
+
+  const MapLeaflet = dynamic(() => import('@components/map-leaflet'), { ssr: false });
 
   return (
     // @ts-ignore
@@ -135,7 +163,7 @@ export default function Courses({ menus, response, responseCategory, errorCode }
               </div>
             </div>
             {isCategoryOpen && (
-              <div className="position-absolute bg-white shadow p-3" style={{ zIndex: 100 }} >
+              <div ref={filterCategoryRef} className="position-absolute bg-white shadow p-3" style={{ zIndex: 100 }} >
                 <h5 className="font-weight-bold text-dark">Danh Mục</h5>
                 <div className="d-flex">
                   <CategoryItem category={responseCategory.data} />
@@ -143,7 +171,7 @@ export default function Courses({ menus, response, responseCategory, errorCode }
               </div>
             )}
             {isFilterOpen && (
-              <div className="position-absolute bg-white shadow p-4 w-100" style={{ zIndex: 100 }} >
+              <div ref={filterRef} className="position-absolute bg-white shadow p-4 w-100" style={{ zIndex: 100 }} >
                 <h5 className="font-weight-bold text-dark">Lọc theo vị trí</h5>
                 <div className="d-flex">
                   <AddressSelector onSelect={setAddress} values={address} col="4" className="form-control" />
@@ -158,7 +186,7 @@ export default function Courses({ menus, response, responseCategory, errorCode }
           <div className="row clearfix d-flex justify-content-center">
             <div className="col-lg-6 col-md-12">
               {response?.content?.length > 0 ? response?.content?.map((courses, index) => (
-                <div className="row mb-3 pl-2 pr-2" key={index}  onClick={() => handlelocation(courses?.bookings[0]?.room?.place?.lat, courses?.bookings[0]?.room?.place?.lng)}>
+                <div className="row mb-3 pl-2 pr-2" key={index}  onClick={() => handleLocationChange(courses?.bookings[0]?.room?.place?.lat, courses?.bookings[0]?.room?.place?.lng)}>
                   <CourseItem course={courses} />
                 </div>
               )) : ''}
@@ -166,7 +194,7 @@ export default function Courses({ menus, response, responseCategory, errorCode }
             </div>
             <div className="col-lg-6 col-md-12">
               <div className="map-sticky">
-                <Map mapStyle={{ height: '95vh' }} location={location} />
+                <MapLeaflet location={location} onMapClick={handleMapClick}/>
               </div>
             </div>
           </div>

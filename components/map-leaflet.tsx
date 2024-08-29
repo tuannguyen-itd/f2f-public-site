@@ -1,6 +1,8 @@
 import React, { useEffect, useRef } from 'react';
-import * as leaflet from 'leaflet';
+import leaflet from 'leaflet';
 import 'leaflet/dist/leaflet.css';
+import 'leaflet-control-geocoder/dist/Control.Geocoder.css';
+import 'leaflet-control-geocoder';
 
 const MapLeaflet = ({ location, onMapClick }) => {
   const mapRef = useRef(null);
@@ -8,7 +10,7 @@ const MapLeaflet = ({ location, onMapClick }) => {
 
   const customIcon = leaflet.icon({
     iconUrl: 'theme/template/images/marker-icon.png',
-    iconSize: [32, 32],
+    iconSize: [20, 32],
     iconAnchor: [16, 32],
     popupAnchor: [0, -32],
   });
@@ -26,6 +28,26 @@ const MapLeaflet = ({ location, onMapClick }) => {
             '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
         })
         .addTo(mapRef.current);
+
+      const geocoder = leaflet.Control.Geocoder.nominatim();
+      leaflet.Control.geocoder({
+        geocoder,
+        defaultMarkGeocode: false,
+        position: 'topleft',
+      }).on('markgeocode', (e) => {
+        const bbox = e.geocode.bbox;
+        const bounds = new leaflet.LatLngBounds(
+          [bbox.getSouthWest().lat, bbox.getSouthWest().lng],
+          [bbox.getNorthEast().lat, bbox.getNorthEast().lng]
+        );
+        mapRef.current.fitBounds(bounds);
+
+        const { center } = e.geocode;
+        leaflet
+          .marker(center, { icon: customIcon })
+          .addTo(mapRef.current)
+          .openPopup();
+      }).addTo(mapRef.current);
 
       mapRef.current.addEventListener('click', (e) => {
         const { lat, lng } = e.latlng;

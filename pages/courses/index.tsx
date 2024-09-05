@@ -198,7 +198,7 @@ export default function Courses({ menus, response, responseCategory, errorCode }
               </div>
             </div>
           </div>
-          {response.totalPages > 1 ?
+          {response?.totalPages > 1 ?
             <Pagination
               visible={response?.content?.length > 0 }
               activePage={+router.query.page || 1}

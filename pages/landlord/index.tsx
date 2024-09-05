@@ -29,7 +29,8 @@ export const getServerSideProps: GetServerSideProps<any, NodeJS.Dict<string>> = 
 
 export default function Landlord({ menus, response, errorCode }: CoursesProps) {
   if (errorCode) return <Error statusCode={errorCode} />;
-  const { data: landlord, total } = response;
+  const landlord = response?.data || [];
+  const total = response?.total || 0;
 
   const router = useRouter();
   const [search, setSearch] = useState('');
@@ -166,7 +167,7 @@ export default function Landlord({ menus, response, errorCode }: CoursesProps) {
                         <Input
                           autoFocus={true}
                           value={search}
-                          onChange={$event => setSearch($event.target.value)}
+                          onChange={$event => setSearch($event?.target?.value)}
                           placeholder="Tìm Người Cho Thuê" />
                         <InputGroupAddon addonType="append">
                           <Button color="secondary">Tìm</Button>
@@ -186,7 +187,7 @@ export default function Landlord({ menus, response, errorCode }: CoursesProps) {
           <div className="row clearfix">
             <div className="col-md-12">
               <div className="row clearfix">
-                {landlord.length > 0 ? landlord.map((landlord, index) => (
+                {landlord?.length > 0 ? landlord?.map((landlord, index) => (
                   <div /*onMouseEnter={() => onHandleCenterHover(course)}*/ key={index}>
                     <LandlordItem key={index} landlord={landlord} />
                   </div>
